@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # PostgreSQL with pgvector for cases, predictions, and clinical guideline embeddings
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: neurosense-db
+    environment:
+      POSTGRES_USER: neurosense_user
+      POSTGRES_PASSWORD: neurosense_pass
+      POSTGRES_DB: neurosense
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U neurosense_user -d neurosense"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Redis for deterministic prediction and signal caching
+  redis:
+    image: redis:7-alpine
+    container_name: neurosense-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  # FastAPI Backend (Inference Lookup & RAG Precaution Gateway)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: neurosense-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://neurosense_user:neurosense_pass@db:5432/neurosense
+      - REDIS_URL=redis://redis:6379/0
+      - MODEL_PATH=/app/models/m32.h5
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+
+  # Next.js 14 Frontend Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: neurosense-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  redisdata:

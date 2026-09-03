@@ -41,7 +41,11 @@ export async function GET(
       risk_stage: pred.risk_stage,
       confidence: pred.confidence,
       model_name: pred.model_name || "Özdemir CNN Multi-Head (m32.h5 Shared Backbone)",
-      provenance: caseItem.domain === "sleep" ? "PhysioNet Sleep-EDF Expanded / AASM 5-Class Staging" : "PhysioNet CHB-MIT Scalp EEG Dataset",
+      provenance: caseItem.domain === "sleep" 
+        ? "PhysioNet Sleep-EDF Expanded / AASM 5-Class Staging" 
+        : caseItem.domain === "early_warning"
+        ? `${caseItem.dataset_source?.toUpperCase()} Physiological Stress/Anxiety Cohort`
+        : "PhysioNet CHB-MIT Scalp EEG Dataset",
       domain: caseItem.domain,
       sleep_stage: pred.sleep_stage,
       sleep_metrics: pred.sleep_metrics

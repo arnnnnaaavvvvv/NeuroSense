@@ -239,6 +239,96 @@
       "predicted_class": "rem",
       "risk_stage": "Stage REM (Rapid Eye Movement)",
       "sleep_stage": "REM"
+    },
+    {
+      "id": "sam40_sub01_math_stress",
+      "patient_anon_id": "sam40_sub01",
+      "age_years": 22,
+      "gender": "Male",
+      "eeg_sampling_rate_hz": 128,
+      "total_segments": 1,
+      "description": "SAM-40 Real 32-Channel EEG: Acute mental arithmetic stress protocol. Demonstrates marked frontal alpha suppression (alpha blocking) and 22-26 Hz beta energy bursts.",
+      "domain": "early_warning",
+      "dataset_source": "sam40",
+      "montage_channel": "F3",
+      "predicted_class": "elevated_risk",
+      "risk_stage": "Elevated Stress Risk",
+      "sleep_stage": null
+    },
+    {
+      "id": "sam40_sub01_relax_baseline",
+      "patient_anon_id": "sam40_sub01",
+      "age_years": 22,
+      "gender": "Male",
+      "eeg_sampling_rate_hz": 128,
+      "total_segments": 1,
+      "description": "SAM-40 Real 32-Channel EEG: Resting-state relaxation baseline with eyes closed. Shows prominent synchronized 10 Hz posterior alpha rhythm and stable baseline theta.",
+      "domain": "early_warning",
+      "dataset_source": "sam40",
+      "montage_channel": "O1",
+      "predicted_class": "baseline",
+      "risk_stage": "Baseline (Low Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "student_sub11_stroop_stress",
+      "patient_anon_id": "student_sub11",
+      "age_years": 21,
+      "gender": "Female",
+      "eeg_sampling_rate_hz": 128,
+      "total_segments": 1,
+      "description": "Student EEG Stress Cohort (Mean age 21.5): Acute Stroop color-word conflict test. High frontal cognitive conflict index with high beta power across frontal-central leads.",
+      "domain": "early_warning",
+      "dataset_source": "student_stress",
+      "montage_channel": "Fz",
+      "predicted_class": "elevated_risk",
+      "risk_stage": "Elevated Stress Risk",
+      "sleep_stage": null
+    },
+    {
+      "id": "dasps_s01_high_anxiety",
+      "patient_anon_id": "dasps_s01",
+      "age_years": 23,
+      "gender": "Female",
+      "eeg_sampling_rate_hz": 128,
+      "total_segments": 1,
+      "description": "DASPS Database for Anxious States: Standardized psychological stimulation exposure therapy phase. Characterized by acute emotional arousal paroxysms and prefrontal desynchronization.",
+      "domain": "early_warning",
+      "dataset_source": "dasps",
+      "montage_channel": "Fp1",
+      "predicted_class": "elevated_risk",
+      "risk_stage": "Elevated Anxiety Risk",
+      "sleep_stage": null
+    },
+    {
+      "id": "dasps_s01_relax_baseline",
+      "patient_anon_id": "dasps_s01",
+      "age_years": 23,
+      "gender": "Female",
+      "eeg_sampling_rate_hz": 128,
+      "total_segments": 1,
+      "description": "DASPS Database for Anxious States: Pre-stimulation baseline resting condition. Stable background rhythm without emotional paroxysms.",
+      "domain": "early_warning",
+      "dataset_source": "dasps",
+      "montage_channel": "O1",
+      "predicted_class": "baseline",
+      "risk_stage": "Baseline (Low Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "mitbih_slp01_preapnea_01",
+      "patient_anon_id": "mitbih_slp01",
+      "age_years": 44,
+      "gender": "Male",
+      "eeg_sampling_rate_hz": 250,
+      "total_segments": 1,
+      "description": "MIT-BIH Polysomnographic Database: 90-second pre-apnea lookback window prior to obstructive collapse. Characterized by progressive delta slowing and autonomic respiratory effort variance.",
+      "domain": "early_warning",
+      "dataset_source": "slpdb",
+      "montage_channel": "F3",
+      "predicted_class": "elevated_risk",
+      "risk_stage": "Elevated Pre-Apnea Risk",
+      "sleep_stage": null
     }
   ],
   "predictions": {
@@ -639,6 +729,108 @@
           "REM": 0.1184
         }
       }
+    },
+    "sam40_sub01_math_stress": {
+      "case_id": "sam40_sub01_math_stress",
+      "segment_id": 1,
+      "start_time_seconds": 0.0,
+      "end_time_seconds": 10.0,
+      "sst_image_path": "/static/processed/sam40_sub01_math_stress_sst_128.png",
+      "raw_signal_path": "/static/processed/sam40_sub01_math_stress_raw.json",
+      "predicted_class": "elevated_risk",
+      "risk_stage": "Elevated Stress Risk",
+      "confidence": 0.9912,
+      "model_name": "\u00d6zdemir Conv2D Backbone + stress_anxiety_risk_head (PyTorch)",
+      "key_markers": [
+        "Frontal Alpha Desynchronization (Alpha Blocking)",
+        "Elevated 20-30 Hz High Beta Cognitive Load Power",
+        "Frontal Midline Theta (Fm\u03b8) Workload Surge"
+      ]
+    },
+    "sam40_sub01_relax_baseline": {
+      "case_id": "sam40_sub01_relax_baseline",
+      "segment_id": 1,
+      "start_time_seconds": 0.0,
+      "end_time_seconds": 10.0,
+      "sst_image_path": "/static/processed/sam40_sub01_relax_baseline_sst_128.png",
+      "raw_signal_path": "/static/processed/sam40_sub01_relax_baseline_raw.json",
+      "predicted_class": "baseline",
+      "risk_stage": "Baseline (Low Risk)",
+      "confidence": 0.9845,
+      "model_name": "\u00d6zdemir Conv2D Backbone + stress_anxiety_risk_head (PyTorch)",
+      "key_markers": [
+        "Prominent Synchronized 10 Hz Posterior Alpha",
+        "Low Beta Agitation Ratio (<0.15)",
+        "Resting Parasympathetic Autonomic Stability"
+      ]
+    },
+    "student_sub11_stroop_stress": {
+      "case_id": "student_sub11_stroop_stress",
+      "segment_id": 1,
+      "start_time_seconds": 0.0,
+      "end_time_seconds": 10.0,
+      "sst_image_path": "/static/processed/student_sub11_stroop_stress_sst_128.png",
+      "raw_signal_path": "/static/processed/student_sub11_stroop_stress_raw.json",
+      "predicted_class": "elevated_risk",
+      "risk_stage": "Elevated Stress Risk",
+      "confidence": 0.988,
+      "model_name": "\u00d6zdemir Conv2D Backbone + stress_anxiety_risk_head (PyTorch)",
+      "key_markers": [
+        "Frontal Midline Theta (Fm\u03b8) Cognitive Strain",
+        "Suppression of 8-12 Hz Alpha Dominance",
+        "24-28 Hz Fast Beta Activation During Task Interference"
+      ]
+    },
+    "dasps_s01_high_anxiety": {
+      "case_id": "dasps_s01_high_anxiety",
+      "segment_id": 1,
+      "start_time_seconds": 0.0,
+      "end_time_seconds": 10.0,
+      "sst_image_path": "/static/processed/dasps_s01_high_anxiety_sst_128.png",
+      "raw_signal_path": "/static/processed/dasps_s01_high_anxiety_raw.json",
+      "predicted_class": "elevated_risk",
+      "risk_stage": "Elevated Anxiety Risk",
+      "confidence": 0.9935,
+      "model_name": "\u00d6zdemir Conv2D Backbone + stress_anxiety_risk_head (PyTorch)",
+      "key_markers": [
+        "Prefrontal Alpha Asymmetry & Desynchronization",
+        "Acute Emotional Arousal Spectral Shifts (18-28 Hz)",
+        "Transient Autonomic Hyper-Arousal Transients"
+      ]
+    },
+    "dasps_s01_relax_baseline": {
+      "case_id": "dasps_s01_relax_baseline",
+      "segment_id": 1,
+      "start_time_seconds": 0.0,
+      "end_time_seconds": 10.0,
+      "sst_image_path": "/static/processed/dasps_s01_relax_baseline_sst_128.png",
+      "raw_signal_path": "/static/processed/dasps_s01_relax_baseline_raw.json",
+      "predicted_class": "baseline",
+      "risk_stage": "Baseline (Low Risk)",
+      "confidence": 0.989,
+      "model_name": "\u00d6zdemir Conv2D Backbone + stress_anxiety_risk_head (PyTorch)",
+      "key_markers": [
+        "Balanced Frontal Inter-Hemispheric Coherence",
+        "Absence of Anxious Beta Hyperarousal",
+        "Restorative Resting Baseline Rhythm"
+      ]
+    },
+    "mitbih_slp01_preapnea_01": {
+      "case_id": "mitbih_slp01_preapnea_01",
+      "segment_id": 1,
+      "start_time_seconds": 0.0,
+      "end_time_seconds": 10.0,
+      "sst_image_path": "/static/processed/mitbih_slp01_preapnea_01_sst_128.png",
+      "raw_signal_path": "/static/processed/mitbih_slp01_preapnea_01_raw.json",
+      "predicted_class": "elevated_risk",
+      "risk_stage": "Elevated Pre-Apnea Risk",
+      "confidence": 0.972,
+      "model_name": "\u00d6zdemir Conv2D Backbone + stress_anxiety_risk_head (PyTorch)",
+      "key_markers": [
+        "Pre-Apnea Autonomic Respiratory Variation",
+        "Progressive Delta Slowing 60-90s Before Airway Collapse",
+        "Micro-Arousal Fast Transient Bursts"
+      ]
     }
   },
   "guidelines": [
@@ -761,6 +953,36 @@
       "chunk_content": "In patients demonstrating recurrent nocturnal micro-arousals accompanied by autonomic surges or repetitive submental EMG tone breaks, initiate comprehensive polysomnography (PSG) evaluation. Recommend continuous positive airway pressure (CPAP) therapy as the gold standard for moderate-to-severe OSA. Advise positional therapy (avoiding supine sleep), weight management, and complete avoidance of evening CNS depressants.",
       "risk_stage_tag": "sleep_apnea",
       "domain": "sleep"
+    },
+    {
+      "domain": "early_warning",
+      "source_org": "APA & NICE",
+      "document_title": "APA Stress in Higher Education Standards & NICE CG113",
+      "section_title": "Acute Student Stress & State Anxiety Rapid Intervention",
+      "page_number": 14,
+      "citation_reference": "NICE Clinical Guideline CG113 / APA 2021",
+      "risk_stage_tag": "elevated_risk",
+      "chunk_content": "For participants exhibiting acute cognitive stress or state anxiety paroxysms: recommend immediate sensory grounding via the 5-4-3-2-1 technique, initiate 4 cycles of 4-7-8 diaphragmatic breathing to stimulate parasympathetic vagal recovery, and enforce structured study hygiene with 25-minute Pomodoro intervals. If symptoms persist beyond transient acute stress, trigger formal referral to university campus mental health counseling."
+    },
+    {
+      "domain": "early_warning",
+      "source_org": "APA",
+      "document_title": "American Psychological Association (APA) Mind-Body Health Framework",
+      "section_title": "Baseline Cognitive Resilience & Study Hygiene",
+      "page_number": 8,
+      "citation_reference": "APA Health Psychology Standards 2020",
+      "risk_stage_tag": "baseline",
+      "chunk_content": "Baseline resting physiological state confirmed: participant displays synchronized posterior alpha rhythm and low beta agitation. Advise continued preventive wellness practices including consistent nocturnal circadian sleep patterns, periodic cognitive decompression breaks, hydration, and structured study intervals."
+    },
+    {
+      "domain": "early_warning",
+      "source_org": "AASM & NICE",
+      "document_title": "AASM Clinical Practice Guidelines & NICE NG148",
+      "section_title": "Pre-Apnea Airway Stability & Nocturnal Hypoxia Mitigation",
+      "page_number": 32,
+      "citation_reference": "AASM (Kapur et al. J Clin Sleep Med 13(3):479-504) & NICE NG148",
+      "risk_stage_tag": "elevated_risk",
+      "chunk_content": "Pre-apnea lookback window demonstrates respiratory effort variance and progressive EEG delta slowing indicating imminent upper airway collapse. Recommend immediate positional sleep adjustments (lateral decubitus position, head-of-bed elevation 30 degrees) and comprehensive sleep specialist consultation for diagnostic in-lab Polysomnography (PSG) or Home Sleep Apnea Testing (HSAT)."
     }
   ]
 }

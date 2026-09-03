@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { 
   Brain, 
   Sparkles, 
@@ -243,6 +244,27 @@ export default function EarlyWarningStressSection() {
               <div className="flex justify-between text-slate-400">
                 <span>Dataset:</span>
                 <span className="text-slate-300 text-right truncate max-w-[180px]">{result.dataset}</span>
+              </div>
+
+              <div className="pt-3 border-t border-slate-800">
+                <Link
+                  href={
+                    selectedTask === "stress"
+                      ? selectedScenario === "elevated_risk"
+                        ? "/analysis/sam40_sub01_math_stress"
+                        : "/analysis/sam40_sub01_relax_baseline"
+                      : selectedTask === "anxiety"
+                      ? selectedScenario === "elevated_risk"
+                        ? "/analysis/dasps_s01_high_anxiety"
+                        : "/analysis/dasps_s01_relax_baseline"
+                      : "/analysis/mitbih_slp01_preapnea_01"
+                  }
+                  className="w-full py-2 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-lg shadow-amber-500/20"
+                >
+                  <Activity className="w-3.5 h-3.5 stroke-[2.5]" />
+                  <span>Inspect Full Oscilloscope Waveform</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
             </div>
           </div>

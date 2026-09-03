@@ -72,13 +72,19 @@ export default function CaseSelectionPage() {
       if (stageFilter === "baseline") return stageStr.includes("baseline") || stageStr.includes("healthy");
       if (stageFilter === "pre-ictal") return stageStr.includes("pre") || stageStr.includes("inter");
       if (stageFilter === "ictal") return stageStr.includes("ictal") && !stageStr.includes("pre") && !stageStr.includes("inter");
-    } else {
+    } else if (activeDomain === "sleep") {
       // Sleep domain
       if (stageFilter === "wake") return sleepStageStr === "wake" || classStr === "wake" || stageStr.includes("wake");
       if (stageFilter === "n1") return sleepStageStr === "n1" || classStr === "n1" || stageStr.includes("n1");
       if (stageFilter === "n2") return sleepStageStr === "n2" || classStr === "n2" || stageStr.includes("n2");
       if (stageFilter === "n3") return sleepStageStr === "n3" || classStr === "n3" || stageStr.includes("n3");
       if (stageFilter === "rem") return sleepStageStr === "rem" || classStr === "rem" || stageStr.includes("rem");
+    } else {
+      // Early warning stress & anxiety domain
+      if (stageFilter === "baseline") return stageStr.includes("baseline") || stageStr.includes("low");
+      if (stageFilter === "stress") return stageStr.includes("stress");
+      if (stageFilter === "anxiety") return stageStr.includes("anxiety");
+      if (stageFilter === "apnea") return stageStr.includes("apnea");
     }
     return true;
   });
@@ -159,14 +165,9 @@ export default function CaseSelectionPage() {
           }`}
         >
           <HeartPulse className="w-4 h-4 stroke-[2.5]" />
-          <span>Stress & Anxiety Early-Warning (103 Subjects)</span>
+          <span>Stress & Anxiety (6 Cases • Real EEG)</span>
         </button>
       </div>
-
-      {activeDomain === "early_warning" ? (
-        <EarlyWarningStressSection />
-      ) : (
-        <>
 
       {/* Secondary Controls: Dataset & Stage Filter Chips */}
       <div className="flex flex-wrap items-center justify-between gap-4 bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs">
@@ -194,10 +195,32 @@ export default function CaseSelectionPage() {
                 </button>
               ))}
             </>
-          ) : (
+          ) : activeDomain === "sleep" ? (
             <span className="px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-mono font-bold">
               PhysioNet Sleep-EDF Expanded (100 Hz PSG)
             </span>
+          ) : (
+            <>
+              {[
+                { id: "all", label: "All Cohorts" },
+                { id: "sam40", label: "SAM-40 (Stress)" },
+                { id: "student_stress", label: "Student EEG (Stress)" },
+                { id: "dasps", label: "DASPS (Anxiety)" },
+                { id: "slpdb", label: "MIT-BIH (Apnea)" },
+              ].map((ds) => (
+                <button
+                  key={ds.id}
+                  onClick={() => setSelectedDataset(ds.id)}
+                  className={`px-2.5 py-1 rounded-lg transition-colors font-mono ${
+                    selectedDataset === ds.id
+                      ? "bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold"
+                      : "text-slate-400 hover:text-slate-200"
+                  }`}
+                >
+                  {ds.label}
+                </button>
+              ))}
+            </>
           )}
         </div>
 
@@ -224,7 +247,7 @@ export default function CaseSelectionPage() {
                 {tab.label}
               </button>
             ))
-          ) : (
+          ) : activeDomain === "sleep" ? (
             [
               { id: "all", label: "All" },
               { id: "wake", label: "Wake" },
@@ -239,6 +262,26 @@ export default function CaseSelectionPage() {
                 className={`px-2.5 py-1 rounded-md transition-all font-medium ${
                   stageFilter === tab.id
                     ? "bg-indigo-600 text-white font-bold"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))
+          ) : (
+            [
+              { id: "all", label: "All" },
+              { id: "baseline", label: "Baseline" },
+              { id: "stress", label: "Elevated Stress" },
+              { id: "anxiety", label: "Elevated Anxiety" },
+              { id: "apnea", label: "Pre-Apnea" },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setStageFilter(tab.id)}
+                className={`px-2.5 py-1 rounded-md transition-all font-medium ${
+                  stageFilter === tab.id
+                    ? "bg-amber-600 text-white font-bold"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
@@ -285,11 +328,27 @@ export default function CaseSelectionPage() {
             const isIctal = c.risk_stage?.toLowerCase().includes("ictal") && !c.risk_stage?.toLowerCase().includes("pre") && !c.risk_stage?.toLowerCase().includes("inter");
             const isPreIctal = c.risk_stage?.toLowerCase().includes("pre") || c.risk_stage?.toLowerCase().includes("inter");
             const isSleep = c.domain === "sleep";
+            const isEarlyWarning = c.domain === "early_warning";
 
             let badgeStyle = "bg-emerald-950/60 text-emerald-300 border-emerald-500/30";
             let StageIcon = CheckCircle2;
 
-            if (isSleep) {
+            if (isEarlyWarning) {
+              const rLower = (c.risk_stage || "").toLowerCase();
+              if (rLower.includes("stress")) {
+                badgeStyle = "bg-amber-950/70 text-amber-300 border-amber-500/50";
+                StageIcon = Brain;
+              } else if (rLower.includes("anxiety")) {
+                badgeStyle = "bg-rose-950/70 text-rose-300 border-rose-500/50";
+                StageIcon = HeartPulse;
+              } else if (rLower.includes("apnea")) {
+                badgeStyle = "bg-sky-950/70 text-sky-300 border-sky-500/50";
+                StageIcon = Activity;
+              } else {
+                badgeStyle = "bg-emerald-950/60 text-emerald-300 border-emerald-500/30";
+                StageIcon = CheckCircle2;
+              }
+            } else if (isSleep) {
               const stUpper = (c.sleep_stage || c.predicted_class || "").toUpperCase();
               if (stUpper.includes("N3")) {
                 badgeStyle = "bg-indigo-950/70 text-indigo-300 border-indigo-500/50";
@@ -323,6 +382,10 @@ export default function CaseSelectionPage() {
               bonn: { label: "Bonn Univ (Univariate)", style: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" },
               uci: { label: "UCI CSV (178 Features)", style: "bg-amber-500/10 text-amber-400 border-amber-500/30" },
               "sleep-edf": { label: "PhysioNet Sleep-EDF", style: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30" },
+              sam40: { label: "SAM-40 (Figshare Stress)", style: "bg-amber-500/10 text-amber-400 border-amber-500/30" },
+              student_stress: { label: "Student EEG (Stress)", style: "bg-purple-500/10 text-purple-400 border-purple-500/30" },
+              dasps: { label: "DASPS (State Anxiety)", style: "bg-rose-500/10 text-rose-400 border-rose-500/30" },
+              slpdb: { label: "MIT-BIH (Polysomnography)", style: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30" },
             };
             const dsInfo = datasetLabels[c.dataset_source || "chbmit"] || { label: c.dataset_source || "Benchmark", style: "bg-slate-800 text-slate-300" };
 
@@ -342,7 +405,7 @@ export default function CaseSelectionPage() {
                       <div>
                         <h2 className="font-bold text-sm text-white font-mono">{c.id}</h2>
                         <span className="text-[10px] text-slate-400">
-                          {c.age_years ? `${c.age_years}y` : "Adult"} &bull; {c.gender || "Patient"} &bull; {c.eeg_sampling_rate_hz} Hz
+                          {c.age_years ? `${c.age_years}y` : "Adult"} &bull; {c.gender || "Participant"} &bull; {c.eeg_sampling_rate_hz} Hz
                         </span>
                       </div>
                     </div>
@@ -366,7 +429,7 @@ export default function CaseSelectionPage() {
                   </div>
 
                   <div className="flex items-center gap-1 text-xs text-slate-400 group-hover:text-sky-400 transition-colors font-medium">
-                    <span>Inspect</span>
+                    <span>Inspect Waveform</span>
                     <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </div>
@@ -375,7 +438,12 @@ export default function CaseSelectionPage() {
           })}
         </div>
       )}
-      </>
+
+      {/* When on Stress & Anxiety domain, also show the interactive Early-Warning Benchmarks & Simulation */}
+      {activeDomain === "early_warning" && (
+        <div className="pt-6 border-t border-slate-800/80">
+          <EarlyWarningStressSection />
+        </div>
       )}
     </div>
   );

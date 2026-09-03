@@ -20,6 +20,10 @@ export async function GET(
       if (stage.includes("n1")) return tag.includes("n1") || tag.includes("light");
       if (stage.includes("rem")) return tag.includes("rem") || tag.includes("sleep_apnea");
       if (stage.includes("wake")) return tag.includes("wake") || tag.includes("insomnia");
+    } else if (domain === "early_warning" || domain === "stress_anxiety") {
+      if (stage.includes("apnea")) return tag.includes("elevated_risk") && (g.section_title?.toLowerCase().includes("apnea") || false);
+      if (stage.includes("elevated") || stage.includes("stress") || stage.includes("anxiety")) return tag.includes("elevated_risk") && !g.section_title?.toLowerCase().includes("apnea");
+      return tag.includes("base") || tag.includes("low");
     } else {
       if (stage.includes("ictal") && !stage.includes("pre") && !stage.includes("inter")) return tag.includes("ictal");
       if (stage.includes("pre")) return tag.includes("pre");

@@ -17,10 +17,12 @@ import {
   Zap, 
   Clock, 
   Wind,
-  Sun
+  Sun,
+  HeartPulse
 } from "lucide-react";
 import { fetchCases } from "../lib/api";
 import { CaseItem } from "../lib/types";
+import EarlyWarningStressSection from "../components/EarlyWarningStressSection";
 
 export default function CaseSelectionPage() {
   const [cases, setCases] = useState<CaseItem[]>([]);
@@ -28,7 +30,7 @@ export default function CaseSelectionPage() {
   const [error, setError] = useState<string | null>(null);
 
   // Active Navigation Filters
-  const [activeDomain, setActiveDomain] = useState<"epilepsy" | "sleep">("epilepsy");
+  const [activeDomain, setActiveDomain] = useState<"epilepsy" | "sleep" | "early_warning">("epilepsy");
   const [selectedDataset, setSelectedDataset] = useState<string>("all");
   const [stageFilter, setStageFilter] = useState<string>("all");
 
@@ -82,7 +84,7 @@ export default function CaseSelectionPage() {
   });
 
   // Handle Domain Switch
-  const handleDomainChange = (domain: "epilepsy" | "sleep") => {
+  const handleDomainChange = (domain: "epilepsy" | "sleep" | "early_warning") => {
     setActiveDomain(domain);
     setSelectedDataset("all");
     setStageFilter("all");
@@ -102,9 +104,9 @@ export default function CaseSelectionPage() {
             Clinical EEG Benchmark Explorer & Risk Staging
           </h1>
           <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-            Integrated multi-disorder clinical intelligence covering <strong>Epileptic Seizure Risk</strong> and{" "}
-            <strong>Polysomnography Sleep Staging</strong> across 4 verified benchmarks (CHB-MIT, Bonn, UCI, Sleep-EDF).
-            Powered by a shared 128×128 SST representation and dual-head CNN backbone with verified RAG precautions.
+            Integrated multi-disorder clinical intelligence covering <strong>Epileptic Seizure Risk</strong>,{" "}
+            <strong>Polysomnography Sleep Staging</strong>, and <strong>Early-Warning Student Stress & Anxiety Detection</strong> across 7 verified cohorts.
+            Powered by a shared 128×128 SST representation and multi-head CNN backbone with verified RAG precautions.
           </p>
         </div>
 
@@ -113,7 +115,7 @@ export default function CaseSelectionPage() {
           <div className="flex items-center gap-2">
             <Info className="w-4 h-4 text-sky-400 shrink-0" />
             <span>
-              <strong>Clinical Research Prototype:</strong> Precomputed benchmark records with verified AES, ILAE, and AASM guideline citations.
+              <strong>Clinical Research Prototype:</strong> Precomputed benchmark records with verified AES, ILAE, AASM, APA & NICE guideline citations.
             </span>
           </div>
           <div className="font-mono text-[11px] text-slate-400">
@@ -147,7 +149,24 @@ export default function CaseSelectionPage() {
           <Moon className="w-4 h-4 stroke-[2.5]" />
           <span>Sleep Staging & Disorders (4 Cases)</span>
         </button>
+
+        <button
+          onClick={() => handleDomainChange("early_warning")}
+          className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2.5 ${
+            activeDomain === "early_warning"
+              ? "bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20"
+              : "bg-slate-900/80 text-slate-300 hover:text-white hover:bg-slate-800/80 border border-slate-800"
+          }`}
+        >
+          <HeartPulse className="w-4 h-4 stroke-[2.5]" />
+          <span>Stress & Anxiety Early-Warning (103 Subjects)</span>
+        </button>
       </div>
+
+      {activeDomain === "early_warning" ? (
+        <EarlyWarningStressSection />
+      ) : (
+        <>
 
       {/* Secondary Controls: Dataset & Stage Filter Chips */}
       <div className="flex flex-wrap items-center justify-between gap-4 bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs">
@@ -355,6 +374,8 @@ export default function CaseSelectionPage() {
             );
           })}
         </div>
+      )}
+      </>
       )}
     </div>
   );

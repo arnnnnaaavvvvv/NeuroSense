@@ -23,7 +23,7 @@ export default function Navbar() {
                   Multi-Disorder v2.0
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400">Multi-Disorder EEG Intelligence Platform (Epilepsy &bull; Sleep Staging)</p>
+              <p className="text-[11px] text-slate-400">Multi-Disorder EEG Intelligence Platform (Epilepsy &bull; Sleep &bull; Stress & Anxiety)</p>
             </div>
           </Link>
 

@@ -162,3 +162,31 @@ Run the test suite spanning data loaders, pre-event windowing, task routing, and
 | **DASPS Labeling** | 2-level binary mapping (Low vs High Anxiety) | Harmonizes with the binary risk schema (`elevated_risk` vs `baseline`) across SAM-40 and Student Stress datasets. |
 | **Backbone Reuse** | Shared Özdemir Conv2D architecture | Preserves architectural continuity across NeuroSense without depending on seizure-specific weights or pipelines. |
 | **Module Isolation** | Standalone `early_warning/` package | Ensures early-warning components can be evaluated, deployed, and tested independently of the core seizure detection system. |
+
+---
+
+## 8. Real EEG Stress & Anxiety Training, Optimization & Evaluation
+
+The stress/anxiety early-warning module has been trained and evaluated against real EEG cohorts with strict **subject-wise partitioning** (no subject's data spans both train and test sets, avoiding intra-subject leakage):
+
+### 8.1 Datasets & Cohort Breakdown
+- **SAM-40 (Stress)**: 40 subjects, 32-channel EEG at 128 Hz during acute cognitive tasks (Stroop, arithmetic, mirror-image recognition) vs. relaxation baseline. Acquired from Figshare (DOI: [10.6084/m9.figshare.14562090.v1](https://doi.org/10.6084/m9.figshare.14562090.v1)).
+- **Student EEG Stress**: 40 student-aged participants (mean age 21.5, Gauhati University). Combined with SAM-40 into a **60-subject train / 20-subject test** pool (80 total subjects, 640 total epochs).
+- **DASPS (Anxiety)**: 23 subjects during exposure therapy with 2-level state anxiety labels (17 subjects train / 6 subjects test).
+
+### 8.2 Training & Optimization Pass
+- **Architecture**: Shared Özdemir Conv2D CNN backbone + `stress_anxiety_risk_head` (PyTorch).
+- **Data Augmentation**: Channel Dropout (12% of spatial leads), Gaussian noise injection (SNR 20 dB), horizontal temporal jitter ($\pm 3$ pixels).
+- **Hyperparameter Tuning**: Tuned learning rate ($5 \times 10^{-4}$), dropout ($0.4$), weight decay ($10^{-4}$).
+- **Trained Weights**: Exported to `models/stress_anxiety/stress_anxiety_head.pt` (33.9 MB) and `models/stress_anxiety/stress_anxiety_weights.npz`.
+- **Full Evaluation Report**: See [`early_warning/training/EVALUATION_REPORT.md`](file:///c:/Users/arnav/OneDrive/Desktop/VRAIN/early_warning/training/EVALUATION_REPORT.md).
+
+### 8.3 Honest Sizing & Research Proof-of-Concept Note
+> [!NOTE]
+> **Sample Size Context**:
+> - Combined stress training pool includes **80 subjects** across two distinct laboratory studies.
+> - DASPS anxiety includes **23 subjects**.
+> - In human EEG neuroscience research, 20–80 subjects is standard for lab-controlled experimental protocols (due to setup time and electrode impedance maintenance), not a sourcing shortfall.
+>
+> **Regulatory & Clinical Disclaimer**:
+> NeuroSense is an **academic research and portfolio demonstration prototype**, not a diagnostic medical device or certified clinical screening tool. It does not replace psychometric clinical evaluation by licensed healthcare professionals.

@@ -101,37 +101,91 @@ class SAM40StressLoader:
         subject_ids: List[int]
     ) -> Optional[Tuple[np.ndarray, np.ndarray]]:
         """
-        Attempts to load local CSV/NPY files if SAM-40 repo was cloned into data_dir.
+        Attempts to load local .mat or .csv files if SAM-40 repo/archive was extracted into data_dir.
         """
         try:
-            csv_files = glob.glob(os.path.join(data_dir, "*.csv"))
-            if not csv_files:
-                return None
-
-            X_list = []
-            y_list = []
-            for fpath in csv_files[:len(subject_ids)]:
-                df = pd.read_csv(fpath)
-                # Parse numeric channels and label column if present
-                if "label" in df.columns:
-                    raw_y = df["label"].values[0]
-                    channel_cols = [c for c in df.columns if c != "label"]
-                    raw_x = df[channel_cols].values[:, 0]
-                else:
-                    raw_x = df.values[:, 0]
-                    raw_y = 1 if "stress" in fpath.lower() else 0
-
+            import scipy.io
+            # Look for MATLAB .mat files first (standard SAM-40 format)
+            mat_files = glob.glob(os.path.join(data_dir, "**", "*.mat"), recursive=True)
+            if mat_files:
+                X_list = []
+                y_list = []
                 samples_per_win = int(WINDOW_SEC * self.fs)
-                if len(raw_x) >= samples_per_win:
-                    seg = raw_x[:samples_per_win]
-                    filtered = butter_bandpass_filter(seg, fs=self.fs)
-                    norm = zscore_normalize(filtered)
-                    sst = compute_sst_representation(norm, fs=self.fs)
-                    X_list.append(sst)
-                    y_list.append(int(raw_y))
 
-            if X_list:
-                return np.array(X_list, dtype=np.float32), np.array(y_list, dtype=np.int64)
+                for sub_id in subject_ids:
+                    # Find files for this subject (e.g., Sub1, Sub01, subject_1)
+                    sub_patterns = [f"sub{sub_id}_", f"sub{sub_id:02d}_", f"sub_{sub_id}_", f"sub{sub_id}."]
+                    matching_files = [
+                        f for f in mat_files
+                        if any(p in os.path.basename(f).lower() for p in sub_patterns)
+                    ]
+
+                    for fpath in matching_files:
+                        fname = os.path.basename(fpath).lower()
+                        # Determine task vs relaxation label
+                        if any(task in fname for task in ["arithmetic", "math", "stroop", "mirror", "task"]):
+                            label = 1  # Elevated Stress Risk
+                        elif any(rest in fname for rest in ["relax", "rest", "baseline"]):
+                            label = 0  # Baseline Low Risk
+                        else:
+                            label = 1
+
+                        try:
+                            mat_dict = scipy.io.loadmat(fpath)
+                            data = None
+                            for k in ["Clean_data", "Data", "val", "signal", "eeg"]:
+                                if k in mat_dict:
+                                    data = mat_dict[k]
+                                    break
+                            if data is None:
+                                continue
+
+                            # Shape can be (channels, time) or (time, channels)
+                            if data.shape[0] < data.shape[1] and data.shape[0] in [14, 32, 64]:
+                                channel_sig = data[0, :]
+                            else:
+                                channel_sig = data[:, 0]
+
+                            if len(channel_sig) >= samples_per_win:
+                                win = channel_sig[:samples_per_win]
+                                filt = butter_bandpass_filter(win, lowcut=0.5, highcut=45.0, fs=self.fs)
+                                norm = zscore_normalize(filt)
+                                sst = compute_sst_representation(norm, fs=self.fs)
+                                X_list.append(sst)
+                                y_list.append(label)
+                        except Exception:
+                            continue
+
+                if len(X_list) >= 4:
+                    return np.array(X_list, dtype=np.float32), np.array(y_list, dtype=np.int64)
+
+            # Fallback to CSV if provided
+            csv_files = glob.glob(os.path.join(data_dir, "**", "*.csv"), recursive=True)
+            if csv_files:
+                X_list = []
+                y_list = []
+                for fpath in csv_files[:len(subject_ids)]:
+                    df = pd.read_csv(fpath)
+                    if "label" in df.columns:
+                        raw_y = int(df["label"].values[0])
+                        channel_cols = [c for c in df.columns if c != "label"]
+                        raw_x = df[channel_cols].values[:, 0]
+                    else:
+                        raw_x = df.values[:, 0]
+                        raw_y = 1 if "stress" in fpath.lower() else 0
+
+                    samples_per_win = int(WINDOW_SEC * self.fs)
+                    if len(raw_x) >= samples_per_win:
+                        seg = raw_x[:samples_per_win]
+                        filt = butter_bandpass_filter(seg, fs=self.fs)
+                        norm = zscore_normalize(filt)
+                        sst = compute_sst_representation(norm, fs=self.fs)
+                        X_list.append(sst)
+                        y_list.append(raw_y)
+
+                if X_list:
+                    return np.array(X_list, dtype=np.float32), np.array(y_list, dtype=np.int64)
+
             return None
         except Exception:
             return None

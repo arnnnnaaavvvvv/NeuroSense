@@ -28,3 +28,7 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+# Raw Datasets & Trained Local Weights
+data/raw/
+models/stress_anxiety/

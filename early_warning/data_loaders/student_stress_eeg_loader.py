@@ -110,7 +110,47 @@ class StudentStressEEGLoader:
         Attempts to read Figshare raw/filtered student EEG files if present in data_dir.
         """
         try:
-            files = glob.glob(os.path.join(data_dir, "*.csv")) + glob.glob(os.path.join(data_dir, "*.npy"))
+            import scipy.io
+            # Check for .mat files
+            mat_files = glob.glob(os.path.join(data_dir, "**", "*.mat"), recursive=True)
+            if mat_files:
+                X_list = []
+                y_list = []
+                samples_per_win = int(WINDOW_SEC * self.fs)
+
+                for sub_id in subject_ids:
+                    sub_patterns = [f"sub{sub_id}_", f"sub{sub_id:02d}_", f"sub_{sub_id}_", f"sub{sub_id}."]
+                    matching_files = [
+                        f for f in mat_files
+                        if any(p in os.path.basename(f).lower() for p in sub_patterns)
+                    ]
+                    for fpath in matching_files:
+                        fname = os.path.basename(fpath).lower()
+                        label = 1 if any(t in fname for t in ["arithmetic", "math", "stroop", "mirror", "task"]) else 0
+                        try:
+                            mat = scipy.io.loadmat(fpath)
+                            data = None
+                            for k in ["Clean_data", "Data", "val", "signal"]:
+                                if k in mat:
+                                    data = mat[k]
+                                    break
+                            if data is None:
+                                continue
+                            channel_sig = data[0, :] if data.shape[0] < data.shape[1] else data[:, 0]
+                            if len(channel_sig) >= samples_per_win:
+                                win = channel_sig[:samples_per_win]
+                                filt = butter_bandpass_filter(win, lowcut=0.5, highcut=45.0, fs=self.fs)
+                                norm = zscore_normalize(filt)
+                                sst = compute_sst_representation(norm, fs=self.fs)
+                                X_list.append(sst)
+                                y_list.append(label)
+                        except Exception:
+                            continue
+                if len(X_list) >= 4:
+                    return np.array(X_list, dtype=np.float32), np.array(y_list, dtype=np.int64)
+
+            # Check for .csv or .npy files
+            files = glob.glob(os.path.join(data_dir, "**", "*.csv"), recursive=True) + glob.glob(os.path.join(data_dir, "**", "*.npy"), recursive=True)
             if not files:
                 return None
 

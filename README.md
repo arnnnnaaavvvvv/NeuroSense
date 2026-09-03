@@ -190,3 +190,17 @@ The stress/anxiety early-warning module has been trained and evaluated against r
 >
 > **Regulatory & Clinical Disclaimer**:
 > NeuroSense is an **academic research and portfolio demonstration prototype**, not a diagnostic medical device or certified clinical screening tool. It does not replace psychometric clinical evaluation by licensed healthcare professionals.
+
+---
+
+## 9. Contributing & Code Quality Standards
+
+Contributions to NeuroSense are welcome! Follow these steps for development:
+
+1. **Branching**: Create focused feature branches (`feature/your-feature-name` or `fix/issue-name`).
+2. **Formatting & Typing**: Ensure type hints are preserved across Python backend modules and TypeScript interfaces.
+3. **Automated Testing**: Run regression tests before opening pull requests:
+   ```bash
+   python -m pytest backend/tests/ early_warning/tests/ -v
+   ```
+4. **Pull Requests**: Provide clear descriptions of signal processing pipelines, model weights, or frontend visual updates.

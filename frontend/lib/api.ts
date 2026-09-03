@@ -10,7 +10,14 @@ import {
   BenchmarkMetricItem
 } from "./types";
 
-const API_BASE = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
+function getApiBase(): string {
+  if (process.env.NEXT_PUBLIC_BACKEND_URL) {
+    return process.env.NEXT_PUBLIC_BACKEND_URL.replace(/\/$/, "");
+  }
+  return "/api";
+}
+
+const API_BASE = getApiBase();
 
 export async function fetchCases(domain?: string, dataset?: string): Promise<CaseItem[]> {
   try {

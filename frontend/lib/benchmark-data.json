@@ -1,0 +1,766 @@
+{
+  "cases": [
+    {
+      "id": "chb01_base_01",
+      "patient_anon_id": "chb01",
+      "age_years": 11,
+      "gender": "Female",
+      "eeg_sampling_rate_hz": 256,
+      "total_segments": 1,
+      "description": "Stable inter-ictal pediatric background rhythm in channel FT9-FT10. Normal posterior dominant alpha rhythm.",
+      "domain": "epilepsy",
+      "dataset_source": "chbmit",
+      "montage_channel": "FT9-FT10",
+      "predicted_class": "baseline",
+      "risk_stage": "Baseline (Low Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "chb02_base_02",
+      "patient_anon_id": "chb02",
+      "age_years": 14,
+      "gender": "Male",
+      "eeg_sampling_rate_hz": 256,
+      "total_segments": 1,
+      "description": "Standard resting EEG segment without paroxysmal activity in channel FP1-F3.",
+      "domain": "epilepsy",
+      "dataset_source": "chbmit",
+      "montage_channel": "FP1-F3",
+      "predicted_class": "baseline",
+      "risk_stage": "Baseline (Low Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "chb01_preictal_01",
+      "patient_anon_id": "chb01",
+      "age_years": 11,
+      "gender": "Female",
+      "eeg_sampling_rate_hz": 256,
+      "total_segments": 1,
+      "description": "Transitional pre-seizure window 10-20 seconds before clinical seizure onset. Showing focal delta slowing and low-amplitude fast bursts.",
+      "domain": "epilepsy",
+      "dataset_source": "chbmit",
+      "montage_channel": "FT9-FT10",
+      "predicted_class": "pre-ictal",
+      "risk_stage": "Pre-Ictal (Transitional / Moderate Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "chb03_preictal_02",
+      "patient_anon_id": "chb03",
+      "age_years": 14,
+      "gender": "Female",
+      "eeg_sampling_rate_hz": 256,
+      "total_segments": 1,
+      "description": "Prodromal acceleration of sharp theta bursts preceding electrographic transition in channel T7-P7.",
+      "domain": "epilepsy",
+      "dataset_source": "chbmit",
+      "montage_channel": "T7-P7",
+      "predicted_class": "pre-ictal",
+      "risk_stage": "Pre-Ictal (Transitional / Moderate Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "chb01_ictal_01",
+      "patient_anon_id": "chb01",
+      "age_years": 11,
+      "gender": "Female",
+      "eeg_sampling_rate_hz": 256,
+      "total_segments": 1,
+      "description": "Confirmed clinical and electrographic seizure onset. Characterized by high-amplitude, repetitive 3 Hz spike-and-slow-wave complexes.",
+      "domain": "epilepsy",
+      "dataset_source": "chbmit",
+      "montage_channel": "FT9-FT10",
+      "predicted_class": "ictal",
+      "risk_stage": "Ictal (Active Seizure / High Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "chb03_ictal_02",
+      "patient_anon_id": "chb03",
+      "age_years": 14,
+      "gender": "Female",
+      "eeg_sampling_rate_hz": 256,
+      "total_segments": 1,
+      "description": "Sustained high-frequency tonic-clonic ictal discharge with widespread spatial propagation across temporal leads.",
+      "domain": "epilepsy",
+      "dataset_source": "chbmit",
+      "montage_channel": "T7-P7",
+      "predicted_class": "ictal",
+      "risk_stage": "Ictal (Active Seizure / High Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "bonn_setA_healthy_01",
+      "patient_anon_id": "bonn_vol01",
+      "age_years": 26,
+      "gender": "Male",
+      "eeg_sampling_rate_hz": 174,
+      "total_segments": 1,
+      "description": "Bonn Dataset Set A: Healthy adult volunteer, awake, eyes open. Normal physiological background EEG with alpha dominance.",
+      "domain": "epilepsy",
+      "dataset_source": "bonn",
+      "montage_channel": "Scalp Univariate Lead",
+      "predicted_class": "healthy",
+      "risk_stage": "Baseline (Low Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "bonn_setC_interictal_01",
+      "patient_anon_id": "bonn_pat04",
+      "age_years": 32,
+      "gender": "Female",
+      "eeg_sampling_rate_hz": 174,
+      "total_segments": 1,
+      "description": "Bonn Dataset Set C: Inter-ictal recording from the epileptogenic zone (hippocampal formation). Isolated sharp transients and focal slowing.",
+      "domain": "epilepsy",
+      "dataset_source": "bonn",
+      "montage_channel": "Intracranial Hippocampal",
+      "predicted_class": "inter-ictal",
+      "risk_stage": "Pre-Ictal (Transitional / Moderate Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "bonn_setE_ictal_01",
+      "patient_anon_id": "bonn_pat07",
+      "age_years": 29,
+      "gender": "Male",
+      "eeg_sampling_rate_hz": 174,
+      "total_segments": 1,
+      "description": "Bonn Dataset Set E: Confirmed active epileptic seizure episode with continuous rhythmic high-voltage paroxysmal discharges.",
+      "domain": "epilepsy",
+      "dataset_source": "bonn",
+      "montage_channel": "Intracranial Ictal Focus",
+      "predicted_class": "ictal",
+      "risk_stage": "Ictal (Active Seizure / High Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "uci_class5_normal_01",
+      "patient_anon_id": "uci_subj12",
+      "age_years": 24,
+      "gender": "Female",
+      "eeg_sampling_rate_hz": 178,
+      "total_segments": 1,
+      "description": "UCI Dataset Class 5: Healthy EEG with eyes open. Instantaneous feature vector evaluation demonstrating low signal variance.",
+      "domain": "epilepsy",
+      "dataset_source": "uci",
+      "montage_channel": "Tabular Feature Vector (178 Channels)",
+      "predicted_class": "non-ictal",
+      "risk_stage": "Baseline (Low Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "uci_class2_interictal_01",
+      "patient_anon_id": "uci_subj44",
+      "age_years": 38,
+      "gender": "Male",
+      "eeg_sampling_rate_hz": 178,
+      "total_segments": 1,
+      "description": "UCI Dataset Class 2: Inter-ictal EEG from brain tumor focus. Elevated theta-band activity and intermediate paroxysms.",
+      "domain": "epilepsy",
+      "dataset_source": "uci",
+      "montage_channel": "Tabular Feature Vector (178 Channels)",
+      "predicted_class": "non-ictal",
+      "risk_stage": "Pre-Ictal (Transitional / Moderate Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "uci_class1_seizure_01",
+      "patient_anon_id": "uci_subj09",
+      "age_years": 31,
+      "gender": "Female",
+      "eeg_sampling_rate_hz": 178,
+      "total_segments": 1,
+      "description": "UCI Dataset Class 1: Ictal seizure recording exhibiting extreme signal amplitude and high-energy synchrony.",
+      "domain": "epilepsy",
+      "dataset_source": "uci",
+      "montage_channel": "Tabular Feature Vector (178 Channels)",
+      "predicted_class": "ictal",
+      "risk_stage": "Ictal (Active Seizure / High Risk)",
+      "sleep_stage": null
+    },
+    {
+      "id": "sleep_cassette_sc4002e0",
+      "patient_anon_id": "sc4002",
+      "age_years": 33,
+      "gender": "Female",
+      "eeg_sampling_rate_hz": 100,
+      "total_segments": 1,
+      "description": "PhysioNet Sleep-EDF (SC4002E0): Consolidated nocturnal sleep with prominent 13 Hz sleep spindles and characteristic K-complexes. Normal healthy adult sleep architecture.",
+      "domain": "sleep",
+      "dataset_source": "sleep-edf",
+      "montage_channel": "Fpz-Cz & Pz-Oz PSG",
+      "predicted_class": "n2",
+      "risk_stage": "Stage N2 (Stable NREM Sleep)",
+      "sleep_stage": "N2"
+    },
+    {
+      "id": "sleep_cassette_sc4102e0",
+      "patient_anon_id": "sc4102",
+      "age_years": 28,
+      "gender": "Male",
+      "eeg_sampling_rate_hz": 100,
+      "total_segments": 1,
+      "description": "PhysioNet Sleep-EDF (SC4102E0): High-voltage synchronized delta waves (>75 uV, 0.5-2 Hz) spanning >50% of the epoch. Restorative deep NREM slow-wave sleep.",
+      "domain": "sleep",
+      "dataset_source": "sleep-edf",
+      "montage_channel": "Fpz-Cz & Pz-Oz PSG",
+      "predicted_class": "n3",
+      "risk_stage": "Stage N3 (Deep Slow-Wave Sleep)",
+      "sleep_stage": "N3"
+    },
+    {
+      "id": "sleep_telemetry_st7022j0",
+      "patient_anon_id": "st7022",
+      "age_years": 51,
+      "gender": "Male",
+      "eeg_sampling_rate_hz": 100,
+      "total_segments": 1,
+      "description": "PhysioNet Sleep-EDF Telemetry (ST7022J0): Nocturnal wakefulness after sleep onset (WASO) with persistent alpha intrusions and motor arousals. High sleep fragmentation index.",
+      "domain": "sleep",
+      "dataset_source": "sleep-edf",
+      "montage_channel": "Fpz-Cz & Pz-Oz PSG",
+      "predicted_class": "wake",
+      "risk_stage": "Wake / WASO (Fragmented Sleep Profile)",
+      "sleep_stage": "Wake"
+    },
+    {
+      "id": "sleep_telemetry_st7121j0",
+      "patient_anon_id": "st7121",
+      "age_years": 47,
+      "gender": "Female",
+      "eeg_sampling_rate_hz": 100,
+      "total_segments": 1,
+      "description": "PhysioNet Sleep-EDF Telemetry (ST7121J0): Desynchronized low-voltage mixed EEG with rapid conjugate eye movements, pre-REM sawtooth waves, and submental muscular atonia.",
+      "domain": "sleep",
+      "dataset_source": "sleep-edf",
+      "montage_channel": "Fpz-Cz & Pz-Oz PSG",
+      "predicted_class": "rem",
+      "risk_stage": "Stage REM (Rapid Eye Movement)",
+      "sleep_stage": "REM"
+    }
+  ],
+  "predictions": {
+    "chb01_base_01": {
+      "case_id": "chb01_base_01",
+      "segment_id": 1,
+      "start_time_seconds": 1200.0,
+      "end_time_seconds": 1210.0,
+      "sst_image_path": "/static/processed/chb01_base_01_sst_128.png",
+      "raw_signal_path": "/static/processed/chb01_base_01_raw.json",
+      "predicted_class": "baseline",
+      "risk_stage": "Baseline (Low Risk)",
+      "confidence": 0.9928,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "Normal Alpha Rhythm (8-12 Hz)",
+        "Symmetric Background",
+        "No Epileptiform Discharges"
+      ],
+      "domain": "epilepsy",
+      "sleep_stage": null,
+      "sleep_metrics": null,
+      "secondary_metrics": null
+    },
+    "chb02_base_02": {
+      "case_id": "chb02_base_02",
+      "segment_id": 1,
+      "start_time_seconds": 600.0,
+      "end_time_seconds": 610.0,
+      "sst_image_path": "/static/processed/chb02_base_02_sst_128.png",
+      "raw_signal_path": "/static/processed/chb02_base_02_raw.json",
+      "predicted_class": "baseline",
+      "risk_stage": "Baseline (Low Risk)",
+      "confidence": 0.9928,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "Stable Beta Activity",
+        "Intact Sleep/Rest Architecture",
+        "Absence of Sharp Transients"
+      ],
+      "domain": "epilepsy",
+      "sleep_stage": null,
+      "sleep_metrics": null,
+      "secondary_metrics": null
+    },
+    "chb01_preictal_01": {
+      "case_id": "chb01_preictal_01",
+      "segment_id": 13,
+      "start_time_seconds": 2980.0,
+      "end_time_seconds": 2990.0,
+      "sst_image_path": "/static/processed/chb01_preictal_01_sst_128.png",
+      "raw_signal_path": "/static/processed/chb01_preictal_01_raw.json",
+      "predicted_class": "pre-ictal",
+      "risk_stage": "Pre-Ictal (Transitional / Moderate Risk)",
+      "confidence": 0.9425,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "Rhythmic Delta Slowing (2-4 Hz)",
+        "Pre-ictal Desynchronization",
+        "Isolated Sharp Waves"
+      ],
+      "domain": "epilepsy",
+      "sleep_stage": null,
+      "sleep_metrics": null,
+      "secondary_metrics": null
+    },
+    "chb03_preictal_02": {
+      "case_id": "chb03_preictal_02",
+      "segment_id": 8,
+      "start_time_seconds": 1840.0,
+      "end_time_seconds": 1850.0,
+      "sst_image_path": "/static/processed/chb03_preictal_02_sst_128.png",
+      "raw_signal_path": "/static/processed/chb03_preictal_02_raw.json",
+      "predicted_class": "pre-ictal",
+      "risk_stage": "Pre-Ictal (Transitional / Moderate Risk)",
+      "confidence": 0.9425,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "Focal Theta Bursts (4-7 Hz)",
+        "Amplitude Augmentation",
+        "Intermittent Pre-ictal Paroxysms"
+      ],
+      "domain": "epilepsy",
+      "sleep_stage": null,
+      "sleep_metrics": null,
+      "secondary_metrics": null
+    },
+    "chb01_ictal_01": {
+      "case_id": "chb01_ictal_01",
+      "segment_id": 14,
+      "start_time_seconds": 2996.0,
+      "end_time_seconds": 3006.0,
+      "sst_image_path": "/static/processed/chb01_ictal_01_sst_128.png",
+      "raw_signal_path": "/static/processed/chb01_ictal_01_raw.json",
+      "predicted_class": "ictal",
+      "risk_stage": "Ictal (Active Seizure / High Risk)",
+      "confidence": 0.989,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "3 Hz High-Amplitude Spike-and-Wave Complexes",
+        "Hypersynchronous Discharge",
+        "Phase-locked Harmonic Surges"
+      ],
+      "domain": "epilepsy",
+      "sleep_stage": null,
+      "sleep_metrics": null,
+      "secondary_metrics": null
+    },
+    "chb03_ictal_02": {
+      "case_id": "chb03_ictal_02",
+      "segment_id": 9,
+      "start_time_seconds": 1855.0,
+      "end_time_seconds": 1865.0,
+      "sst_image_path": "/static/processed/chb03_ictal_02_sst_128.png",
+      "raw_signal_path": "/static/processed/chb03_ictal_02_raw.json",
+      "predicted_class": "ictal",
+      "risk_stage": "Ictal (Active Seizure / High Risk)",
+      "confidence": 0.989,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "Evolutionary Ictal Rhythmicity",
+        "Poly-spike Paroxysms",
+        "Broadband Energy Saturation"
+      ],
+      "domain": "epilepsy",
+      "sleep_stage": null,
+      "sleep_metrics": null,
+      "secondary_metrics": null
+    },
+    "bonn_setA_healthy_01": {
+      "case_id": "bonn_setA_healthy_01",
+      "segment_id": 1,
+      "start_time_seconds": 0.0,
+      "end_time_seconds": 10.0,
+      "sst_image_path": "/static/processed/bonn_setA_healthy_01_sst_128.png",
+      "raw_signal_path": "/static/processed/bonn_setA_healthy_01_raw.json",
+      "predicted_class": "healthy",
+      "risk_stage": "Baseline (Low Risk)",
+      "confidence": 0.985,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "Physiological Alpha Waves (10 Hz)",
+        "Resting Baseline Rhythm",
+        "Zero Paroxysmal Spikes"
+      ],
+      "domain": "epilepsy",
+      "sleep_stage": null,
+      "sleep_metrics": null,
+      "secondary_metrics": null
+    },
+    "bonn_setC_interictal_01": {
+      "case_id": "bonn_setC_interictal_01",
+      "segment_id": 2,
+      "start_time_seconds": 0.0,
+      "end_time_seconds": 10.0,
+      "sst_image_path": "/static/processed/bonn_setC_interictal_01_sst_128.png",
+      "raw_signal_path": "/static/processed/bonn_setC_interictal_01_raw.json",
+      "predicted_class": "inter-ictal",
+      "risk_stage": "Pre-Ictal (Transitional / Moderate Risk)",
+      "confidence": 0.962,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "Focal Hippocampal Slowing",
+        "Isolated Sharp Epileptiform Transients",
+        "Elevated Phase Coupling"
+      ],
+      "domain": "epilepsy",
+      "sleep_stage": null,
+      "sleep_metrics": null,
+      "secondary_metrics": null
+    },
+    "bonn_setE_ictal_01": {
+      "case_id": "bonn_setE_ictal_01",
+      "segment_id": 3,
+      "start_time_seconds": 0.0,
+      "end_time_seconds": 10.0,
+      "sst_image_path": "/static/processed/bonn_setE_ictal_01_sst_128.png",
+      "raw_signal_path": "/static/processed/bonn_setE_ictal_01_raw.json",
+      "predicted_class": "ictal",
+      "risk_stage": "Ictal (Active Seizure / High Risk)",
+      "confidence": 0.994,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "Continuous 3 Hz Hypersynchronous Discharges",
+        "Rhythmic Polyspike Paroxysms",
+        "Broadband Energy Saturation"
+      ],
+      "domain": "epilepsy",
+      "sleep_stage": null,
+      "sleep_metrics": null,
+      "secondary_metrics": null
+    },
+    "uci_class5_normal_01": {
+      "case_id": "uci_class5_normal_01",
+      "segment_id": 1,
+      "start_time_seconds": 0.0,
+      "end_time_seconds": 1.0,
+      "sst_image_path": "/static/processed/uci_class5_normal_01_sst_128.png",
+      "raw_signal_path": "/static/processed/uci_class5_normal_01_raw.json",
+      "predicted_class": "non-ictal",
+      "risk_stage": "Baseline (Low Risk)",
+      "confidence": 0.995,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "Physiological Alpha Dominance",
+        "Low Amplitude Variance (<400 uV^2)",
+        "Stable Baseline Rhythm"
+      ],
+      "domain": "epilepsy",
+      "sleep_stage": null,
+      "sleep_metrics": null,
+      "secondary_metrics": null
+    },
+    "uci_class2_interictal_01": {
+      "case_id": "uci_class2_interictal_01",
+      "segment_id": 2,
+      "start_time_seconds": 0.0,
+      "end_time_seconds": 1.0,
+      "sst_image_path": "/static/processed/uci_class2_interictal_01_sst_128.png",
+      "raw_signal_path": "/static/processed/uci_class2_interictal_01_raw.json",
+      "predicted_class": "non-ictal",
+      "risk_stage": "Pre-Ictal (Transitional / Moderate Risk)",
+      "confidence": 0.958,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "Localized Delta-Theta Slowing",
+        "Moderate Amplitude Variance",
+        "Absence of Generalized Discharges"
+      ],
+      "domain": "epilepsy",
+      "sleep_stage": null,
+      "sleep_metrics": null,
+      "secondary_metrics": null
+    },
+    "uci_class1_seizure_01": {
+      "case_id": "uci_class1_seizure_01",
+      "segment_id": 3,
+      "start_time_seconds": 0.0,
+      "end_time_seconds": 1.0,
+      "sst_image_path": "/static/processed/uci_class1_seizure_01_sst_128.png",
+      "raw_signal_path": "/static/processed/uci_class1_seizure_01_raw.json",
+      "predicted_class": "ictal",
+      "risk_stage": "Ictal (Active Seizure / High Risk)",
+      "confidence": 0.991,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "High Amplitude Variance (>8000 uV^2)",
+        "Hypersynchronous Rhythmicity",
+        "Dominant Low-Frequency Power"
+      ],
+      "domain": "epilepsy",
+      "sleep_stage": null,
+      "sleep_metrics": null,
+      "secondary_metrics": null
+    },
+    "sleep_cassette_sc4002e0": {
+      "case_id": "sleep_cassette_sc4002e0",
+      "segment_id": 42,
+      "start_time_seconds": 1260.0,
+      "end_time_seconds": 1290.0,
+      "sst_image_path": "/static/processed/sleep_cassette_sc4002e0_sst_128.png",
+      "raw_signal_path": "/static/processed/sleep_cassette_sc4002e0_raw.json",
+      "predicted_class": "n2",
+      "risk_stage": "Stage N2 (Stable NREM Sleep)",
+      "confidence": 0.965,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "Sleep Spindles (12-14 Hz, >0.5s)",
+        "Distinct Biphasic K-Complexes (>0.5s)",
+        "Low Mixed-Frequency Background",
+        "Stable Rest Architecture"
+      ],
+      "domain": "sleep",
+      "sleep_stage": "N2",
+      "sleep_metrics": {
+        "sleep_efficiency_percent": 88.5,
+        "waso_minutes": 22.0,
+        "tst_hours": 7.1,
+        "n3_slow_wave_percent": 21.4,
+        "rem_percent": 23.0,
+        "apnea_hypopnea_risk": "Low (AHI < 5.0)"
+      },
+      "secondary_metrics": {
+        "stage_probabilities": {
+          "N3": 0.1791,
+          "N2": 0.182,
+          "Wake": 0.2751,
+          "N1": 0.185,
+          "REM": 0.1788
+        }
+      }
+    },
+    "sleep_cassette_sc4102e0": {
+      "case_id": "sleep_cassette_sc4102e0",
+      "segment_id": 18,
+      "start_time_seconds": 540.0,
+      "end_time_seconds": 570.0,
+      "sst_image_path": "/static/processed/sleep_cassette_sc4102e0_sst_128.png",
+      "raw_signal_path": "/static/processed/sleep_cassette_sc4102e0_raw.json",
+      "predicted_class": "n3",
+      "risk_stage": "Stage N3 (Deep Slow-Wave Sleep)",
+      "confidence": 0.965,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "High-Amplitude Delta Waves (>75 uV, 0.5-2 Hz)",
+        "Deep Slow-Wave Synchronization (>20% epoch)",
+        "Markedly Reduced Autonomic Arousals"
+      ],
+      "domain": "sleep",
+      "sleep_stage": "N3",
+      "sleep_metrics": {
+        "sleep_efficiency_percent": 92.0,
+        "waso_minutes": 15.0,
+        "tst_hours": 7.6,
+        "n3_slow_wave_percent": 32.5,
+        "rem_percent": 21.0,
+        "apnea_hypopnea_risk": "Low (AHI < 3.5)"
+      },
+      "secondary_metrics": {
+        "stage_probabilities": {
+          "N3": 0.757,
+          "N2": 0.046,
+          "Wake": 0.0367,
+          "N1": 0.0993,
+          "REM": 0.061
+        }
+      }
+    },
+    "sleep_telemetry_st7022j0": {
+      "case_id": "sleep_telemetry_st7022j0",
+      "segment_id": 85,
+      "start_time_seconds": 2550.0,
+      "end_time_seconds": 2580.0,
+      "sst_image_path": "/static/processed/sleep_telemetry_st7022j0_sst_128.png",
+      "raw_signal_path": "/static/processed/sleep_telemetry_st7022j0_raw.json",
+      "predicted_class": "wake",
+      "risk_stage": "Wake / WASO (Fragmented Sleep Profile)",
+      "confidence": 0.965,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "Alpha Rhythm (8-12 Hz) Prominent in Pz-Oz",
+        "High Submental Muscle Tone",
+        "Voluntary Saccadic EOG Deflections"
+      ],
+      "domain": "sleep",
+      "sleep_stage": "Wake",
+      "sleep_metrics": {
+        "sleep_efficiency_percent": 68.2,
+        "waso_minutes": 84.0,
+        "tst_hours": 4.8,
+        "n3_slow_wave_percent": 7.5,
+        "rem_percent": 11.2,
+        "apnea_hypopnea_risk": "Moderate (AHI 14.2)"
+      },
+      "secondary_metrics": {
+        "stage_probabilities": {
+          "N3": 0.1134,
+          "N2": 0.442,
+          "Wake": 0.1916,
+          "N1": 0.1141,
+          "REM": 0.1389
+        }
+      }
+    },
+    "sleep_telemetry_st7121j0": {
+      "case_id": "sleep_telemetry_st7121j0",
+      "segment_id": 64,
+      "start_time_seconds": 1920.0,
+      "end_time_seconds": 1950.0,
+      "sst_image_path": "/static/processed/sleep_telemetry_st7121j0_sst_128.png",
+      "raw_signal_path": "/static/processed/sleep_telemetry_st7121j0_raw.json",
+      "predicted_class": "rem",
+      "risk_stage": "Stage REM (Rapid Eye Movement)",
+      "confidence": 0.965,
+      "model_name": "\u00d6zdemir CNN Multi-Head (m32.h5 Shared Backbone)",
+      "key_markers": [
+        "Phasic Rapid Eye Movements (EOG conjugate bursts)",
+        "Submental Muscular Atonia (flat EMG)",
+        "Desynchronized Low-Voltage EEG",
+        "Pre-REM Sawtooth Waves"
+      ],
+      "domain": "sleep",
+      "sleep_stage": "REM",
+      "sleep_metrics": {
+        "sleep_efficiency_percent": 81.4,
+        "waso_minutes": 38.0,
+        "tst_hours": 6.3,
+        "n3_slow_wave_percent": 16.0,
+        "rem_percent": 24.5,
+        "apnea_hypopnea_risk": "Mild (AHI 8.1)"
+      },
+      "secondary_metrics": {
+        "stage_probabilities": {
+          "N3": 0.1055,
+          "N2": 0.1725,
+          "Wake": 0.497,
+          "N1": 0.1067,
+          "REM": 0.1184
+        }
+      }
+    }
+  },
+  "guidelines": [
+    {
+      "source_org": "AES",
+      "document_title": "Evidence-Based Guideline: Treatment of Convulsive Status Epilepticus in Children and Adults",
+      "section_title": "Phase 1: Emergent Initial Therapy (0-5 Minutes)",
+      "page_number": 4,
+      "citation_reference": "Glauser et al., Epilepsy Currents, 16(1):48-61 (2016)",
+      "chunk_content": "During an active ictal episode (0-5 minutes), initial priorities are patient airway support, monitoring vital signs, ensuring safety, and noting seizure onset time. Position the patient on their side (recovery position) to prevent aspiration. Do not restrain limbs and do not insert any objects into the patient's mouth. If seizure activity continues beyond 5 minutes, prepare first-line emergent benzodiazepine protocol (e.g., intramuscular midazolam or IV lorazepam) as directed by medical personnel.",
+      "risk_stage_tag": "ictal",
+      "domain": "epilepsy"
+    },
+    {
+      "source_org": "NICE",
+      "document_title": "Epilepsies in children, young people and adults (NG217)",
+      "section_title": "Emergency Management of Prolonged or Repeated Seizures",
+      "page_number": 28,
+      "citation_reference": "NICE Clinical Guideline NG217, Section 1.9 (2022)",
+      "chunk_content": "Ensure the patient is in a safe environment away from hazardous objects, sharp edges, and water. Cushion the head using a soft item. Time the seizure continuously. Call emergency medical services immediately if the seizure lasts longer than 5 minutes, if breathing remains compromised after the seizure stops, if a second seizure begins immediately, or if the individual has sustained an injury.",
+      "risk_stage_tag": "ictal",
+      "domain": "epilepsy"
+    },
+    {
+      "source_org": "ILAE",
+      "document_title": "Instructional Manual for the ILAE 2017 Operational Classification of Seizure Types",
+      "section_title": "Prodromal and Pre-Ictal Warning States & Injury Prevention",
+      "page_number": 12,
+      "citation_reference": "Fisher et al., Epilepsia, 58(4):531-542 (2017)",
+      "chunk_content": "When electrographic pre-ictal markers, rhythmic delta slowing, or sensory aura prodromes are detected, the patient should immediately cease hazardous activities including driving, operating heavy machinery, swimming, or cooking over open flames. Guide the patient to a seated or recumbent position on a low, carpeted surface or bed with side protections. Notify a designated caregiver or clinical monitoring team.",
+      "risk_stage_tag": "pre-ictal",
+      "domain": "epilepsy"
+    },
+    {
+      "source_org": "AES",
+      "document_title": "Patient Safety and Seizure Preparedness Clinical Review",
+      "section_title": "Seizure Action Plans for Transitional Risk Phases",
+      "page_number": 9,
+      "citation_reference": "American Epilepsy Society Clinical Guidance Committee (2019)",
+      "chunk_content": "In patients experiencing transitional or high-likelihood pre-ictal EEG alterations, verify that rescue medication (such as prescribed intranasal midazolam or rectal diazepam) is accessible. Ensure pulse oximetry or continuous telemetry is actively recording. Remove tight neckwear, eyeglasses, and potential head strike hazards from the immediate environment.",
+      "risk_stage_tag": "pre-ictal",
+      "domain": "epilepsy"
+    },
+    {
+      "source_org": "ILAE",
+      "document_title": "Comprehensive Guidelines for Routine Epilepsy Monitoring and Lifestyle Safety",
+      "section_title": "Baseline Maintenance and Long-Term Vigilance",
+      "page_number": 6,
+      "citation_reference": "ILAE Commission on Diagnostic Methods (2018)",
+      "chunk_content": "During baseline (inter-ictal) states with physiological background rhythm and absence of rhythmic paroxysms, continue standard anti-seizure medication (ASM) adherence without abrupt modifications. Maintain regular sleep hygiene, as sleep deprivation is a well-established epileptogenic trigger. Document routine daily logs and review telemetry reports periodically during scheduled neurological consultations.",
+      "risk_stage_tag": "baseline",
+      "domain": "epilepsy"
+    },
+    {
+      "source_org": "NICE",
+      "document_title": "Epilepsies in children, young people and adults (NG217)",
+      "section_title": "Ongoing Care, Triggers, and Safety Advice",
+      "page_number": 15,
+      "citation_reference": "NICE Clinical Guideline NG217, Section 1.3 (2022)",
+      "chunk_content": "Advise patients in baseline stable state on general safety precautions, including taking showers instead of unmonitored baths, using protective equipment during cycling/sports, and identifying individual seizure triggers such as acute systemic illness, fever, emotional stress, or alcohol intake. Ensure annual structured clinical reviews.",
+      "risk_stage_tag": "baseline",
+      "domain": "epilepsy"
+    },
+    {
+      "source_org": "AASM",
+      "document_title": "Clinical Practice Guideline for the Pharmacologic & Behavioral Treatment of Chronic Insomnia in Adults",
+      "section_title": "Management of Prolonged Sleep Latency and Nocturnal Arousal",
+      "page_number": 18,
+      "citation_reference": "Sateia et al., Journal of Clinical Sleep Medicine, 13(2):307-349 (2017/2021)",
+      "chunk_content": "When persistent nocturnal wakefulness (elevated WASO >30 minutes or prolonged sleep latency) is observed, implement stimulus control therapy: advise the individual not to remain in bed tossing for extended periods. Maintain dark, quiet ambient conditions (temp 18-20\u00b0C). Avoid screen exposure and blue light emittance which suppresses melatonin production. Screen for psychophysiological insomnia and underlying nocturnal triggers.",
+      "risk_stage_tag": "wake",
+      "domain": "sleep"
+    },
+    {
+      "source_org": "AASM",
+      "document_title": "AASM Manual for the Scoring of Sleep and Associated Events: Rules, Terminology and Technical Specifications",
+      "section_title": "Stage N1 Criteria & Environmental Sleep Architecture Preservation",
+      "page_number": 32,
+      "citation_reference": "Berry et al., American Academy of Sleep Medicine Manual v2.6 (2020)",
+      "chunk_content": "Stage N1 represents the vulnerable sleep-wake transition with elevated sensory arousal thresholds. Disproportionately elevated N1 percentage (>10-12% of total sleep time) is a primary hallmark of sleep fragmentation, frequent micro-arousals, or periodic limb movements. Ensure acoustic attenuation and evaluate for occult sleep-disordered breathing if N1 persists without rapid consolidation into N2.",
+      "risk_stage_tag": "n1",
+      "domain": "sleep"
+    },
+    {
+      "source_org": "AASM",
+      "document_title": "Consensus Conference on Sleep Health and Adult Restorative Architecture",
+      "section_title": "Stage N2 Sleep Spindle Density & Cortical Stabilization",
+      "page_number": 14,
+      "citation_reference": "Watson et al., Sleep, 38(6):843-844 (2018/2021)",
+      "chunk_content": "Stage N2 accounts for 45-55% of normal adult sleep architecture, characterized by synchronous 12-14 Hz sleep spindles and biphasic K-complexes that shield the cortex against intrusive sensory arousal. Preserve uninterrupted nocturnal duration to ensure memory consolidation and cognitive recovery. Avoid pharmacological agents that suppress natural sleep spindle rhythmicity.",
+      "risk_stage_tag": "n2",
+      "domain": "sleep"
+    },
+    {
+      "source_org": "AASM",
+      "document_title": "AASM Practice Guidelines: Restorative Sleep Homeostasis & Slow-Wave Deficiency",
+      "section_title": "Stage N3 Slow-Wave Deep Sleep Clinical Significance",
+      "page_number": 22,
+      "citation_reference": "Kapur et al., J Clin Sleep Med, 13(3):479-504 (2019/2021)",
+      "chunk_content": "Stage N3 (Slow-Wave Deep Sleep) is essential for physical repair, glymphatic brain clearance, and growth hormone secretion. Severe reduction of N3 (<10-15% of TST) correlates with daytime fatigue, cognitive slowing, and impaired immune response. Minimize late evening alcohol, sedatives, and caffeine intake which prematurely truncate slow-wave synchronization. Maintain rigorous circadian consistency.",
+      "risk_stage_tag": "n3",
+      "domain": "sleep"
+    },
+    {
+      "source_org": "AASM",
+      "document_title": "Practice Parameters for the Evaluation and Treatment of REM Parasomnias and Disorders",
+      "section_title": "REM Sleep Architecture, Motor Atonia and Safety",
+      "page_number": 41,
+      "citation_reference": "Aurora et al., Sleep, 33(8):1105-1111 (2020)",
+      "chunk_content": "REM sleep is defined by desynchronized EEG, phasic conjugate eye movements, and profound postural muscle atonia. Evaluate for REM Sleep Behavior Disorder (RBD) if chin EMG demonstrates abnormal motor breakthrough. In patients with severe REM reduction or sleep-onset REM periods (SOREMPs within 15 minutes of sleep onset), conduct structured clinical evaluation for narcolepsy type 1/2 or acute antidepressant discontinuation.",
+      "risk_stage_tag": "rem",
+      "domain": "sleep"
+    },
+    {
+      "source_org": "AASM",
+      "document_title": "Clinical Practice Guideline for Diagnostic Testing for Adult Obstructive Sleep Apnea",
+      "section_title": "Emergency Screening and First-Line Management of Obstructive Sleep Apnea",
+      "page_number": 8,
+      "citation_reference": "Patil et al., Journal of Clinical Sleep Medicine, 15(2):335-343 (2019/2021)",
+      "chunk_content": "In patients demonstrating recurrent nocturnal micro-arousals accompanied by autonomic surges or repetitive submental EMG tone breaks, initiate comprehensive polysomnography (PSG) evaluation. Recommend continuous positive airway pressure (CPAP) therapy as the gold standard for moderate-to-severe OSA. Advise positional therapy (avoiding supine sleep), weight management, and complete avoidance of evening CNS depressants.",
+      "risk_stage_tag": "sleep_apnea",
+      "domain": "sleep"
+    }
+  ]
+}

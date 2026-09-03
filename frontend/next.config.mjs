@@ -5,17 +5,16 @@ const nextConfig = {
     unoptimized: true,
   },
   async rewrites() {
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://127.0.0.1:8000';
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${backendUrl}/:path*`,
-      },
-      {
-        source: '/static/:path*',
-        destination: `${backendUrl}/static/:path*`,
-      },
-    ];
+    if (process.env.NEXT_PUBLIC_BACKEND_URL) {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL.replace(/\/$/, "");
+      return [
+        {
+          source: '/api/:path*',
+          destination: `${backendUrl}/:path*`,
+        },
+      ];
+    }
+    return [];
   },
 };
 

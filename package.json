@@ -1,0 +1,14 @@
+{
+  "name": "neurosense-platform",
+  "version": "2.0.0",
+  "description": "Multi-Disorder EEG Intelligence Platform (Seizure Risk Staging, Polysomnography Sleep Architecture & Early-Warning Physiological Detection)",
+  "private": true,
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm start",
+    "lint": "cd frontend && npm run lint",
+    "test:python": "pytest backend/tests/ early_warning/tests/",
+    "demo:early-warning": "python demo_mode.py"
+  }
+}

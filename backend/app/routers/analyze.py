@@ -41,6 +41,9 @@ class ClassificationSummary(BaseModel):
     confidence: float
     model_name: str
     provenance: str
+    domain: Optional[str] = "epilepsy"
+    sleep_stage: Optional[str] = None
+    sleep_metrics: Optional[dict] = None
 
 
 class AnalysisResponse(BaseModel):
@@ -48,6 +51,9 @@ class AnalysisResponse(BaseModel):
     segment_id: int
     patient_anon_id: str
     description: Optional[str]
+    domain: Optional[str] = "epilepsy"
+    dataset_source: Optional[str] = "chbmit"
+    montage_channel: Optional[str] = None
     time_window: TimeWindow
     signal_assets: SignalAssets
     classification: ClassificationSummary
@@ -102,11 +108,23 @@ def get_case_analysis(
 
     duration = pred.end_time_seconds - pred.start_time_seconds
 
+    # Determine provenance string based on dataset source
+    provenance_map = {
+        "chbmit": "Özdemir & Kaya (2020) CNN / PhysioNet CHB-MIT",
+        "bonn": "Bonn University Epilepsy EEG Dataset (Univariate)",
+        "uci": "UCI Epileptic Seizure Recognition Benchmark (178 Features)",
+        "sleep-edf": "PhysioNet Sleep-EDF Expanded / AASM 5-Class Staging"
+    }
+    provenance = provenance_map.get(case.dataset_source, "NeuroSense Multi-Disorder Backbone")
+
     response_data = AnalysisResponse(
         case_id=case.id,
         segment_id=pred.segment_id,
         patient_anon_id=case.patient_anon_id,
         description=case.description,
+        domain=case.domain or "epilepsy",
+        dataset_source=case.dataset_source or "chbmit",
+        montage_channel=case.montage_channel,
         time_window=TimeWindow(
             start_seconds=pred.start_time_seconds,
             end_seconds=pred.end_time_seconds,
@@ -121,7 +139,10 @@ def get_case_analysis(
             risk_stage=pred.risk_stage,
             confidence=round(pred.confidence_score, 4),
             model_name=pred.model_version,
-            provenance="Özdemir & Kaya (2020) CNN / PhysioNet CHB-MIT"
+            provenance=provenance,
+            domain=case.domain or "epilepsy",
+            sleep_stage=pred.sleep_stage,
+            sleep_metrics=pred.sleep_metrics
         ),
         key_markers=pred.key_markers or [],
         cached=False

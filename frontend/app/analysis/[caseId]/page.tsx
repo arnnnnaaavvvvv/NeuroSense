@@ -12,6 +12,7 @@ import SignalViewer from "../../../components/SignalViewer";
 import ResultCard from "../../../components/ResultCard";
 import PrecautionPanel from "../../../components/PrecautionPanel";
 import ClinicalAuditExportModal from "../../../components/ClinicalAuditExportModal";
+import HypnogramTimeline from "../../../components/HypnogramTimeline";
 
 export default function CaseAnalysisPage() {
   const params = useParams();
@@ -30,7 +31,7 @@ export default function CaseAnalysisPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0.0);
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
-  const duration = 10.0; // Fixed 10s window
+  const duration = analysis?.time_window.duration_seconds || 10.0;
 
   const animationFrameRef = useRef<number | null>(null);
   const lastTickTimeRef = useRef<number | null>(null);
@@ -53,7 +54,8 @@ export default function CaseAnalysisPage() {
         }
 
         setLoadingPrecautions(true);
-        const precData = await fetchPrecautions(analysisData.classification.binary_class || "baseline");
+        const stageTarget = analysisData.classification.sleep_stage || analysisData.classification.binary_class || "baseline";
+        const precData = await fetchPrecautions(stageTarget, analysisData.domain);
         setPrecautions(precData);
       } catch (err: any) {
         console.error("Failed to load analysis page:", err);
@@ -191,6 +193,14 @@ export default function CaseAnalysisPage() {
         duration={duration}
         riskStage={analysis.classification.risk_stage}
       />
+
+      {/* 1b. Polysomnography Sleep Hypnogram (for Sleep Cases) */}
+      {(analysis.domain === "sleep" || waveformData?.hypnogram) && (
+        <HypnogramTimeline
+          hypnogram={waveformData?.hypnogram}
+          sleepMetrics={analysis.classification.sleep_metrics}
+        />
+      )}
 
       {/* 2. Real-Time Playback Controls */}
       <ReplayControls

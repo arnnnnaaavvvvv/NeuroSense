@@ -19,13 +19,17 @@ def test_health():
 
 
 def test_get_cases():
-    response = client.get("/cases")
+    response = client.get("/cases?dataset=chbmit")
     assert response.status_code == 200
     cases = response.json()
     assert len(cases) == 6
     case_ids = [c["id"] for c in cases]
     assert "chb01_ictal_01" in case_ids
     assert "chb01_base_01" in case_ids
+
+    all_response = client.get("/cases")
+    assert all_response.status_code == 200
+    assert len(all_response.json()) >= 6
 
 
 def test_get_analysis():

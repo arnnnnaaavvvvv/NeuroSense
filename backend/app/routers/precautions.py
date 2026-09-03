@@ -29,6 +29,7 @@ class PrecautionRetrieveRequest(BaseModel):
     case_id: Optional[str] = None
     segment_id: Optional[int] = None
     risk_stage: str
+    domain: Optional[str] = None
     session_id: Optional[str] = "demo_session"
 
 
@@ -36,15 +37,17 @@ class PrecautionRetrieveRequest(BaseModel):
 def get_precautions_by_stage(
     stage: str,
     top_k: int = Query(default=2, ge=1, le=5),
+    domain: Optional[str] = Query(default=None, description="Disorder domain: 'epilepsy' or 'sleep'"),
     session_id: Optional[str] = Query(default="demo_session"),
     db: Session = Depends(get_db)
 ):
     """
-    Retrieves clinical precaution guidelines matching the specified risk stage
-    (e.g., 'ictal', 'pre-ictal', 'baseline') from the vector knowledge base,
-    formats them via a strict non-hallucinatory prompt, and returns verified citations.
+    Retrieves clinical precaution guidelines matching the specified risk or sleep stage
+    (e.g., 'ictal', 'pre-ictal', 'baseline', 'wake', 'n1', 'n2', 'n3', 'rem', 'sleep_apnea')
+    from the vector knowledge base, formats them via a strict non-hallucinatory prompt,
+    and returns verified citations.
     """
-    guidelines = retrieve_guidelines_for_stage(db, risk_stage=stage, top_k=top_k)
+    guidelines = retrieve_guidelines_for_stage(db, risk_stage=stage, top_k=top_k, domain=domain)
     response_data = format_guidance_response(
         guideline_docs=guidelines,
         risk_stage=stage,
@@ -62,7 +65,7 @@ def retrieve_guidelines(
     """
     Alternative POST endpoint matching the architecture contract.
     """
-    guidelines = retrieve_guidelines_for_stage(db, risk_stage=payload.risk_stage, top_k=2)
+    guidelines = retrieve_guidelines_for_stage(db, risk_stage=payload.risk_stage, top_k=2, domain=payload.domain)
     response_data = format_guidance_response(
         guideline_docs=guidelines,
         risk_stage=payload.risk_stage,

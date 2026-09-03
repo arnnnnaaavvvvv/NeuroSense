@@ -28,24 +28,46 @@ STRICT_SYSTEM_PROMPT = (
 def retrieve_guidelines_for_stage(
     db: Session,
     risk_stage: str,
-    top_k: int = 2
+    top_k: int = 2,
+    domain: Optional[str] = None
 ) -> List[GuidelineDocument]:
     """
-    Retrieves the most relevant guideline documents for a given risk stage
-    (e.g., 'ictal', 'pre-ictal', 'baseline').
+    Retrieves the most relevant guideline documents for a given risk or sleep stage
+    (e.g., 'ictal', 'pre-ictal', 'baseline', 'wake', 'n1', 'n2', 'n3', 'rem', 'sleep_apnea').
     """
-    normalized_stage = risk_stage.lower().strip()
-    if "ictal" in normalized_stage and "pre" not in normalized_stage and "non" not in normalized_stage:
+    normalized = risk_stage.lower().strip()
+    
+    # 1. Sleep Domain Tag Matching
+    if domain == "sleep" or any(k in normalized for k in ["n3", "slow wave", "deep sleep"]):
+        target_tag = "n3"
+    elif domain == "sleep" and any(k in normalized for k in ["n2", "spindle", "k-complex"]):
+        target_tag = "n2"
+    elif domain == "sleep" and any(k in normalized for k in ["n1", "transitional", "light"]):
+        target_tag = "n1"
+    elif domain == "sleep" and any(k in normalized for k in ["rem", "rapid eye"]):
+        target_tag = "rem"
+    elif any(k in normalized for k in ["apnea", "hypopnea", "osa"]):
+        target_tag = "sleep_apnea"
+    elif domain == "sleep" and any(k in normalized for k in ["wake", "waso", "insomnia", "w"]):
+        target_tag = "wake"
+    elif normalized in ["w", "wake", "n1", "n2", "n3", "rem"]:
+        target_tag = normalized
+    # 2. Epilepsy / Seizure Domain Tag Matching
+    elif "ictal" in normalized and "pre" not in normalized and "non" not in normalized:
         target_tag = "ictal"
-    elif "pre" in normalized_stage:
+    elif "pre" in normalized:
         target_tag = "pre-ictal"
     else:
         target_tag = "baseline"
 
     try:
-        results = db.query(GuidelineDocument).filter(
-            GuidelineDocument.risk_stage_tag == target_tag
-        ).limit(top_k).all()
+        query = db.query(GuidelineDocument).filter(GuidelineDocument.risk_stage_tag == target_tag)
+        if domain:
+            query = query.filter(GuidelineDocument.domain == domain)
+        results = query.limit(top_k).all()
+
+        if not results:
+            results = db.query(GuidelineDocument).filter(GuidelineDocument.risk_stage_tag == target_tag).limit(top_k).all()
 
         if not results:
             results = db.query(GuidelineDocument).limit(top_k).all()

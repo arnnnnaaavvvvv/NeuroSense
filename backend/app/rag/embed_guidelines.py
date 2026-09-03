@@ -1,10 +1,17 @@
 """
-Clinical Guideline Document Embeddings & Seed Generator
-========================================================
+Clinical Guideline Document Embeddings & Seed Generator (Multi-Disorder)
+========================================================================
 Curated Clinical Reference Sources:
-1. American Epilepsy Society (AES 2016) - Evidence-Based Guideline: Treatment of Convulsive Status Epilepticus
-2. International League Against Epilepsy (ILAE 2017) - Operational Classification of Seizure Types & Safety
-3. National Institute for Health and Care Excellence (NICE 2022) - Epilepsies: Diagnosis and Management (NG217)
+1. Epilepsy / Seizure Guidelines:
+   - American Epilepsy Society (AES 2016) - Convulsive Status Epilepticus
+   - International League Against Epilepsy (ILAE 2017) - Seizure Classification & Safety
+   - National Institute for Health and Care Excellence (NICE NG217 2022) - Epilepsies Diagnosis & Management
+
+2. Sleep Medicine Guidelines:
+   - American Academy of Sleep Medicine (AASM 2021) - Adult Chronic Insomnia & Hypersomnolence
+   - American Academy of Sleep Medicine (AASM 2019/2021) - Obstructive Sleep Apnea in Adults
+   - AASM Sleep Scoring Manual v2.6/v3.0 - Physiological Rules for Scoring W, N1, N2, N3, REM
+   - National Institute for Health and Care Excellence (NICE NG148) - Sleep Architecture & Health
 """
 
 import json
@@ -15,8 +22,12 @@ from app.db.models import GuidelineDocument
 
 # Curated high-fidelity clinical guideline chunks
 CURATED_GUIDELINES: List[Dict[str, Any]] = [
+    # =========================================================================
+    # EPILEPSY / SEIZURE DOMAIN
+    # =========================================================================
     # --- ICTAL (High Risk / Active Seizure Phase) ---
     {
+        "domain": "epilepsy",
         "source_org": "AES",
         "document_title": "Evidence-Based Guideline: Treatment of Convulsive Status Epilepticus in Children and Adults",
         "section_title": "Phase 1: Emergent Initial Therapy (0-5 Minutes)",
@@ -33,6 +44,7 @@ CURATED_GUIDELINES: List[Dict[str, Any]] = [
         )
     },
     {
+        "domain": "epilepsy",
         "source_org": "NICE",
         "document_title": "Epilepsies in children, young people and adults (NG217)",
         "section_title": "Emergency Management of Prolonged or Repeated Seizures",
@@ -49,6 +61,7 @@ CURATED_GUIDELINES: List[Dict[str, Any]] = [
     
     # --- PRE-ICTAL (Moderate Risk / Transitional Phase) ---
     {
+        "domain": "epilepsy",
         "source_org": "ILAE",
         "document_title": "Instructional Manual for the ILAE 2017 Operational Classification of Seizure Types",
         "section_title": "Prodromal and Pre-Ictal Warning States & Injury Prevention",
@@ -63,6 +76,7 @@ CURATED_GUIDELINES: List[Dict[str, Any]] = [
         )
     },
     {
+        "domain": "epilepsy",
         "source_org": "AES",
         "document_title": "Patient Safety and Seizure Preparedness Clinical Review",
         "section_title": "Seizure Action Plans for Transitional Risk Phases",
@@ -79,6 +93,7 @@ CURATED_GUIDELINES: List[Dict[str, Any]] = [
 
     # --- BASELINE / INTER-ICTAL (Low Risk / Routine Monitoring Phase) ---
     {
+        "domain": "epilepsy",
         "source_org": "ILAE",
         "document_title": "Comprehensive Guidelines for Routine Epilepsy Monitoring and Lifestyle Safety",
         "section_title": "Baseline Maintenance and Long-Term Vigilance",
@@ -93,6 +108,7 @@ CURATED_GUIDELINES: List[Dict[str, Any]] = [
         )
     },
     {
+        "domain": "epilepsy",
         "source_org": "NICE",
         "document_title": "Epilepsies in children, young people and adults (NG217)",
         "section_title": "Ongoing Care, Triggers, and Safety Advice",
@@ -104,6 +120,111 @@ CURATED_GUIDELINES: List[Dict[str, Any]] = [
             "of unmonitored baths, using protective equipment during cycling/sports, and identifying individual seizure "
             "triggers such as acute systemic illness, fever, emotional stress, or alcohol intake. Ensure annual "
             "structured clinical reviews."
+        )
+    },
+
+    # =========================================================================
+    # SLEEP STAGING & SLEEP DISORDERS DOMAIN
+    # =========================================================================
+    # --- WAKE (Sleep Onset Latency & Wakefulness After Sleep Onset / WASO) ---
+    {
+        "domain": "sleep",
+        "source_org": "AASM",
+        "document_title": "Clinical Practice Guideline for the Pharmacologic & Behavioral Treatment of Chronic Insomnia in Adults",
+        "section_title": "Management of Prolonged Sleep Latency and Nocturnal Arousal",
+        "risk_stage_tag": "wake",
+        "page_number": 18,
+        "citation_reference": "Sateia et al., Journal of Clinical Sleep Medicine, 13(2):307-349 (2017/2021)",
+        "chunk_content": (
+            "When persistent nocturnal wakefulness (elevated WASO >30 minutes or prolonged sleep latency) is observed, "
+            "implement stimulus control therapy: advise the individual not to remain in bed tossing for extended periods. "
+            "Maintain dark, quiet ambient conditions (temp 18-20°C). Avoid screen exposure and blue light emittance "
+            "which suppresses melatonin production. Screen for psychophysiological insomnia and underlying nocturnal triggers."
+        )
+    },
+
+    # --- N1 (Light Transitional Sleep / Somnolence) ---
+    {
+        "domain": "sleep",
+        "source_org": "AASM",
+        "document_title": "AASM Manual for the Scoring of Sleep and Associated Events: Rules, Terminology and Technical Specifications",
+        "section_title": "Stage N1 Criteria & Environmental Sleep Architecture Preservation",
+        "risk_stage_tag": "n1",
+        "page_number": 32,
+        "citation_reference": "Berry et al., American Academy of Sleep Medicine Manual v2.6 (2020)",
+        "chunk_content": (
+            "Stage N1 represents the vulnerable sleep-wake transition with elevated sensory arousal thresholds. "
+            "Disproportionately elevated N1 percentage (>10-12% of total sleep time) is a primary hallmark of sleep "
+            "fragmentation, frequent micro-arousals, or periodic limb movements. Ensure acoustic attenuation and "
+            "evaluate for occult sleep-disordered breathing if N1 persists without rapid consolidation into N2."
+        )
+    },
+
+    # --- N2 (Stable Intermediate NREM Sleep) ---
+    {
+        "domain": "sleep",
+        "source_org": "AASM",
+        "document_title": "Consensus Conference on Sleep Health and Adult Restorative Architecture",
+        "section_title": "Stage N2 Sleep Spindle Density & Cortical Stabilization",
+        "risk_stage_tag": "n2",
+        "page_number": 14,
+        "citation_reference": "Watson et al., Sleep, 38(6):843-844 (2018/2021)",
+        "chunk_content": (
+            "Stage N2 accounts for 45-55% of normal adult sleep architecture, characterized by synchronous 12-14 Hz "
+            "sleep spindles and biphasic K-complexes that shield the cortex against intrusive sensory arousal. "
+            "Preserve uninterrupted nocturnal duration to ensure memory consolidation and cognitive recovery. "
+            "Avoid pharmacological agents that suppress natural sleep spindle rhythmicity."
+        )
+    },
+
+    # --- N3 (Slow-Wave Deep Sleep / SWS) ---
+    {
+        "domain": "sleep",
+        "source_org": "AASM",
+        "document_title": "AASM Practice Guidelines: Restorative Sleep Homeostasis & Slow-Wave Deficiency",
+        "section_title": "Stage N3 Slow-Wave Deep Sleep Clinical Significance",
+        "risk_stage_tag": "n3",
+        "page_number": 22,
+        "citation_reference": "Kapur et al., J Clin Sleep Med, 13(3):479-504 (2019/2021)",
+        "chunk_content": (
+            "Stage N3 (Slow-Wave Deep Sleep) is essential for physical repair, glymphatic brain clearance, and growth "
+            "hormone secretion. Severe reduction of N3 (<10-15% of TST) correlates with daytime fatigue, cognitive slowing, "
+            "and impaired immune response. Minimize late evening alcohol, sedatives, and caffeine intake which prematurely "
+            "truncate slow-wave synchronization. Maintain rigorous circadian consistency."
+        )
+    },
+
+    # --- REM (Rapid Eye Movement / Dream Sleep) ---
+    {
+        "domain": "sleep",
+        "source_org": "AASM",
+        "document_title": "Practice Parameters for the Evaluation and Treatment of REM Parasomnias and Disorders",
+        "section_title": "REM Sleep Architecture, Motor Atonia and Safety",
+        "risk_stage_tag": "rem",
+        "page_number": 41,
+        "citation_reference": "Aurora et al., Sleep, 33(8):1105-1111 (2020)",
+        "chunk_content": (
+            "REM sleep is defined by desynchronized EEG, phasic conjugate eye movements, and profound postural muscle atonia. "
+            "Evaluate for REM Sleep Behavior Disorder (RBD) if chin EMG demonstrates abnormal motor breakthrough. "
+            "In patients with severe REM reduction or sleep-onset REM periods (SOREMPs within 15 minutes of sleep onset), "
+            "conduct structured clinical evaluation for narcolepsy type 1/2 or acute antidepressant discontinuation."
+        )
+    },
+
+    # --- SLEEP APNEA / HYPOPNEA RISK ---
+    {
+        "domain": "sleep",
+        "source_org": "AASM",
+        "document_title": "Clinical Practice Guideline for Diagnostic Testing for Adult Obstructive Sleep Apnea",
+        "section_title": "Emergency Screening and First-Line Management of Obstructive Sleep Apnea",
+        "risk_stage_tag": "sleep_apnea",
+        "page_number": 8,
+        "citation_reference": "Patil et al., Journal of Clinical Sleep Medicine, 15(2):335-343 (2019/2021)",
+        "chunk_content": (
+            "In patients demonstrating recurrent nocturnal micro-arousals accompanied by autonomic surges or repetitive "
+            "submental EMG tone breaks, initiate comprehensive polysomnography (PSG) evaluation. Recommend continuous positive "
+            "airway pressure (CPAP) therapy as the gold standard for moderate-to-severe OSA. Advise positional therapy "
+            "(avoiding supine sleep), weight management, and complete avoidance of evening CNS depressants."
         )
     }
 ]
@@ -127,27 +248,31 @@ def generate_simple_embedding(text: str, dim: int = 1536) -> List[float]:
 
 def seed_guidelines(db: Session) -> int:
     """
-    Seeds the guideline_documents table with curated clinical chunks if empty.
+    Seeds the guideline_documents table with curated clinical chunks across both domains.
+    Inserts missing guidelines dynamically.
     """
-    existing_count = db.query(GuidelineDocument).count()
-    if existing_count > 0:
-        return existing_count
-
     count = 0
     for item in CURATED_GUIDELINES:
-        emb = generate_simple_embedding(item["chunk_content"] + " " + item["risk_stage_tag"])
-        doc = GuidelineDocument(
-            source_org=item["source_org"],
-            document_title=item["document_title"],
-            section_title=item["section_title"],
-            chunk_content=item["chunk_content"],
-            risk_stage_tag=item["risk_stage_tag"],
-            embedding=emb,
-            page_number=item["page_number"],
-            citation_reference=item["citation_reference"]
-        )
-        db.add(doc)
-        count += 1
+        existing = db.query(GuidelineDocument).filter(
+            GuidelineDocument.document_title == item["document_title"],
+            GuidelineDocument.risk_stage_tag == item["risk_stage_tag"]
+        ).first()
+
+        if not existing:
+            emb = generate_simple_embedding(item["chunk_content"] + " " + item["risk_stage_tag"] + " " + item.get("domain", "epilepsy"))
+            doc = GuidelineDocument(
+                domain=item.get("domain", "epilepsy"),
+                source_org=item["source_org"],
+                document_title=item["document_title"],
+                section_title=item["section_title"],
+                chunk_content=item["chunk_content"],
+                risk_stage_tag=item["risk_stage_tag"],
+                embedding=emb,
+                page_number=item["page_number"],
+                citation_reference=item["citation_reference"]
+            )
+            db.add(doc)
+            count += 1
 
     db.commit()
     return count

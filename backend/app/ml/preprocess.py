@@ -138,6 +138,72 @@ def process_eeg_segment_to_sst(
     return sst_128
 
 
+def process_sleep_epoch_to_sst(
+    signal_segment: np.ndarray,
+    sampling_rate: int = 100,
+    target_size: Tuple[int, int] = (128, 128),
+) -> np.ndarray:
+    """
+    Processes a 30s polysomnography EEG epoch (Sleep-EDF standard, 100 Hz)
+    into a 128x128 normalized SST time-frequency spectrogram for the shared CNN backbone.
+    """
+    return process_eeg_segment_to_sst(
+        signal_segment=signal_segment,
+        sampling_rate=sampling_rate,
+        target_size=target_size
+    )
+
+
+def compute_sleep_architecture_metrics(
+    hypnogram: list[str],
+    epoch_duration_seconds: float = 30.0
+) -> dict:
+    """
+    Computes clinical sleep macro-architecture metrics from an epoch staging sequence:
+    - Total Sleep Time (TST)
+    - Sleep Efficiency (%)
+    - Wake After Sleep Onset (WASO)
+    - N3 (Deep Sleep) %, REM %, N2 %
+    - Micro-arousal / Fragmentation index
+    """
+    total_epochs = len(hypnogram)
+    if total_epochs == 0:
+        return {}
+
+    counts = {"W": 0, "N1": 0, "N2": 0, "N3": 0, "REM": 0}
+    for st in hypnogram:
+        norm_st = st.upper().replace("WAKE", "W")
+        if norm_st in counts:
+            counts[norm_st] += 1
+        elif "REM" in norm_st:
+            counts["REM"] += 1
+        else:
+            counts["W"] += 1
+
+    sleep_epochs = counts["N1"] + counts["N2"] + counts["N3"] + counts["REM"]
+    total_time_min = (total_epochs * epoch_duration_seconds) / 60.0
+    total_sleep_min = (sleep_epochs * epoch_duration_seconds) / 60.0
+    sleep_efficiency = (sleep_epochs / total_epochs) * 100.0 if total_epochs > 0 else 0.0
+
+    # WASO: Wake epochs occurring after sleep onset
+    wake_epochs = counts["W"]
+    waso_min = (wake_epochs * epoch_duration_seconds) / 60.0
+
+    return {
+        "total_monitoring_minutes": round(total_time_min, 1),
+        "total_sleep_time_minutes": round(total_sleep_min, 1),
+        "sleep_efficiency_percent": round(sleep_efficiency, 1),
+        "waso_minutes": round(waso_min, 1),
+        "stage_percentages": {
+            "Wake": round((counts["W"] / total_epochs) * 100.0, 1),
+            "N1": round((counts["N1"] / total_epochs) * 100.0, 1),
+            "N2": round((counts["N2"] / total_epochs) * 100.0, 1),
+            "N3": round((counts["N3"] / total_epochs) * 100.0, 1),
+            "REM": round((counts["REM"] / total_epochs) * 100.0, 1),
+        }
+    }
+
+
 def _encode_png_chunk(chunk_type: bytes, data: bytes) -> bytes:
     """Encodes a single PNG chunk with CRC checksum."""
     crc = zlib.crc32(chunk_type + data) & 0xffffffff

@@ -17,6 +17,11 @@ class ClinicalAuditExportResponse(BaseModel):
     patient_anon_id: str
     age_years: Optional[int]
     gender: Optional[str]
+    domain: Optional[str] = "epilepsy"
+    dataset_source: Optional[str] = "chbmit"
+    montage_channel: Optional[str] = None
+    sleep_stage: Optional[str] = None
+    sleep_metrics: Optional[Dict[str, Any]] = None
     sampling_rate_hz: int
     duration_seconds: float
     time_window_start: float
@@ -38,6 +43,7 @@ def get_case_audit_export(case_id: str, db: Session = Depends(get_db)):
     """
     Generates a structured, printable clinical audit export payload
     combining precomputed EEG classification, signal markers, and verified RAG precautions.
+    Supports both Seizure Risk and Polysomnography Sleep Architecture cases.
     """
     case = db.query(Case).filter(Case.id == case_id).first()
     if not case:
@@ -47,8 +53,9 @@ def get_case_audit_export(case_id: str, db: Session = Depends(get_db)):
     if not pred:
         raise HTTPException(status_code=404, detail=f"No prediction found for case '{case_id}'.")
 
-    # Retrieve matching clinical guidelines
-    guideline_docs = retrieve_guidelines_for_stage(db, risk_stage=pred.predicted_class, top_k=2)
+    # Retrieve matching clinical guidelines by stage and domain
+    stage_to_lookup = pred.predicted_class if case.domain != "sleep" else (pred.sleep_stage or pred.predicted_class)
+    guideline_docs = retrieve_guidelines_for_stage(db, risk_stage=stage_to_lookup, top_k=2, domain=case.domain)
     guidance_data = format_guidance_response(
         guideline_docs=guideline_docs,
         risk_stage=pred.risk_stage,
@@ -64,6 +71,11 @@ def get_case_audit_export(case_id: str, db: Session = Depends(get_db)):
         patient_anon_id=case.patient_anon_id,
         age_years=case.age_years,
         gender=case.gender,
+        domain=case.domain or "epilepsy",
+        dataset_source=case.dataset_source or "chbmit",
+        montage_channel=case.montage_channel,
+        sleep_stage=pred.sleep_stage,
+        sleep_metrics=pred.sleep_metrics,
         sampling_rate_hz=case.eeg_sampling_rate_hz,
         duration_seconds=round(duration, 2),
         time_window_start=pred.start_time_seconds,

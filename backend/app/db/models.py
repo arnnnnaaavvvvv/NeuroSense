@@ -16,6 +16,9 @@ class Case(Base):
     eeg_sampling_rate_hz = Column(Integer, default=256, nullable=False)
     total_segments = Column(Integer, default=1, nullable=False)
     description = Column(Text, nullable=True)
+    domain = Column(String(32), default="epilepsy", nullable=False)
+    dataset_source = Column(String(32), default="chbmit", nullable=False)
+    montage_channel = Column(String(64), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     predictions = relationship("Prediction", back_populates="case", cascade="all, delete-orphan")
@@ -36,6 +39,10 @@ class Prediction(Base):
     confidence_score = Column(Float, nullable=False)
     model_version = Column(String(32), default="m32.h5", nullable=False)
     key_markers = Column(JSON, nullable=True)
+    domain = Column(String(32), default="epilepsy", nullable=True)
+    sleep_stage = Column(String(32), nullable=True)
+    sleep_metrics = Column(JSON, nullable=True)
+    secondary_metrics = Column(JSON, nullable=True)
     precomputed_at = Column(DateTime, default=datetime.utcnow)
 
     case = relationship("Case", back_populates="predictions")
@@ -45,6 +52,7 @@ class GuidelineDocument(Base):
     __tablename__ = "guideline_documents"
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    domain = Column(String(32), default="epilepsy", nullable=False)
     source_org = Column(String(64), nullable=False)
     document_title = Column(String(255), nullable=False)
     section_title = Column(String(255), nullable=True)

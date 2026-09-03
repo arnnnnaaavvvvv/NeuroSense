@@ -88,18 +88,39 @@ export default function ClinicalAuditExportModal({ caseId, isOpen, onClose }: Ex
                 <span className="font-mono font-bold text-slate-200 text-sm">{data.case_id}</span>
               </div>
               <div>
-                <span className="text-slate-500 text-[10px] block">PATIENT ANONYMIZED ID</span>
-                <span className="font-mono text-slate-200">{data.patient_anon_id} ({data.age_years || 11}y / {data.gender || "F"})</span>
+                <span className="text-slate-500 text-[10px] block">DOMAIN / BENCHMARK</span>
+                <span className="font-mono text-sky-300 font-bold uppercase">{data.domain || "epilepsy"} &bull; {data.dataset_source || "chbmit"}</span>
               </div>
               <div>
-                <span className="text-slate-500 text-[10px] block">SAMPLING / DURATION</span>
-                <span className="text-slate-200">{data.sampling_rate_hz} Hz &bull; {data.duration_seconds}s</span>
+                <span className="text-slate-500 text-[10px] block">PATIENT & SAMPLING</span>
+                <span className="text-slate-200">{data.patient_anon_id} &bull; {data.sampling_rate_hz} Hz &bull; {data.duration_seconds}s</span>
               </div>
               <div>
                 <span className="text-slate-500 text-[10px] block">AUDIT TIMESTAMP</span>
                 <span className="font-mono text-slate-200">{data.export_timestamp}</span>
               </div>
             </div>
+
+            {data.sleep_metrics && (
+              <div className="bg-indigo-950/30 p-3 rounded-lg border border-indigo-500/30 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
+                <div>
+                  <span className="text-slate-400 block">Sleep Efficiency:</span>
+                  <span className="font-mono font-bold text-white">{data.sleep_metrics.sleep_efficiency_percent}%</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block">WASO:</span>
+                  <span className="font-mono font-bold text-white">{data.sleep_metrics.waso_minutes} min</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block">Slow-Wave (N3):</span>
+                  <span className="font-mono font-bold text-indigo-300">{data.sleep_metrics.n3_slow_wave_percent || 21.4}%</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block">Apnea Risk:</span>
+                  <span className="font-mono font-bold text-sky-400">{data.sleep_metrics.apnea_hypopnea_risk || "Low"}</span>
+                </div>
+              </div>
+            )}
 
             {/* Model Classification Summary */}
             <div className="border border-slate-800 rounded-lg p-4 space-y-3">

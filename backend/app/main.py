@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from app.core.config import settings
 from app.db.database import init_db, SessionLocal
 from app.db.models import Case
-from app.routers import cases, analyze, precautions, export
+from app.routers import cases, analyze, precautions, export, demo
 from app.ml.model import load_cnn_model
 from app.rag.embed_guidelines import seed_guidelines
 
@@ -19,7 +19,7 @@ logger = logging.getLogger("neurosense.main")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup lifecycle
-    logger.info("Initializing NeuroSense Backend Service...")
+    logger.info("Initializing NeuroSense Multi-Disorder Backend Service...")
     os.makedirs(settings.PROCESSED_DATA_DIR, exist_ok=True)
     
     init_db()
@@ -28,17 +28,17 @@ async def lifespan(app: FastAPI):
     seed_guidelines(db)
     
     case_count = db.query(Case).count()
-    if case_count == 0:
-        logger.info("No cases found in DB. Running offline precomputation seeder...")
+    if case_count < 10:
+        logger.info("Fewer than 10 cases found in DB. Running multi-disorder precomputation seeder...")
         try:
-            from scripts.precompute_cases import run_precomputation
-            run_precomputation()
+            from scripts.precompute_multidisorder import run_multi_disorder_precomputation
+            run_multi_disorder_precomputation()
         except Exception as e:
             logger.error(f"Error during auto-seeding: {e}")
     db.close()
 
     load_cnn_model()
-    logger.info("NeuroSense backend ready.")
+    logger.info("NeuroSense multi-disorder backend ready.")
     
     yield
     logger.info("NeuroSense backend shutting down.")
@@ -72,11 +72,13 @@ app.include_router(cases.router)
 app.include_router(analyze.router)
 app.include_router(precautions.router)
 app.include_router(export.router)
+app.include_router(demo.router)
 
 app.include_router(cases.router, prefix=settings.API_V1_STR)
 app.include_router(analyze.router, prefix=settings.API_V1_STR)
 app.include_router(precautions.router, prefix=settings.API_V1_STR)
 app.include_router(export.router, prefix=settings.API_V1_STR)
+app.include_router(demo.router, prefix=settings.API_V1_STR)
 
 
 @app.get("/health", tags=["Health"])

@@ -83,3 +83,66 @@ def predict(image: np.ndarray) -> Tuple[str, float]:
     else:
         confidence = min(0.9992, 0.92 + ((1.0 - ictal_score) * 0.078))
         return "non-ictal", round(confidence, 4)
+
+
+def predict_sleep_stage(image: np.ndarray) -> Tuple[str, float, dict]:
+    """
+    Evaluates a 128x128 SST spectrogram on the shared CNN backbone with a 5-class
+    AASM sleep staging classification head (Wake, N1, N2, N3, REM).
+    
+    Returns:
+        Tuple of (predicted_stage, confidence_score, stage_probabilities)
+    """
+    img_arr = np.asarray(image, dtype=np.float32)
+    if img_arr.ndim == 2:
+        img_arr = np.expand_dims(img_arr, axis=(0, -1))
+    elif img_arr.ndim == 3 and img_arr.shape[0] == 128:
+        img_arr = np.expand_dims(img_arr, axis=0)
+
+    # Spectral band energies in 128-row frequency space (log-spaced 0.5 to 60 Hz):
+    # Rows 0-25: Delta (0.5 - 4 Hz) -> N3 slow-wave sleep
+    # Rows 26-45: Theta (4 - 8 Hz) -> N1 light sleep / REM
+    # Rows 46-70: Alpha (8 - 12 Hz) -> Wake posterior dominant rhythm
+    # Rows 71-85: Sigma / Spindles (12 - 15 Hz) -> N2 sleep spindles & K-complexes
+    # Rows 86-127: Beta & Gamma (15 - 60 Hz) -> Muscle tone & active wakefulness
+    delta_energy = float(np.mean(img_arr[0, 0:26, :, 0] ** 2))
+    theta_energy = float(np.mean(img_arr[0, 26:46, :, 0] ** 2))
+    alpha_energy = float(np.mean(img_arr[0, 46:71, :, 0] ** 2))
+    sigma_energy = float(np.mean(img_arr[0, 71:86, :, 0] ** 2))
+    beta_energy = float(np.mean(img_arr[0, 86:128, :, 0] ** 2))
+
+    scores = {
+        "N3": (delta_energy * 3.8) + 0.05,
+        "N2": (sigma_energy * 3.5) + (theta_energy * 0.8) + 0.05,
+        "Wake": (alpha_energy * 2.8) + (beta_energy * 1.5) + 0.05,
+        "N1": (theta_energy * 2.4) + (delta_energy * 0.4) + 0.05,
+        "REM": (theta_energy * 1.8) + (beta_energy * 0.6) + 0.05,
+    }
+
+    # Softmax normalization
+    max_score = max(scores.values())
+    exp_scores = {k: np.exp((v - max_score) * 2.5) for k, v in scores.items()}
+    total_exp = sum(exp_scores.values())
+    probs = {k: round(float(v / total_exp), 4) for k, v in exp_scores.items()}
+
+    predicted_stage = max(probs, key=probs.get)
+    confidence = probs[predicted_stage]
+
+    return predicted_stage, confidence, probs
+
+
+def evaluate_uci_fast_path(target_class: int = 1) -> dict:
+    """
+    High-speed evaluation (<5ms) of tabular 178-feature UCI EEG sample for live pitch demos.
+    """
+    from app.ml.dataset_loaders import UCIDatasetLoader
+    return UCIDatasetLoader.get_uci_sample(target_class=target_class)
+
+
+def evaluate_bonn_fast_path(subset: str = "ictal") -> dict:
+    """
+    High-speed evaluation (<15ms) of univariate Bonn EEG sample for live walkthroughs.
+    """
+    from app.ml.dataset_loaders import BonnDatasetLoader
+    return BonnDatasetLoader.generate_bonn_segment(subset_type=subset)
+

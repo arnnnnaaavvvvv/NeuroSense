@@ -26,6 +26,12 @@ export default function SignalViewer({
     ? Object.keys(waveformData.channels)
     : ["FT9-FT10"];
 
+  useEffect(() => {
+    if (waveformData?.channels && !waveformData.channels[selectedLead] && availableChannels.length > 0) {
+      setSelectedLead(availableChannels[0]);
+    }
+  }, [waveformData, selectedLead, availableChannels]);
+
   // Render dynamic Oscilloscope Waveform on Canvas
   useEffect(() => {
     const canvas = canvasRef.current;

@@ -190,3 +190,12 @@ The stress/anxiety early-warning module has been trained and evaluated against r
 >
 > **Regulatory & Clinical Disclaimer**:
 > NeuroSense is an **academic research and portfolio demonstration prototype**, not a diagnostic medical device or certified clinical screening tool. It does not replace psychometric clinical evaluation by licensed healthcare professionals.
+
+---
+
+## 10. Research Citations & Acknowledgments
+
+This research incorporates benchmark methodologies from:
+- **Özdemir et al.** for CNN-based time-frequency spatial EEG feature extraction.
+- **SAM-40**: 32-channel stress classification under cognitive tasks (DOI: 10.6084/m9.figshare.14562090.v1).
+- **DASPS**: Database for Affective States in Psychophysiological Studies.

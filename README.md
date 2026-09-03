@@ -204,3 +204,13 @@ Contributions to NeuroSense are welcome! Follow these steps for development:
    python -m pytest backend/tests/ early_warning/tests/ -v
    ```
 4. **Pull Requests**: Provide clear descriptions of signal processing pipelines, model weights, or frontend visual updates.
+
+---
+
+## 10. Research Citations & Acknowledgments
+
+This research incorporates benchmark methodologies from:
+- **Özdemir et al.** for CNN-based time-frequency spatial EEG feature extraction.
+- **SAM-40**: 32-channel stress classification under cognitive tasks (DOI: 10.6084/m9.figshare.14562090.v1).
+- **DASPS**: Database for Affective States in Psychophysiological Studies.
+

@@ -5,16 +5,20 @@ const nextConfig = {
     unoptimized: true,
   },
   async rewrites() {
+    const rules = [
+      {
+        source: '/api/static/:path*',
+        destination: '/static/:path*',
+      },
+    ];
     if (process.env.NEXT_PUBLIC_BACKEND_URL) {
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL.replace(/\/$/, "");
-      return [
-        {
-          source: '/api/:path*',
-          destination: `${backendUrl}/:path*`,
-        },
-      ];
+      rules.push({
+        source: '/api/:path*',
+        destination: `${backendUrl}/:path*`,
+      });
     }
-    return [];
+    return rules;
   },
 };
 

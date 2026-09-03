@@ -74,7 +74,15 @@ export async function fetchPrecautions(stage: string, domain?: string): Promise<
 
 export async function fetchWaveformData(rawUrl: string): Promise<RawWaveformData> {
   try {
-    const url = rawUrl.startsWith("http") ? rawUrl : `${API_BASE}${rawUrl}`;
+    let url = rawUrl;
+    if (rawUrl.startsWith("http")) {
+      url = rawUrl;
+    } else if (process.env.NEXT_PUBLIC_BACKEND_URL) {
+      url = `${process.env.NEXT_PUBLIC_BACKEND_URL.replace(/\/$/, "")}${rawUrl}`;
+    } else {
+      url = rawUrl.startsWith("/") ? rawUrl : `/${rawUrl}`;
+    }
+
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error(`Failed to fetch raw waveform from ${url}`);
     return await res.json();

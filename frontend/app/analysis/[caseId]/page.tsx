@@ -192,6 +192,7 @@ export default function CaseAnalysisPage() {
         currentTime={currentTime}
         duration={duration}
         riskStage={analysis.classification.risk_stage}
+        domain={analysis.domain}
       />
 
       {/* 1b. Polysomnography Sleep Hypnogram (for Sleep Cases) */}

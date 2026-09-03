@@ -16,8 +16,17 @@ export async function GET(
   const domain = caseItem.domain || "epilepsy";
 
   // Find matching guideline
-  let matching = benchmarkData.guidelines.filter((g) => (g.domain || "epilepsy").toLowerCase() === domain);
-  const target = matching[0];
+  let matching = benchmarkData.guidelines.filter((g) => (g.domain || "epilepsy").toLowerCase() === domain.toLowerCase());
+  const stage = (pred?.risk_stage || "").toLowerCase();
+  let target = matching.find((g) => {
+    const tag = (g.risk_stage_tag || "").toLowerCase();
+    if (domain === "early_warning" || domain === "stress_anxiety") {
+      if (stage.includes("apnea")) return tag.includes("elevated_risk") && (g.section_title?.toLowerCase().includes("apnea") || false);
+      if (stage.includes("elevated") || stage.includes("stress") || stage.includes("anxiety")) return tag.includes("elevated_risk") && !g.section_title?.toLowerCase().includes("apnea");
+      return tag.includes("base") || tag.includes("low");
+    }
+    return true;
+  }) || matching[0];
 
   const citations = matching.slice(0, 3).map((g) => ({
     source_org: g.source_org,

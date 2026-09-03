@@ -7,7 +7,9 @@ export async function GET(
 ) {
   const stage = decodeURIComponent(params.stage).toLowerCase();
   const { searchParams } = new URL(request.url);
-  const domain = searchParams.get("domain")?.toLowerCase() || (["wake", "n1", "n2", "n3", "rem"].some(s => stage.includes(s)) ? "sleep" : "epilepsy");
+  const domain = searchParams.get("domain")?.toLowerCase() || 
+    (["stress", "anxiety", "apnea"].some(s => stage.includes(s)) ? "early_warning" : 
+    (["wake", "n1", "n2", "n3", "rem"].some(s => stage.includes(s)) ? "sleep" : "epilepsy"));
 
   // Find matching guideline
   let matching = benchmarkData.guidelines.filter((g) => (g.domain || "epilepsy").toLowerCase() === domain);

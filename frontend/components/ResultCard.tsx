@@ -25,18 +25,17 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
   const { risk_stage, confidence, model_name, binary_class, domain, sleep_stage, sleep_metrics } = classification;
 
   const isEarlyWarning = domain === "early_warning" || domain === "stress_anxiety";
-  const isSleep = domain === "sleep" || Boolean(sleep_stage);
-  const isEpilepsy = !isEarlyWarning && !isSleep;
+  const isSleep = domain === "sleep" || Boolean(sleep_stage) || !isEarlyWarning;
 
   // 1. Styling & Stage Classification Logic
   let badgeBg = "bg-emerald-950/60 border-emerald-500/40 text-emerald-300";
   let icon = <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />;
   let confidenceBarColor = "bg-emerald-500";
-  let stageTitle = "Evaluated Seizure Risk Stage";
+  let stageTitle = "AASM Sleep Stage Classification";
   let stageLabel = risk_stage;
-  let sectionHeader = "Model Inference & Seizure Risk Classification";
-  let headBadge = "Head: Seizure Risk Classifier (Özdemir CNN)";
-  let testAccuracy = "Reported Test Acc: 99.28% (CHB-MIT Benchmark)";
+  let sectionHeader = "Model Inference & AASM Sleep Stage Classification";
+  let headBadge = "Head: 5-Class AASM Sleep Staging";
+  let testAccuracy = "AASM Scoring Standard v2.6 (Sleep-EDF Benchmark)";
 
   if (isEarlyWarning) {
     sectionHeader = "Model Inference & Early-Warning Risk Classification";
@@ -71,7 +70,8 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
       confidenceBarColor = "bg-emerald-500";
       stageLabel = "Baseline Normal (Resting Recovery State)";
     }
-  } else if (isSleep) {
+  } else {
+    // Default: Sleep Staging
     sectionHeader = "Model Inference & AASM Sleep Stage Classification";
     headBadge = "Head: 5-Class AASM Sleep Staging";
     testAccuracy = "AASM Scoring Standard v2.6 (Sleep-EDF Benchmark)";
@@ -103,30 +103,6 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
       icon = <Sun className="w-5 h-5 text-rose-400 shrink-0" />;
       confidenceBarColor = "bg-rose-500";
       stageLabel = "Stage Wake (Nocturnal Arousal / WASO)";
-    }
-  } else {
-    // Seizure logic
-    sectionHeader = "Model Inference & Seizure Risk Classification";
-    headBadge = "Head: Seizure Risk Classifier";
-    testAccuracy = "Reported Test Acc: 99.28% (Özdemir & Kaya 2020)";
-    stageTitle = "Evaluated Seizure Risk Stage";
-
-    const rLower = (risk_stage || "").toLowerCase();
-    if (rLower.includes("ictal") && !rLower.includes("pre") && !rLower.includes("inter")) {
-      badgeBg = "bg-rose-950/70 border-rose-500/50 text-rose-300 animate-pulse_slow";
-      icon = <ShieldAlert className="w-5 h-5 text-rose-400 shrink-0" />;
-      confidenceBarColor = "bg-rose-500";
-      stageLabel = "High Risk (Active Ictal Seizure)";
-    } else if (rLower.includes("pre")) {
-      badgeBg = "bg-amber-950/60 border-amber-500/50 text-amber-300";
-      icon = <AlertCircle className="w-5 h-5 text-amber-400 shrink-0" />;
-      confidenceBarColor = "bg-amber-500";
-      stageLabel = "Moderate Risk (Pre-Ictal / Transitional)";
-    } else {
-      badgeBg = "bg-emerald-950/60 border-emerald-500/40 text-emerald-300";
-      icon = <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />;
-      confidenceBarColor = "bg-emerald-500";
-      stageLabel = "Low Risk (Baseline / Inter-Ictal)";
     }
   }
 

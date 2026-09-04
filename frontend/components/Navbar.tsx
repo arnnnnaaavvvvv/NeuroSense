@@ -1,13 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { Activity, Database, Zap, Moon, Brain } from "lucide-react";
-import FastPitchDemoModal from "./FastPitchDemoModal";
+import { Activity, Database, Moon, Brain } from "lucide-react";
 
 export default function Navbar() {
-  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
-
   return (
     <>
       <header className="sticky top-0 z-40 bg-[#0a0d14]/90 backdrop-blur-md border-b border-slate-800">
@@ -23,7 +20,7 @@ export default function Navbar() {
                   Multi-Disorder v2.0
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400">Multi-Disorder EEG Intelligence Platform (Epilepsy &bull; Sleep &bull; Stress & Anxiety)</p>
+              <p className="text-[11px] text-slate-400">Multi-Disorder EEG Intelligence Platform (Sleep Staging &bull; Stress & Anxiety)</p>
             </div>
           </Link>
 
@@ -36,15 +33,6 @@ export default function Navbar() {
               <span className="hidden sm:inline">Benchmark Cases</span>
             </Link>
 
-            {/* Fast-Path Demo Launcher */}
-            <button
-              onClick={() => setIsDemoModalOpen(true)}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs shadow-lg shadow-amber-500/20 transition-all hover:scale-105"
-            >
-              <Zap className="w-3.5 h-3.5 fill-slate-950 stroke-[2]" />
-              <span>⚡ Fast-Path Demo</span>
-            </button>
-
             <div className="hidden lg:flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-3 py-1 rounded-full">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               <span>Shared Özdemir CNN Multi-Head</span>
@@ -52,12 +40,6 @@ export default function Navbar() {
           </nav>
         </div>
       </header>
-
-      {/* Fast Pitch Modal */}
-      <FastPitchDemoModal
-        isOpen={isDemoModalOpen}
-        onClose={() => setIsDemoModalOpen(false)}
-      />
     </>
   );
 }

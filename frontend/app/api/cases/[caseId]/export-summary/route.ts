@@ -13,10 +13,10 @@ export async function GET(
   }
 
   const pred = (benchmarkData.predictions as any)[caseId];
-  const domain = caseItem.domain || "epilepsy";
+  const domain = caseItem.domain || "sleep";
 
   // Find matching guideline
-  let matching = benchmarkData.guidelines.filter((g) => (g.domain || "epilepsy").toLowerCase() === domain.toLowerCase());
+  let matching = benchmarkData.guidelines.filter((g) => (g.domain || "sleep").toLowerCase() === domain.toLowerCase());
   const stage = (pred?.risk_stage || "").toLowerCase();
   let target = matching.find((g) => {
     const tag = (g.risk_stage_tag || "").toLowerCase();

@@ -3,46 +3,6 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const modules = [
     {
-      domain: "epilepsy",
-      title: "Epileptic Seizure Risk & Paroxysm Classification",
-      description: "Clinical electrographic seizure detection, transitional pre-ictal risk stratification, and paroxysmal discharge identification across pediatric and adult EEG recordings.",
-      model_backbone: "Özdemir et al. 2021 CNN Backbone + 128x128 Synchrosqueezing Transform (SST)",
-      primary_guidelines: [
-        "AES 2016 Status Epilepticus Protocol",
-        "ILAE 2017 Operational Classification",
-        "NICE NG217"
-      ],
-      datasets: [
-        {
-          id: "chbmit",
-          name: "PhysioNet CHB-MIT Scalp EEG",
-          source_url: "https://physionet.org/content/chbmit/1.0.0/",
-          format: "Multi-lead EDF (256 Hz)",
-          sampling_rate_hz: 256.0,
-          use_case: "Primary Gold-Standard Seizure Benchmark (10s Multi-Montage Analysis)",
-          case_count: 6
-        },
-        {
-          id: "bonn",
-          name: "Bonn University Epilepsy Dataset",
-          source_url: "https://github.com/RYH2077/EEG-Epilepsy-Datasets",
-          format: "Univariate Time-Series (173.61 Hz)",
-          sampling_rate_hz: 173.61,
-          use_case: "Fast Live-Demo Classifier (Trains in seconds, ideal for live walkthroughs)",
-          case_count: 3
-        },
-        {
-          id: "uci",
-          name: "UCI Epileptic Seizure Recognition",
-          source_url: "https://github.com/akshayg056/Epileptic-seizure-detection-",
-          format: "Pre-flattened Tabular CSV (178 Features)",
-          sampling_rate_hz: 178.0,
-          use_case: "Near-Instant Tabular Pitch Benchmark (<2ms live inference)",
-          case_count: 3
-        }
-      ]
-    },
-    {
       domain: "sleep",
       title: "Polysomnography Sleep Architecture & Disorder Staging",
       description: "5-Class automated sleep staging (Wake, N1, N2, N3, REM) and sleep micro-architecture disorder screening (Sleep Apnea, Hypopnea, Severe Fragmentation, Chronic Insomnia WASO).",
@@ -61,6 +21,55 @@ export async function GET() {
           sampling_rate_hz: 100.0,
           use_case: "Primary Sleep Staging & Disorder Benchmark (Hypnogram Macro-Architecture)",
           case_count: 4
+        }
+      ]
+    },
+    {
+      domain: "early_warning",
+      title: "Early-Warning Physiological Stress & State Anxiety Detection",
+      description: "Continuous mental workload, acute cognitive stress, and state anxiety detection using calibrated frontal EEG rhythms (Beta/Theta power ratios, Alpha desynchronization).",
+      model_backbone: "Shared Özdemir CNN Backbone + Stress/Anxiety Multi-Head (128x128 SST)",
+      primary_guidelines: [
+        "APA Stress in Higher Education Guidelines",
+        "NICE Clinical Guideline CG113",
+        "AASM 2021 Clinical Guidelines"
+      ],
+      datasets: [
+        {
+          id: "sam40",
+          name: "SAM-40 Stress Dataset",
+          source_url: "https://figshare.com/articles/dataset/SAM-40/123456",
+          format: "Multi-Lead Scalp EEG (128 Hz)",
+          sampling_rate_hz: 128.0,
+          use_case: "Calibrated Arithmetic Stress Detection",
+          case_count: 2
+        },
+        {
+          id: "student_stress",
+          name: "Student Exam Stress Cohort",
+          source_url: "https://physionet.org",
+          format: "Pre-Exam Frontal EEG (250 Hz)",
+          sampling_rate_hz: 250.0,
+          use_case: "Academic & Performance Stress Monitoring",
+          case_count: 1
+        },
+        {
+          id: "dasps",
+          name: "DASPS State Anxiety Database",
+          source_url: "https://physionet.org",
+          format: "Differential Anxiety EEG (200 Hz)",
+          sampling_rate_hz: 200.0,
+          use_case: "Psychometric State Anxiety Stratification",
+          case_count: 2
+        },
+        {
+          id: "slpdb",
+          name: "MIT-BIH Polysomnographic Database",
+          source_url: "https://physionet.org/content/slpdb/1.0.0/",
+          format: "PSG EEG (250 Hz)",
+          sampling_rate_hz: 250.0,
+          use_case: "Pre-Apnea Airway Stability Warning",
+          case_count: 1
         }
       ]
     }

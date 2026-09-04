@@ -89,7 +89,7 @@ export default function ClinicalAuditExportModal({ caseId, isOpen, onClose }: Ex
               </div>
               <div>
                 <span className="text-slate-500 text-[10px] block">DOMAIN / BENCHMARK</span>
-                <span className="font-mono text-sky-300 font-bold uppercase">{data.domain || "epilepsy"} &bull; {data.dataset_source || "chbmit"}</span>
+                <span className="font-mono text-sky-300 font-bold uppercase">{data.domain || "sleep"} &bull; {data.dataset_source || "sleep-edf"}</span>
               </div>
               <div>
                 <span className="text-slate-500 text-[10px] block">PATIENT & SAMPLING</span>

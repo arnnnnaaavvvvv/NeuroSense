@@ -8,11 +8,10 @@ export async function GET(
   const stage = decodeURIComponent(params.stage).toLowerCase();
   const { searchParams } = new URL(request.url);
   const domain = searchParams.get("domain")?.toLowerCase() || 
-    (["stress", "anxiety", "apnea"].some(s => stage.includes(s)) ? "early_warning" : 
-    (["wake", "n1", "n2", "n3", "rem"].some(s => stage.includes(s)) ? "sleep" : "epilepsy"));
+    (["stress", "anxiety", "apnea"].some(s => stage.includes(s)) ? "early_warning" : "sleep");
 
   // Find matching guideline
-  let matching = benchmarkData.guidelines.filter((g) => (g.domain || "epilepsy").toLowerCase() === domain);
+  let matching = benchmarkData.guidelines.filter((g) => (g.domain || "sleep").toLowerCase() === domain);
 
   let targetGuideline = matching.find((g) => {
     const tag = (g.risk_stage_tag || "").toLowerCase();
@@ -22,14 +21,10 @@ export async function GET(
       if (stage.includes("n1")) return tag.includes("n1") || tag.includes("light");
       if (stage.includes("rem")) return tag.includes("rem") || tag.includes("sleep_apnea");
       if (stage.includes("wake")) return tag.includes("wake") || tag.includes("insomnia");
-    } else if (domain === "early_warning" || domain === "stress_anxiety") {
+    } else {
       if (stage.includes("apnea")) return tag.includes("elevated_risk") && (g.section_title?.toLowerCase().includes("apnea") || false);
       if (stage.includes("elevated") || stage.includes("stress") || stage.includes("anxiety")) return tag.includes("elevated_risk") && !g.section_title?.toLowerCase().includes("apnea");
       return tag.includes("base") || tag.includes("low");
-    } else {
-      if (stage.includes("ictal") && !stage.includes("pre") && !stage.includes("inter")) return tag.includes("ictal");
-      if (stage.includes("pre")) return tag.includes("pre");
-      return tag.includes("base") || tag.includes("inter");
     }
     return false;
   }) || matching[0];

@@ -24,9 +24,9 @@ export async function GET(
     segment_id: pred.segment_id || 1,
     patient_anon_id: caseItem.patient_anon_id,
     description: caseItem.description,
-    domain: caseItem.domain || "epilepsy",
-    dataset_source: caseItem.dataset_source || "chbmit",
-    montage_channel: caseItem.montage_channel || "FT9-FT10",
+    domain: caseItem.domain || "sleep",
+    dataset_source: caseItem.dataset_source || "sleep-edf",
+    montage_channel: caseItem.montage_channel || "Fpz-Cz",
     time_window: {
       start_seconds: pred.start_time_seconds || 0.0,
       end_seconds: pred.end_time_seconds || 10.0,
@@ -41,11 +41,9 @@ export async function GET(
       risk_stage: pred.risk_stage,
       confidence: pred.confidence,
       model_name: pred.model_name || "Özdemir CNN Multi-Head (m32.h5 Shared Backbone)",
-      provenance: caseItem.domain === "sleep" 
-        ? "PhysioNet Sleep-EDF Expanded / AASM 5-Class Staging" 
-        : caseItem.domain === "early_warning"
+      provenance: caseItem.domain === "early_warning"
         ? `${caseItem.dataset_source?.toUpperCase()} Physiological Stress/Anxiety Cohort`
-        : "PhysioNet CHB-MIT Scalp EEG Dataset",
+        : "PhysioNet Sleep-EDF Expanded / AASM 5-Class Staging",
       domain: caseItem.domain,
       sleep_stage: pred.sleep_stage,
       sleep_metrics: pred.sleep_metrics

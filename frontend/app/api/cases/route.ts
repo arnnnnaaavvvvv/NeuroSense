@@ -9,11 +9,11 @@ export async function GET(request: NextRequest) {
   let cases = benchmarkData.cases;
 
   if (domain) {
-    cases = cases.filter((c) => (c.domain || "epilepsy").toLowerCase() === domain);
+    cases = cases.filter((c) => (c.domain || "sleep").toLowerCase() === domain);
   }
 
   if (dataset) {
-    cases = cases.filter((c) => (c.dataset_source || "chbmit").toLowerCase() === dataset);
+    cases = cases.filter((c) => (c.dataset_source || "sleep-edf").toLowerCase() === dataset);
   }
 
   return NextResponse.json(cases);

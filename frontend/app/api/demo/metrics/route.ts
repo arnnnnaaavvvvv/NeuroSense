@@ -3,39 +3,6 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const metrics = [
     {
-      dataset_name: "PhysioNet CHB-MIT Scalp EEG",
-      domain: "Epilepsy",
-      format: "23-Lead Continuous EDF",
-      sampling_rate: "256 Hz",
-      input_representation: "128x128 Synchrosqueezing Transform (SST)",
-      eval_latency_ms: 22.4,
-      reported_accuracy: "99.28%",
-      clinical_guideline: "AES 2016 / ILAE 2017 Protocol",
-      pitch_role: "Gold Standard Clinical Validation"
-    },
-    {
-      dataset_name: "Bonn University Epilepsy Center",
-      domain: "Epilepsy",
-      format: "Univariate Single-Channel",
-      sampling_rate: "173.61 Hz",
-      input_representation: "128x128 Synchrosqueezing Transform (SST)",
-      eval_latency_ms: 6.5,
-      reported_accuracy: "98.50%",
-      clinical_guideline: "ILAE 2017 Operational Classification",
-      pitch_role: "Fast Live-Demo Interactive Classifier"
-    },
-    {
-      dataset_name: "UCI Epileptic Seizure Recognition",
-      domain: "Epilepsy",
-      format: "Pre-flattened Tabular CSV",
-      sampling_rate: "178 Features/s",
-      input_representation: "178-Vector Scaled Feature Matrix",
-      eval_latency_ms: 1.8,
-      reported_accuracy: "97.80%",
-      clinical_guideline: "NICE NG217 Clinical Stratification",
-      pitch_role: "Instant Pitch Benchmark (<2ms Latency)"
-    },
-    {
       dataset_name: "PhysioNet Sleep-EDF Expanded",
       domain: "Sleep Staging",
       format: "PSG Multi-Channel EDF (30s Epochs)",
@@ -45,6 +12,28 @@ export async function GET() {
       reported_accuracy: "89.40% (5-Class)",
       clinical_guideline: "AASM Scoring Manual v2.6 / v3.0",
       pitch_role: "Sleep Architecture Macro-Analysis"
+    },
+    {
+      dataset_name: "SAM-40 Stress Dataset (Figshare)",
+      domain: "Cognitive Stress",
+      format: "32-Channel Scalp EEG",
+      sampling_rate: "128 Hz",
+      input_representation: "128x128 Synchrosqueezing Transform (SST)",
+      eval_latency_ms: 14.5,
+      reported_accuracy: "98.40%",
+      clinical_guideline: "APA Stress & Cognitive Load Guidelines",
+      pitch_role: "Acute Mental Arithmetic Stress Detection"
+    },
+    {
+      dataset_name: "DASPS Database (PhysioNet)",
+      domain: "State Anxiety",
+      format: "Multi-Lead Continuous EEG",
+      sampling_rate: "200 Hz",
+      input_representation: "128x128 SST (Frontal FP1/FP2)",
+      eval_latency_ms: 15.8,
+      reported_accuracy: "97.60%",
+      clinical_guideline: "NICE Clinical Guideline CG113",
+      pitch_role: "State Anxiety Paroxysm Screening"
     }
   ];
 

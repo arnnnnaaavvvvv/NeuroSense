@@ -30,7 +30,7 @@ export default function CaseSelectionPage() {
   const [error, setError] = useState<string | null>(null);
 
   // Active Navigation Filters
-  const [activeDomain, setActiveDomain] = useState<"epilepsy" | "sleep" | "early_warning">("epilepsy");
+  const [activeDomain, setActiveDomain] = useState<"sleep" | "early_warning">("sleep");
   const [selectedDataset, setSelectedDataset] = useState<string>("all");
   const [stageFilter, setStageFilter] = useState<string>("all");
 
@@ -53,7 +53,7 @@ export default function CaseSelectionPage() {
 
   // Filter cases by domain, dataset, and stage
   const domainFilteredCases = cases.filter((c) => {
-    const cDomain = (c.domain || "epilepsy").toLowerCase();
+    const cDomain = (c.domain || "sleep").toLowerCase();
     return cDomain === activeDomain;
   });
 
@@ -68,11 +68,7 @@ export default function CaseSelectionPage() {
     const classStr = (c.predicted_class || "").toLowerCase();
     const sleepStageStr = (c.sleep_stage || "").toLowerCase();
 
-    if (activeDomain === "epilepsy") {
-      if (stageFilter === "baseline") return stageStr.includes("baseline") || stageStr.includes("healthy");
-      if (stageFilter === "pre-ictal") return stageStr.includes("pre") || stageStr.includes("inter");
-      if (stageFilter === "ictal") return stageStr.includes("ictal") && !stageStr.includes("pre") && !stageStr.includes("inter");
-    } else if (activeDomain === "sleep") {
+    if (activeDomain === "sleep") {
       // Sleep domain
       if (stageFilter === "wake") return sleepStageStr === "wake" || classStr === "wake" || stageStr.includes("wake");
       if (stageFilter === "n1") return sleepStageStr === "n1" || classStr === "n1" || stageStr.includes("n1");
@@ -90,7 +86,7 @@ export default function CaseSelectionPage() {
   });
 
   // Handle Domain Switch
-  const handleDomainChange = (domain: "epilepsy" | "sleep" | "early_warning") => {
+  const handleDomainChange = (domain: "sleep" | "early_warning") => {
     setActiveDomain(domain);
     setSelectedDataset("all");
     setStageFilter("all");
@@ -100,9 +96,9 @@ export default function CaseSelectionPage() {
     <div className="space-y-8 animate-fadeIn">
       {/* Platform Overview Banner */}
       <div className="glass-panel rounded-2xl p-6 sm:p-8 border border-slate-800 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
         <div className="max-w-3xl space-y-3 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-950/60 border border-sky-500/30 text-sky-400 text-xs font-mono">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-950/60 border border-indigo-500/30 text-indigo-400 text-xs font-mono">
             <Brain className="w-3.5 h-3.5" />
             <span>Multi-Disorder EEG Intelligence Platform</span>
           </div>
@@ -110,8 +106,8 @@ export default function CaseSelectionPage() {
             Clinical EEG Benchmark Explorer & Risk Staging
           </h1>
           <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-            Integrated multi-disorder clinical intelligence covering <strong>Epileptic Seizure Risk</strong>,{" "}
-            <strong>Polysomnography Sleep Staging</strong>, and <strong>Early-Warning Student Stress & Anxiety Detection</strong> across 7 verified cohorts.
+            Integrated multi-disorder clinical intelligence covering <strong>Polysomnography Sleep Staging</strong> and{" "}
+            <strong>Early-Warning Student Stress & Anxiety Detection</strong> across verified clinical cohorts.
             Powered by a shared 128×128 SST representation and multi-head CNN backbone with verified RAG precautions.
           </p>
         </div>
@@ -119,31 +115,19 @@ export default function CaseSelectionPage() {
         {/* Informational Scope Note */}
         <div className="mt-5 pt-4 border-t border-slate-800/80 flex items-center justify-between flex-wrap gap-3 text-xs text-slate-400">
           <div className="flex items-center gap-2">
-            <Info className="w-4 h-4 text-sky-400 shrink-0" />
+            <Info className="w-4 h-4 text-indigo-400 shrink-0" />
             <span>
-              <strong>Clinical Research Prototype:</strong> Precomputed benchmark records with verified AES, ILAE, AASM, APA & NICE guideline citations.
+              <strong>Clinical Research Prototype:</strong> Precomputed benchmark records with verified AASM, APA & NICE guideline citations.
             </span>
           </div>
           <div className="font-mono text-[11px] text-slate-400">
-            Shared Backbone: <span className="text-sky-300">Özdemir CNN (m32.h5)</span>
+            Shared Backbone: <span className="text-indigo-300">Özdemir CNN (m32.h5)</span>
           </div>
         </div>
       </div>
 
       {/* Top-Level Domain Switcher Tabs */}
       <div className="flex flex-wrap items-center gap-3 border-b border-slate-800 pb-4">
-        <button
-          onClick={() => handleDomainChange("epilepsy")}
-          className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2.5 ${
-            activeDomain === "epilepsy"
-              ? "bg-sky-500 text-slate-950 shadow-lg shadow-sky-500/20"
-              : "bg-slate-900/80 text-slate-300 hover:text-white hover:bg-slate-800/80 border border-slate-800"
-          }`}
-        >
-          <Activity className="w-4 h-4 stroke-[2.5]" />
-          <span>Epilepsy & Seizure Risk (12 Cases)</span>
-        </button>
-
         <button
           onClick={() => handleDomainChange("sleep")}
           className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2.5 ${
@@ -174,28 +158,7 @@ export default function CaseSelectionPage() {
         {/* Dataset Filter Chips */}
         <div className="flex items-center gap-2">
           <span className="font-semibold uppercase tracking-wider text-[10px] text-slate-400">Dataset:</span>
-          {activeDomain === "epilepsy" ? (
-            <>
-              {[
-                { id: "all", label: "All Datasets" },
-                { id: "chbmit", label: "CHB-MIT (Primary)" },
-                { id: "bonn", label: "Bonn Univ (Live)" },
-                { id: "uci", label: "UCI CSV (Instant)" },
-              ].map((ds) => (
-                <button
-                  key={ds.id}
-                  onClick={() => setSelectedDataset(ds.id)}
-                  className={`px-2.5 py-1 rounded-lg transition-colors font-mono ${
-                    selectedDataset === ds.id
-                      ? "bg-sky-500/20 text-sky-300 border border-sky-500/40 font-bold"
-                      : "text-slate-400 hover:text-slate-200"
-                  }`}
-                >
-                  {ds.label}
-                </button>
-              ))}
-            </>
-          ) : activeDomain === "sleep" ? (
+          {activeDomain === "sleep" ? (
             <span className="px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-mono font-bold">
               PhysioNet Sleep-EDF Expanded (100 Hz PSG)
             </span>
@@ -228,26 +191,7 @@ export default function CaseSelectionPage() {
         <div className="flex items-center gap-1.5">
           <Filter className="w-3.5 h-3.5 text-slate-400" />
           <span className="font-semibold uppercase tracking-wider text-[10px] text-slate-400">Stage:</span>
-          {activeDomain === "epilepsy" ? (
-            [
-              { id: "all", label: "All Stages" },
-              { id: "baseline", label: "Baseline" },
-              { id: "pre-ictal", label: "Pre-Ictal" },
-              { id: "ictal", label: "Ictal" },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setStageFilter(tab.id)}
-                className={`px-2.5 py-1 rounded-md transition-all font-medium ${
-                  stageFilter === tab.id
-                    ? "bg-slate-700 text-white font-bold"
-                    : "text-slate-400 hover:text-white"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))
-          ) : activeDomain === "sleep" ? (
+          {activeDomain === "sleep" ? (
             [
               { id: "all", label: "All" },
               { id: "wake", label: "Wake" },
@@ -325,8 +269,6 @@ export default function CaseSelectionPage() {
       {!loading && !error && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {finalCases.map((c) => {
-            const isIctal = c.risk_stage?.toLowerCase().includes("ictal") && !c.risk_stage?.toLowerCase().includes("pre") && !c.risk_stage?.toLowerCase().includes("inter");
-            const isPreIctal = c.risk_stage?.toLowerCase().includes("pre") || c.risk_stage?.toLowerCase().includes("inter");
             const isSleep = c.domain === "sleep";
             const isEarlyWarning = c.domain === "early_warning";
 
@@ -348,7 +290,8 @@ export default function CaseSelectionPage() {
                 badgeStyle = "bg-emerald-950/60 text-emerald-300 border-emerald-500/30";
                 StageIcon = CheckCircle2;
               }
-            } else if (isSleep) {
+            } else {
+              // Sleep domain
               const stUpper = (c.sleep_stage || c.predicted_class || "").toUpperCase();
               if (stUpper.includes("N3")) {
                 badgeStyle = "bg-indigo-950/70 text-indigo-300 border-indigo-500/50";
@@ -366,28 +309,17 @@ export default function CaseSelectionPage() {
                 badgeStyle = "bg-rose-950/70 text-rose-300 border-rose-500/50";
                 StageIcon = Sun;
               }
-            } else {
-              if (isIctal) {
-                badgeStyle = "bg-rose-950/60 text-rose-300 border-rose-500/40";
-                StageIcon = ShieldAlert;
-              } else if (isPreIctal) {
-                badgeStyle = "bg-amber-950/60 text-amber-300 border-amber-500/30";
-                StageIcon = AlertCircle;
-              }
             }
 
             // Benchmark dataset label badge
             const datasetLabels: Record<string, { label: string; style: string }> = {
-              chbmit: { label: "CHB-MIT (Primary)", style: "bg-sky-500/10 text-sky-400 border-sky-500/30" },
-              bonn: { label: "Bonn Univ (Univariate)", style: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" },
-              uci: { label: "UCI CSV (178 Features)", style: "bg-amber-500/10 text-amber-400 border-amber-500/30" },
               "sleep-edf": { label: "PhysioNet Sleep-EDF", style: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30" },
               sam40: { label: "SAM-40 (Figshare Stress)", style: "bg-amber-500/10 text-amber-400 border-amber-500/30" },
               student_stress: { label: "Student EEG (Stress)", style: "bg-purple-500/10 text-purple-400 border-purple-500/30" },
               dasps: { label: "DASPS (State Anxiety)", style: "bg-rose-500/10 text-rose-400 border-rose-500/30" },
               slpdb: { label: "MIT-BIH (Polysomnography)", style: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30" },
             };
-            const dsInfo = datasetLabels[c.dataset_source || "chbmit"] || { label: c.dataset_source || "Benchmark", style: "bg-slate-800 text-slate-300" };
+            const dsInfo = datasetLabels[c.dataset_source || "sleep-edf"] || { label: c.dataset_source || "Benchmark", style: "bg-slate-800 text-slate-300" };
 
             return (
               <Link

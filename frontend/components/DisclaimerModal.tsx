@@ -32,24 +32,24 @@ export default function DisclaimerModal() {
 
         <div className="space-y-3 text-sm text-slate-300 leading-relaxed border-y border-slate-700/60 py-4 my-2">
           <p>
-            Welcome to <strong className="text-sky-400">NeuroSense</strong>, an artificial intelligence demonstration system for EEG time-frequency feature extraction and seizure risk classification.
+            Welcome to <strong className="text-sky-400">NeuroSense</strong>, an artificial intelligence demonstration system for EEG time-frequency feature extraction and neurophysiological state classification.
           </p>
           <div className="bg-slate-900/80 rounded-lg p-3 border border-slate-800 space-y-2 text-xs text-slate-400">
             <div className="flex items-start gap-2">
               <Lock className="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" />
-              <span><strong>Inference-Only Architecture:</strong> Operates strictly on pre-curated PhysioNet CHB-MIT demo cases. Dynamic file uploads are disabled by design.</span>
+              <span><strong>Inference-Only Architecture:</strong> Operates strictly on pre-curated benchmark demo cohorts. Dynamic file uploads are disabled by design.</span>
             </div>
             <div className="flex items-start gap-2">
               <Lock className="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" />
-              <span><strong>Model Citation:</strong> CNN architecture based on <em>Özdemir & Kaya (2020)</em> trained on 128x128 Synchrosqueezing Transform matrices.</span>
+              <span><strong>Model Citation:</strong> CNN architecture based on <em>Özdemir & Kaya (2020)</em> multi-head backbone on 128x128 Synchrosqueezing Transform representations.</span>
             </div>
             <div className="flex items-start gap-2">
               <Lock className="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" />
-              <span><strong>RAG Layer Grounding:</strong> Precaution guidance is strictly retrieved from published clinical guidelines (AES, ILAE, NICE) with zero unverified medical claims.</span>
+              <span><strong>RAG Layer Grounding:</strong> Precaution guidance is strictly retrieved from published clinical guidelines (AASM, APA, NICE) with zero unverified medical claims.</span>
             </div>
           </div>
           <p className="text-xs text-amber-300/90 font-medium">
-            This platform is NOT a certified medical device (FDA/CE) and must NEVER be used to formulate medical diagnoses, alter prescription anti-seizure medication (ASM), or replace qualified neurological consultation.
+            This platform is NOT a certified medical device (FDA/CE) and must NEVER be used to formulate medical diagnoses, alter prescription medications, or replace qualified clinical consultation.
           </p>
         </div>
 

@@ -302,10 +302,10 @@ export default function BenchmarkDashboardPage() {
       {loading && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {[1, 2, 3, 4, 5, 6].map((n) => (
-            <div key={n} className="bg-white rounded-xl p-5 border border-zinc-200 animate-pulse h-64 space-y-4">
-              <div className="h-6 bg-zinc-100 rounded w-1/2" />
-              <div className="h-16 bg-zinc-100/60 rounded" />
-              <div className="h-8 bg-zinc-100 rounded" />
+            <div key={n} className="bg-zinc-950 rounded-2xl p-6 border border-zinc-800 animate-pulse h-64 space-y-4">
+              <div className="h-6 bg-zinc-800 rounded w-1/2" />
+              <div className="h-16 bg-zinc-900 rounded" />
+              <div className="h-8 bg-zinc-800 rounded" />
             </div>
           ))}
         </div>
@@ -319,7 +319,7 @@ export default function BenchmarkDashboardPage() {
         </div>
       )}
 
-      {/* Case Grid (White Cards, Crisp Black Typography) */}
+      {/* Case Grid (Dark Prominent Cards with High Contrast) */}
       {!loading && !error && finalCases.length === 0 && (
         <div className="bg-zinc-50 rounded-xl p-12 text-center border border-zinc-200 space-y-3">
           <Search className="w-8 h-8 text-zinc-400 mx-auto" />
@@ -346,95 +346,97 @@ export default function BenchmarkDashboardPage() {
             const isSleep = c.domain === "sleep";
             const isEarlyWarning = c.domain === "early_warning";
 
-            let badgeStyle = "bg-zinc-100 text-zinc-900 border-zinc-200";
+            let badgeStyle = "bg-white text-zinc-950 border-white font-bold";
             let StageIcon = CheckCircle2;
 
             if (isEarlyWarning) {
               const rLower = (c.risk_stage || "").toLowerCase();
               if (rLower.includes("stress")) {
-                badgeStyle = "bg-zinc-950 text-white border-zinc-950";
+                badgeStyle = "bg-white text-zinc-950 border-white font-bold ring-2 ring-white/20";
                 StageIcon = Brain;
               } else if (rLower.includes("anxiety")) {
-                badgeStyle = "bg-zinc-950 text-white border-zinc-950";
+                badgeStyle = "bg-white text-zinc-950 border-white font-bold ring-2 ring-white/20";
                 StageIcon = HeartPulse;
               } else if (rLower.includes("apnea")) {
-                badgeStyle = "bg-zinc-900 text-white border-zinc-900";
+                badgeStyle = "bg-zinc-100 text-zinc-950 border-zinc-200 font-bold";
                 StageIcon = Activity;
               } else {
-                badgeStyle = "bg-zinc-100 text-zinc-900 border-zinc-300";
+                badgeStyle = "bg-zinc-800 text-zinc-100 border-zinc-700 font-medium";
                 StageIcon = CheckCircle2;
               }
             } else {
               const stUpper = (c.sleep_stage || c.predicted_class || "").toUpperCase();
               if (stUpper.includes("N3")) {
-                badgeStyle = "bg-zinc-950 text-white border-zinc-950";
+                badgeStyle = "bg-white text-zinc-950 border-white font-bold shadow-sm";
                 StageIcon = Moon;
               } else if (stUpper.includes("N2")) {
-                badgeStyle = "bg-zinc-800 text-white border-zinc-800";
+                badgeStyle = "bg-zinc-100 text-zinc-950 border-zinc-200 font-bold shadow-sm";
                 StageIcon = Activity;
               } else if (stUpper.includes("N1")) {
-                badgeStyle = "bg-zinc-200 text-zinc-900 border-zinc-300";
+                badgeStyle = "bg-zinc-200 text-zinc-900 border-zinc-300 font-semibold";
                 StageIcon = AlertCircle;
               } else if (stUpper.includes("REM")) {
-                badgeStyle = "bg-zinc-900 text-white border-zinc-900";
+                badgeStyle = "bg-white text-zinc-950 border-white font-bold shadow-sm";
                 StageIcon = Wind;
               } else {
-                badgeStyle = "bg-zinc-100 text-zinc-900 border-zinc-300";
+                badgeStyle = "bg-zinc-300 text-zinc-950 border-zinc-400 font-semibold";
                 StageIcon = Sun;
               }
             }
 
             const datasetLabels: Record<string, { label: string; style: string }> = {
-              "sleep-edf": { label: "PhysioNet Sleep-EDF", style: "bg-zinc-100 text-zinc-900 border-zinc-200" },
-              sam40: { label: "SAM-40 (Stress)", style: "bg-zinc-100 text-zinc-900 border-zinc-200" },
-              student_stress: { label: "Student EEG (Stress)", style: "bg-zinc-100 text-zinc-900 border-zinc-200" },
-              dasps: { label: "DASPS (State Anxiety)", style: "bg-zinc-100 text-zinc-900 border-zinc-200" },
-              slpdb: { label: "MIT-BIH (Apnea)", style: "bg-zinc-100 text-zinc-900 border-zinc-200" },
+              "sleep-edf": { label: "PhysioNet Sleep-EDF", style: "bg-zinc-900 text-zinc-300 border-zinc-800" },
+              sam40: { label: "SAM-40 (Stress)", style: "bg-zinc-900 text-zinc-300 border-zinc-800" },
+              student_stress: { label: "Student EEG (Stress)", style: "bg-zinc-900 text-zinc-300 border-zinc-800" },
+              dasps: { label: "DASPS (State Anxiety)", style: "bg-zinc-900 text-zinc-300 border-zinc-800" },
+              slpdb: { label: "MIT-BIH (Apnea)", style: "bg-zinc-900 text-zinc-300 border-zinc-800" },
             };
-            const dsInfo = datasetLabels[c.dataset_source || "sleep-edf"] || { label: c.dataset_source || "Benchmark", style: "bg-zinc-100 text-zinc-800" };
+            const dsInfo = datasetLabels[c.dataset_source || "sleep-edf"] || { label: c.dataset_source || "Benchmark", style: "bg-zinc-900 text-zinc-300 border-zinc-800" };
 
             return (
               <ScrollReveal key={c.id} animation="fade-up" delay={i * 50}>
                 <Link
                   href={`/analysis/${c.id}`}
-                  className="bg-white rounded-xl p-5 border border-zinc-200 hover:border-zinc-950 hover:shadow-lg transition-all flex flex-col justify-between group cursor-pointer h-full"
+                  className="bg-zinc-950 text-white rounded-2xl p-6 border border-zinc-800 hover:border-zinc-500 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all flex flex-col justify-between group cursor-pointer h-full relative overflow-hidden"
                 >
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {/* Card Header */}
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center font-mono font-bold text-xs text-zinc-900 group-hover:bg-black group-hover:text-white transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center font-mono font-bold text-xs text-zinc-200 group-hover:bg-white group-hover:text-zinc-950 transition-colors shadow-inner">
                           {c.patient_anon_id.slice(0, 5).toUpperCase()}
                         </div>
                         <div>
-                          <h3 className="font-bold text-sm text-zinc-950 font-mono">{c.id}</h3>
-                          <span className="text-[10px] text-zinc-500">
+                          <h3 className="font-bold text-sm text-white font-mono tracking-tight group-hover:text-zinc-200 transition-colors">
+                            {c.id}
+                          </h3>
+                          <span className="text-[11px] text-zinc-400 font-mono">
                             {c.age_years ? `${c.age_years}y` : "Adult"} &bull; {c.gender || "Participant"} &bull; {c.eeg_sampling_rate_hz} Hz
                           </span>
                         </div>
                       </div>
 
-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${dsInfo.style}`}>
+                      <span className={`text-[10px] font-mono px-2.5 py-1 rounded-md border ${dsInfo.style}`}>
                         {dsInfo.label}
                       </span>
                     </div>
 
                     {/* Description */}
-                    <p className="text-xs text-zinc-600 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-zinc-300 line-clamp-2 leading-relaxed font-normal">
                       {c.description || "No description provided."}
                     </p>
                   </div>
 
                   {/* Card Footer */}
-                  <div className="pt-4 border-t border-zinc-100 flex items-center justify-between gap-2 mt-4">
-                    <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold ${badgeStyle}`}>
+                  <div className="pt-5 border-t border-zinc-800/80 flex items-center justify-between gap-2 mt-5">
+                    <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs ${badgeStyle}`}>
                       <StageIcon className="w-3.5 h-3.5 shrink-0" />
                       <span className="truncate">{c.risk_stage}</span>
                     </div>
 
-                    <div className="flex items-center gap-1 text-xs text-zinc-500 group-hover:text-zinc-950 transition-colors font-medium">
+                    <div className="flex items-center gap-1.5 text-xs text-zinc-300 group-hover:text-white transition-colors font-medium">
                       <span>Inspect Signal</span>
-                      <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                      <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 </Link>

@@ -531,37 +531,116 @@ export default function LandingPage() {
       </section>
 
       {/* =========================================================================
-          SECTION 03: DEDICATED BENCHMARK DASHBOARD SPOTLIGHT (Clean White / Crisp Black Fonts)
+          SECTION 03: HOW NEUROSENSE DIFFERS & BENCHMARK DASHBOARD NAVIGATION
           ========================================================================= */}
-      <section className="space-y-8">
+      <section className="space-y-10">
         <ScrollReveal animation="fade-up">
-          <div className="rounded-2xl p-8 sm:p-12 border border-zinc-200 bg-white shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8 relative overflow-hidden">
-            <div className="space-y-4 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-900 text-xs font-mono font-semibold">
-                <Database className="w-3.5 h-3.5 text-zinc-900" />
-                <span>03 / CLINICAL BENCHMARK DASHBOARD</span>
-              </div>
-              <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-zinc-950 font-display">
-                Explore Ground-Truth Benchmark Cases
-              </h2>
-              <p className="text-sm sm:text-base text-zinc-600 leading-relaxed font-normal">
-                Inspect 10 real patient and participant recordings across verified clinical cohorts: <strong>PhysioNet Sleep-EDF</strong> (Wake, N1, N2, N3, REM), <strong>SAM-40 Mental Stress</strong>, <strong>Student Examination Stress</strong>, and <strong>DASPS State Anxiety</strong>. View full oscilloscope traces and test the model in real time.
-              </p>
+          <div className="max-w-3xl space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-900 text-xs font-mono font-semibold">
+              <Database className="w-3.5 h-3.5 text-zinc-900" />
+              <span>03 / HOW NEUROSENSE DIFFERS FROM EXISTING PRODUCTS</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950 font-display">
+              Built for Clinical Precision, Not Consumer Guesswork
+            </h2>
+            <p className="text-sm sm:text-base text-zinc-600 leading-relaxed font-normal">
+              Most EEG tools either rely on slow, manual hospital workflows or provide opaque consumer wellness metrics without medical grounding. Here is how NeuroSense's multi-head architecture compares:
+            </p>
+          </div>
+        </ScrollReveal>
 
-              <div className="flex flex-wrap gap-2 pt-2 text-xs font-mono">
-                <span className="px-2.5 py-1 rounded-md bg-zinc-50 border border-zinc-200 text-zinc-800">
-                  4 Polysomnography Records
-                </span>
-                <span className="px-2.5 py-1 rounded-md bg-zinc-50 border border-zinc-200 text-zinc-800">
-                  6 Stress & Anxiety Records
-                </span>
-                <span className="px-2.5 py-1 rounded-md bg-zinc-50 border border-zinc-200 text-zinc-800">
-                  Interactive Early-Warning Simulation
-                </span>
-                <span className="px-2.5 py-1 rounded-md bg-zinc-950 text-white font-bold">
-                  Confusion Matrices & F1 Scores
-                </span>
+        {/* Comparison Matrix Table */}
+        <ScrollReveal animation="fade-up" delay={100}>
+          <div className="bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="border-b border-zinc-200 bg-zinc-50/80 font-mono uppercase text-[10px] text-zinc-500">
+                    <th className="py-3.5 px-4 sm:px-5 font-semibold">Key Capabilities</th>
+                    <th className="py-3.5 px-4 sm:px-5 font-semibold text-zinc-600">Legacy Clinical Software</th>
+                    <th className="py-3.5 px-4 sm:px-5 font-semibold text-zinc-600">Consumer EEG Headbands</th>
+                    <th className="py-3.5 px-4 sm:px-5 font-bold text-zinc-950 bg-zinc-100/80 border-l border-r border-zinc-200">
+                      NeuroSense Platform
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-100 text-zinc-700">
+                  {[
+                    {
+                      feature: "Task Scope & Flexibility",
+                      sub: "Conditions covered by AI",
+                      legacy: "Siloed single-disease tools; requires separate software for sleep vs cognitive state.",
+                      consumer: "Single uncalibrated wellness metric (e.g. basic 'calm' score) with no clinical depth.",
+                      neurosense: "Unified Multi-Head CNN (m32.h5) evaluating both Sleep Staging and Student Stress/Anxiety on one shared representation.",
+                    },
+                    {
+                      feature: "Medical Guideline Grounding",
+                      sub: "Verifiability of output",
+                      legacy: "Static paper/PDF guidelines requiring manual technician interpretation.",
+                      consumer: "Generic wellness advice accompanied by non-medical disclaimer only.",
+                      neurosense: "100% Deterministic Evidence RAG matching predictions directly to official AASM, APA, and NICE protocols.",
+                    },
+                    {
+                      feature: "Signal Feature Resolution",
+                      sub: "Mathematical transform",
+                      legacy: "Basic Fast Fourier Transform (FFT) prone to time-frequency spectral blurring.",
+                      consumer: "Coarse frequency band averages contaminated by movement and blink artifacts.",
+                      neurosense: "128×128 Synchrosqueezing Transform (SST) preserving sharp neural micro-transients and sleep spindles.",
+                    },
+                    {
+                      feature: "Analysis Speed & Latency",
+                      sub: "Time to decision support",
+                      legacy: "Offline batch processing taking 1–3 hours of manual technician scoring per record.",
+                      consumer: "Cloud synchronization latency averaging 5 to 30 seconds delay.",
+                      neurosense: "< 18.2 ms real-time edge-grade inference per window for instant monitoring.",
+                    },
+                    {
+                      feature: "Empirical Validation",
+                      sub: "Testing standards & isolation",
+                      legacy: "Small proprietary hospital datasets with limited cross-study reproducibility.",
+                      consumer: "Proprietary closed models with unknown test sets and high data leakage risk.",
+                      neurosense: "103 real subjects with strict subject-wise partitioning (zero data leakage) and published confusion matrices.",
+                    },
+                  ].map((row, i) => (
+                    <tr key={i} className="hover:bg-zinc-50/50 transition-colors">
+                      <td className="py-4 px-4 sm:px-5 font-sans">
+                        <div className="font-bold text-xs text-zinc-950">{row.feature}</div>
+                        <div className="text-[10px] font-mono text-zinc-400 mt-0.5">{row.sub}</div>
+                      </td>
+                      <td className="py-4 px-4 sm:px-5 text-zinc-500 leading-relaxed">
+                        <span className="text-zinc-400 font-mono font-bold mr-1.5">&times;</span>
+                        {row.legacy}
+                      </td>
+                      <td className="py-4 px-4 sm:px-5 text-zinc-500 leading-relaxed">
+                        <span className="text-zinc-400 font-mono font-bold mr-1.5">&times;</span>
+                        {row.consumer}
+                      </td>
+                      <td className="py-4 px-4 sm:px-5 text-zinc-950 bg-zinc-50/70 border-l border-r border-zinc-200 leading-relaxed font-medium">
+                        <span className="text-zinc-950 font-bold mr-1.5">&#10003;</span>
+                        <strong>{row.neurosense}</strong>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </ScrollReveal>
+
+        {/* Navigation Option Below It */}
+        <ScrollReveal animation="fade-up" delay={200}>
+          <div className="rounded-2xl p-7 sm:p-9 border border-zinc-200 bg-white shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="space-y-2 max-w-2xl">
+              <div className="flex items-center gap-2 text-xs font-mono font-semibold text-zinc-900">
+                <span className="w-2 h-2 rounded-full bg-zinc-950 animate-pulse" />
+                <span>10 VERIFIED GROUND-TRUTH CLINICAL CASES READY TO INSPECT</span>
               </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-zinc-950 font-display">
+                Explore the Clinical Benchmark Dashboard
+              </h3>
+              <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-normal">
+                Inspect 10 real patient and student recordings across PhysioNet Sleep-EDF, SAM-40 Stress, and DASPS Anxiety. View full continuous oscilloscope signals, test real-time inference, and inspect deterministic clinical precautions.
+              </p>
             </div>
 
             <div className="shrink-0 w-full md:w-auto">

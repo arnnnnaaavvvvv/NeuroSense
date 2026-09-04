@@ -3,16 +3,16 @@
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, RefreshCw, AlertCircle, Sparkles, CheckCircle2, ShieldAlert, FileDown } from "lucide-react";
+import { ArrowLeft, AlertCircle, CheckCircle2, FileDown, Activity } from "lucide-react";
 
 import { fetchAnalysis, fetchPrecautions, fetchWaveformData } from "../../../lib/api";
 import { AnalysisResponse, PrecautionResponse, RawWaveformData } from "../../../lib/types";
-import ReplayControls from "../../../components/ReplayControls";
 import SignalViewer from "../../../components/SignalViewer";
 import ResultCard from "../../../components/ResultCard";
 import PrecautionPanel from "../../../components/PrecautionPanel";
 import ClinicalAuditExportModal from "../../../components/ClinicalAuditExportModal";
 import HypnogramTimeline from "../../../components/HypnogramTimeline";
+import PatientGuidanceSection from "../../../components/PatientGuidanceSection";
 
 export default function CaseAnalysisPage() {
   const params = useParams();
@@ -113,22 +113,22 @@ export default function CaseAnalysisPage() {
   if (loadingAnalysis) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-8 bg-slate-800 rounded w-1/4"></div>
-        <div className="h-64 bg-slate-800/60 rounded-xl"></div>
-        <div className="h-44 bg-slate-800/40 rounded-xl"></div>
+        <div className="h-8 bg-zinc-200 rounded w-1/4"></div>
+        <div className="h-64 bg-zinc-100 rounded-2xl border border-zinc-200"></div>
+        <div className="h-44 bg-zinc-100 rounded-2xl border border-zinc-200"></div>
       </div>
     );
   }
 
   if (error || !analysis) {
     return (
-      <div className="clinical-panel rounded-2xl p-8 border border-rose-500/40 text-center space-y-4">
-        <AlertCircle className="w-10 h-10 text-rose-400 mx-auto" />
-        <h2 className="text-xl font-bold text-white">Case Analysis Unavailable</h2>
-        <p className="text-sm text-slate-300 max-w-md mx-auto">{error || "Case record could not be found."}</p>
+      <div className="bg-white rounded-2xl p-8 border border-rose-200 text-center space-y-4 shadow-sm">
+        <AlertCircle className="w-10 h-10 text-rose-500 mx-auto" />
+        <h2 className="text-xl font-bold text-zinc-900">Case Analysis Unavailable</h2>
+        <p className="text-sm text-zinc-600 max-w-md mx-auto">{error || "Case record could not be found."}</p>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 transition-colors text-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 text-white hover:bg-black transition-colors text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Case Catalog
@@ -139,25 +139,27 @@ export default function CaseAnalysisPage() {
 
   return (
     <div className="space-y-6">
-      {/* Top Breadcrumb & Actions */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+      {/* Top Breadcrumb & Actions Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-zinc-200 shadow-xs">
+        <div className="flex items-center gap-3.5">
           <Link
             href="/"
-            className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white transition-colors"
-            title="Return to Cases"
+            className="p-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-zinc-800 transition-colors"
+            title="Return to Benchmark Cases"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-4 h-4" />
           </Link>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-bold text-white font-mono">{analysis.case_id}</h1>
-              <span className="text-xs px-2 py-0.5 rounded bg-slate-800 text-sky-400 border border-slate-700 font-mono">
+              <h1 className="text-xl sm:text-2xl font-bold text-zinc-950 font-mono tracking-tight">
+                {analysis.case_id}
+              </h1>
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200 font-mono font-semibold">
                 Segment #{analysis.segment_id}
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Patient: {analysis.patient_anon_id} &bull; Time Window: {analysis.time_window.start_seconds}s - {analysis.time_window.end_seconds}s ({analysis.time_window.duration_seconds}s)
+            <p className="text-xs text-zinc-500 mt-0.5">
+              Patient: <strong className="text-zinc-700">{analysis.patient_anon_id}</strong> &bull; Time Window: {analysis.time_window.start_seconds}s - {analysis.time_window.end_seconds}s ({analysis.time_window.duration_seconds}s)
             </p>
           </div>
         </div>
@@ -165,27 +167,31 @@ export default function CaseAnalysisPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsExportModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-950 hover:bg-black text-white text-xs font-semibold transition-all shadow-xs"
           >
             <FileDown className="w-4 h-4 text-sky-400" />
             <span>Export Clinical Summary</span>
           </button>
 
-          <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
-            <CheckCircle2 className="w-4 h-4" />
+          <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
             <span>Precomputed Telemetry</span>
           </div>
         </div>
       </div>
 
-      {/* Description Callout */}
+      {/* Clinical Context Callout */}
       {analysis.description && (
-        <div className="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-300 leading-relaxed">
-          <strong className="text-slate-100">Clinical Context:</strong> {analysis.description}
+        <div className="bg-zinc-950 text-white p-4 rounded-2xl border border-zinc-800 text-xs text-zinc-300 leading-relaxed shadow-xs flex items-start gap-3">
+          <Activity className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+          <div>
+            <strong className="text-white font-semibold">Clinical Dataset Context: </strong>
+            <span>{analysis.description}</span>
+          </div>
         </div>
       )}
 
-      {/* 1. Multi-Montage Oscilloscope & SST Spectrogram Dual Viewer */}
+      {/* 1. Oscilloscope Graph with Integrated Playback Option Directly Below & Lead Explanations */}
       <SignalViewer
         waveformData={waveformData}
         sstImageUrl={analysis.signal_assets.sst_image_url}
@@ -193,9 +199,15 @@ export default function CaseAnalysisPage() {
         duration={duration}
         riskStage={analysis.classification.risk_stage}
         domain={analysis.domain}
+        isPlaying={isPlaying}
+        onTogglePlay={handleTogglePlay}
+        onReset={handleReset}
+        onSeek={handleSeek}
+        playbackSpeed={playbackSpeed}
+        onChangeSpeed={handleChangeSpeed}
       />
 
-      {/* 1b. Polysomnography Sleep Hypnogram (for Sleep Cases) */}
+      {/* 2. Polysomnography Sleep Hypnogram (for Sleep Cases) */}
       {(analysis.domain === "sleep" || waveformData?.hypnogram) && (
         <HypnogramTimeline
           hypnogram={waveformData?.hypnogram}
@@ -203,31 +215,27 @@ export default function CaseAnalysisPage() {
         />
       )}
 
-      {/* 2. Real-Time Playback Controls */}
-      <ReplayControls
-        isPlaying={isPlaying}
-        onTogglePlay={handleTogglePlay}
-        onReset={handleReset}
-        currentTime={currentTime}
-        duration={duration}
-        onSeek={handleSeek}
-        playbackSpeed={playbackSpeed}
-        onChangeSpeed={handleChangeSpeed}
-      />
-
       {/* 3. Pretrained CNN Classification & Key Signal Markers Card */}
       <ResultCard
         classification={analysis.classification}
         keyMarkers={analysis.key_markers}
       />
 
-      {/* 4. RAG Clinical Precaution Panel with Source Citations */}
+      {/* 4. Non-Medical Patient Health Guidance: Causes, Symptoms, Required Tests & Doctor Questions */}
+      <PatientGuidanceSection
+        caseId={caseId}
+        domain={analysis.domain}
+        stageOrRisk={analysis.classification.risk_stage}
+        patientAnonId={analysis.patient_anon_id}
+      />
+
+      {/* 5. RAG Clinical Precaution Panel with Source Citations */}
       <PrecautionPanel
         precautionData={precautions}
         isLoading={loadingPrecautions}
       />
 
-      {/* 5. Printable Clinical Audit Summary Modal */}
+      {/* 6. Printable Clinical Audit Summary Modal */}
       <ClinicalAuditExportModal
         caseId={caseId}
         isOpen={isExportModalOpen}

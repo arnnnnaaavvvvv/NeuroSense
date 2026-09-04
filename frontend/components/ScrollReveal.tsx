@@ -11,13 +11,17 @@ interface ScrollRevealProps {
   once?: boolean;
 }
 
+/**
+ * ScrollReveal Component
+ * Live bidirectional scroll-triggered animations (triggers when scrolling down AND scrolling up).
+ */
 export default function ScrollReveal({
   children,
   animation = "fade-up",
   delay = 0,
   className = "",
   threshold = 0.08,
-  once = true,
+  once = false,
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -43,7 +47,7 @@ export default function ScrollReveal({
       },
       {
         threshold,
-        rootMargin: "0px 0px -40px 0px",
+        rootMargin: "0px 0px -30px 0px",
       }
     );
 
@@ -68,7 +72,8 @@ export default function ScrollReveal({
 }
 
 /**
- * Hook to automatically observe all raw elements with `[data-reveal]` on the page.
+ * Hook to automatically observe all raw elements with `[data-reveal]` on the page
+ * with live bidirectional scrolling animations.
  */
 export function useScrollRevealInit() {
   useEffect(() => {
@@ -84,17 +89,18 @@ export function useScrollRevealInit() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
+          } else {
+            entry.target.classList.remove("is-visible");
           }
         });
       },
       {
         threshold: 0.08,
-        rootMargin: "0px 0px -40px 0px",
+        rootMargin: "0px 0px -30px 0px",
       }
     );
 
-    const elements = document.querySelectorAll("[data-reveal]:not(.is-visible)");
+    const elements = document.querySelectorAll("[data-reveal]");
     elements.forEach((el) => observer.observe(el));
 
     return () => {

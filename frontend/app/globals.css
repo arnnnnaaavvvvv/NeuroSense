@@ -64,10 +64,15 @@ body {
    ============================================================ */
 [data-reveal] {
   opacity: 0;
-  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform, filter;
+}
+
+/* Instantly reset transition delay when exiting viewport so re-entry stagger animates immediately */
+[data-reveal]:not(.is-visible) {
+  transition-delay: 0ms !important;
 }
 
 [data-reveal="fade-up"] {

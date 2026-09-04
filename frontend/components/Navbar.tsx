@@ -26,15 +26,15 @@ export default function Navbar() {
 
           <nav className="flex items-center gap-3 text-sm">
             <Link
-              href="#benchmark-explorer"
+              href="/dashboard"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-zinc-700 hover:text-black hover:bg-zinc-100 transition-colors font-medium"
             >
               <Database className="w-4 h-4 text-zinc-900" />
-              <span className="hidden sm:inline">Benchmark Cases</span>
+              <span className="hidden sm:inline">Benchmark Dashboard</span>
             </Link>
 
             <Link
-              href="#architecture-bento"
+              href="/#architecture-bento"
               className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-zinc-700 hover:text-black hover:bg-zinc-100 transition-colors font-medium"
             >
               <Brain className="w-4 h-4 text-zinc-900" />

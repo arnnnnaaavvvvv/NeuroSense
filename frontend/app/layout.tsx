@@ -6,7 +6,7 @@ import DisclaimerModal from "../components/DisclaimerModal";
 
 export const metadata: Metadata = {
   title: "NeuroSense | Multi-Disorder Clinical EEG Intelligence Platform",
-  description: "Clinical research prototype for EEG time-frequency feature extraction, epileptic seizure prediction, AASM sleep staging, and student stress/anxiety early-warning using a shared 128×128 SST representation and multi-head CNN.",
+  description: "Clinical research prototype for EEG time-frequency feature extraction, AASM sleep staging, and student stress/anxiety early-warning using a shared 128×128 SST representation and multi-head CNN.",
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
         <DisclaimerModal />
         <footer className="border-t border-slate-800/80 bg-[#070a10] py-6 text-center text-xs text-slate-500">
           <p>
-            NeuroSense Research Prototype &bull; Model Checkpoint: <span className="font-mono text-slate-400">m32.h5 Shared Backbone</span> &bull; Verified Cohorts: <span className="font-mono text-slate-400">PhysioNet CHB-MIT, Sleep-EDF, SAM-40 Stress & DASPS Anxiety</span>
+            NeuroSense Research Prototype &bull; Model Checkpoint: <span className="font-mono text-slate-400">m32.h5 Shared Backbone</span> &bull; Verified Cohorts: <span className="font-mono text-slate-400">PhysioNet Sleep-EDF, SAM-40 Stress & DASPS Anxiety</span>
           </p>
           <p className="mt-1 text-slate-600">
             For academic and clinical engineering demonstration purposes only. Not for medical diagnosis.

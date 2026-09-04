@@ -15,20 +15,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen bg-[#0a0d14] text-slate-100 flex flex-col bg-eeg-grid antialiased">
+    <html lang="en">
+      <body className="min-h-screen bg-white text-zinc-950 flex flex-col bg-eeg-grid antialiased selection:bg-black selection:text-white">
         <DisclaimerBanner />
         <Navbar />
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {children}
         </main>
         <DisclaimerModal />
-        <footer className="border-t border-slate-800/80 bg-[#070a10] py-6 text-center text-xs text-slate-500">
+        <footer className="border-t border-zinc-200 bg-zinc-50/80 py-8 text-center text-xs text-zinc-500">
           <p>
-            NeuroSense Research Prototype &bull; Model Checkpoint: <span className="font-mono text-slate-400">m32.h5 Shared Backbone</span> &bull; Verified Cohorts: <span className="font-mono text-slate-400">PhysioNet Sleep-EDF, SAM-40 Stress & DASPS Anxiety</span>
+            NeuroSense Research Prototype &bull; Model Checkpoint: <span className="font-mono font-semibold text-zinc-800">m32.h5 Shared Backbone</span> &bull; Verified Cohorts: <span className="font-mono text-zinc-700">PhysioNet Sleep-EDF, SAM-40 Stress & DASPS Anxiety</span>
           </p>
-          <p className="mt-1 text-slate-600">
-            For academic and clinical engineering demonstration purposes only. Not for medical diagnosis.
+          <p className="mt-1 text-zinc-400">
+            For academic and clinical engineering demonstration purposes only. Not for clinical diagnosis or prescription adjustment.
           </p>
         </footer>
       </body>

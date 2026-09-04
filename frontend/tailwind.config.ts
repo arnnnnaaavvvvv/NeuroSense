@@ -9,27 +9,33 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#0a0d14",
-        surface: "#111726",
-        "surface-elevated": "#182238",
-        border: "#1e293b",
-        "medical-blue": "#38bdf8",
-        "medical-cyan": "#06b6d4",
-        "risk-low": "#10b981",
-        "risk-moderate": "#f59e0b",
-        "risk-high": "#ef4444",
+        background: "#ffffff",
+        surface: "#f9fafb",
+        "surface-card": "#ffffff",
+        "surface-elevated": "#f4f4f5",
+        border: "#e4e4e7",
+        "border-dark": "#09090b",
+        foreground: "#09090b",
+        "foreground-muted": "#71717a",
       },
       fontFamily: {
-        mono: ["JetBrains Mono", "Fira Code", "Courier New", "monospace"],
+        sans: ["'Plus Jakarta Sans'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        display: ["'Space Grotesk'", "'Plus Jakarta Sans'", "sans-serif"],
+        mono: ["'JetBrains Mono'", "Fira Code", "Courier New", "monospace"],
       },
       animation: {
         pulse_slow: "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         scan: "scan 4s linear infinite",
+        float: "float 6s ease-in-out infinite",
       },
       keyframes: {
         scan: {
           "0%": { transform: "translateY(-100%)" },
           "100%": { transform: "translateY(1000%)" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-6px)" },
         },
       },
     },

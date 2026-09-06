@@ -16,9 +16,6 @@ export default function Navbar() {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-bold text-lg text-zinc-950 tracking-tight font-display">NeuroSense</span>
-                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-800 border border-zinc-300 font-semibold">
-                  v2.0 Clinical
-                </span>
               </div>
               <p className="text-[11px] text-zinc-500">Sleep Staging &bull; Stress & Anxiety EEG Intelligence</p>
             </div>
@@ -40,11 +37,6 @@ export default function Navbar() {
               <Brain className="w-4 h-4 text-zinc-900" />
               <span>Architecture</span>
             </Link>
-
-            <div className="hidden lg:flex items-center gap-1.5 text-xs text-zinc-900 bg-zinc-100 border border-zinc-200 px-3 py-1 rounded-full font-mono">
-              <span className="w-2 h-2 rounded-full bg-zinc-900 animate-pulse"></span>
-              <span>Özdemir CNN (m32.h5)</span>
-            </div>
           </nav>
         </div>
       </header>

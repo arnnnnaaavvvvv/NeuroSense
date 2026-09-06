@@ -37,14 +37,6 @@ export default function LandingPage() {
           ========================================================================= */}
       <section className="relative pt-6 sm:pt-12 pb-8 border-b border-zinc-200/80">
         <div className="max-w-5xl mx-auto text-center space-y-8">
-          {/* Clinical Badge */}
-          <ScrollReveal animation="fade-down">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100 border border-zinc-300/80 text-zinc-900 text-xs font-mono font-semibold tracking-wide">
-              <span className="w-2 h-2 rounded-full bg-zinc-950 animate-pulse" />
-              <span>CLINICAL RESEARCH PLATFORM &bull; MULTI-COHORT EEG INTELLIGENCE</span>
-            </div>
-          </ScrollReveal>
-
           {/* Monumental Headline */}
           <ScrollReveal animation="fade-up" delay={100}>
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-zinc-950 font-display leading-[1.08]">
@@ -128,7 +120,7 @@ export default function LandingPage() {
                     <Layers className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="space-y-1">
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold block">01 / Mathematical Precision</span>
+                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold block">Mathematical Precision</span>
                     <h3 className="font-bold text-base text-zinc-950 font-display">
                       128×128 Synchrosqueezing Transform (SST)
                     </h3>
@@ -144,7 +136,7 @@ export default function LandingPage() {
                     <Cpu className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="space-y-1">
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold block">02 / Deep Learning Architecture</span>
+                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold block">Deep Learning Architecture</span>
                     <h3 className="font-bold text-base text-zinc-950 font-display">
                       Unified Multi-Head Model (m32.h5 Backbone)
                     </h3>
@@ -160,7 +152,7 @@ export default function LandingPage() {
                     <Stethoscope className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="space-y-1">
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold block">03 / Human-Centered Health</span>
+                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold block">Human-Centered Health</span>
                     <h3 className="font-bold text-base text-zinc-950 font-display">
                       Plain-English Guidance & Diagnostic Roadmaps
                     </h3>
@@ -211,12 +203,11 @@ export default function LandingPage() {
       <section id="architecture-bento" className="space-y-12">
         <ScrollReveal animation="fade-up">
           <div className="max-w-3xl space-y-2">
-            <span className="text-xs font-mono font-bold tracking-widest text-zinc-400 uppercase">01 / Core Architecture</span>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950 font-display">
               Dual-Domain Neural Classification Engine
             </h2>
             <p className="text-sm sm:text-base text-zinc-600 leading-relaxed font-normal">
-              A shared convolutional neural network that analyzes brainwave frequency spectrograms, paired with zero-hallucination medical guidelines.
+              Our core system architecture uses a shared convolutional neural network to process continuous brainwave spectrograms, simultaneously performing polysomnography sleep staging and mental stress detection alongside verified clinical guidelines.
             </p>
           </div>
         </ScrollReveal>
@@ -230,7 +221,6 @@ export default function LandingPage() {
                   <Moon className="w-6 h-6 stroke-[2]" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-mono uppercase text-zinc-500 tracking-wider">Domain 01</span>
                   <h3 className="text-xl font-bold text-zinc-950 font-display mt-0.5">Polysomnography Sleep Staging</h3>
                 </div>
                 <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
@@ -267,7 +257,6 @@ export default function LandingPage() {
                   <HeartPulse className="w-6 h-6 stroke-[2]" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-mono uppercase text-zinc-500 tracking-wider">Domain 02</span>
                   <h3 className="text-xl font-bold text-zinc-950 font-display mt-0.5">Stress & State Anxiety Detection</h3>
                 </div>
                 <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
@@ -304,7 +293,6 @@ export default function LandingPage() {
                   <FileCheck className="w-6 h-6 stroke-[2]" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-mono uppercase text-zinc-500 tracking-wider">Clinical Evidence</span>
                   <h3 className="text-xl font-bold text-zinc-950 font-display mt-0.5">Zero-Hallucination Evidence RAG</h3>
                 </div>
                 <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
@@ -341,7 +329,6 @@ export default function LandingPage() {
       <section className="space-y-12 bg-zinc-50/60 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 border-y border-zinc-200">
         <ScrollReveal animation="fade-up">
           <div className="max-w-3xl space-y-2">
-            <span className="text-xs font-mono font-bold tracking-widest text-zinc-400 uppercase">02 / Pipeline</span>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950 font-display">
               End-to-End Neural Processing Pipeline
             </h2>
@@ -402,7 +389,7 @@ export default function LandingPage() {
           <div className="max-w-3xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-900 text-xs font-mono font-semibold">
               <Database className="w-3.5 h-3.5 text-zinc-900" />
-              <span>03 / HOW NEUROSENSE DIFFERS FROM EXISTING PRODUCTS</span>
+              <span>HOW NEUROSENSE DIFFERS FROM EXISTING PRODUCTS</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950 font-display">
               Built for Clinical Precision, Not Consumer Guesswork

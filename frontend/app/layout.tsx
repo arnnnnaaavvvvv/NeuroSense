@@ -6,6 +6,13 @@ import DisclaimerModal from "../components/DisclaimerModal";
 export const metadata: Metadata = {
   title: "NeuroSense | Multi-Disorder Clinical EEG Intelligence Platform",
   description: "Clinical research prototype for EEG time-frequency feature extraction, AASM sleep staging, and student stress/anxiety early-warning using a shared 128×128 SST representation and multi-head CNN.",
+  icons: {
+    icon: [
+      { url: "/icon.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicon.ico" }
+    ],
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({

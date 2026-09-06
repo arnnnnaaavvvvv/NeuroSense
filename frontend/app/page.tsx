@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { 
   Activity, 
   Database, 
@@ -37,6 +38,22 @@ export default function LandingPage() {
           ========================================================================= */}
       <section className="relative pt-6 sm:pt-12 pb-8 border-b border-zinc-200/80">
         <div className="max-w-5xl mx-auto text-center space-y-8">
+          {/* Official Brand Badge */}
+          <ScrollReveal animation="fade-up" delay={50}>
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-zinc-900 text-zinc-200 text-xs font-medium shadow-md shadow-zinc-950/5 border border-zinc-800/80 mb-2">
+              <div className="w-5 h-5 rounded-md overflow-hidden flex-shrink-0">
+                <Image
+                  src="/logo.png"
+                  alt="NeuroSense Logo"
+                  width={20}
+                  height={20}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <span className="tracking-tight font-medium">NeuroSense Neural Intelligence</span>
+            </div>
+          </ScrollReveal>
+
           {/* Monumental Headline */}
           <ScrollReveal animation="fade-up" delay={100}>
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-zinc-950 font-display leading-[1.08]">

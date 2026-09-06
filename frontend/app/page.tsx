@@ -385,11 +385,11 @@ export default function LandingPage() {
       <section className="space-y-10">
         <ScrollReveal animation="fade-up">
           <div className="max-w-3xl space-y-3">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950 font-display">
-              Built for Clinical Precision, Not Consumer Guesswork
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-950 font-outfit">
+              Clinical-Grade Precision with Intuitive Clarity
             </h2>
-            <p className="text-sm sm:text-base text-zinc-600 leading-relaxed font-normal">
-              Traditional hospital tests take weeks and cost thousands, while consumer smartbands offer vague wellness scores without medical backing. NeuroSense delivers the best of both: hospital-grade accuracy paired with simple, human-friendly clarity.
+            <p className="text-sm sm:text-base text-zinc-600 leading-relaxed font-normal font-sans">
+              NeuroSense bridges advanced neurodiagnostic research and everyday health awareness. By combining hospital-grade neural signal analysis with clear, doctor-verified guidance, it delivers fast, transparent insights you and your care team can rely on.
             </p>
           </div>
         </ScrollReveal>
@@ -402,8 +402,8 @@ export default function LandingPage() {
                 <thead>
                   <tr className="border-b border-zinc-200 bg-zinc-50/80 font-mono uppercase text-[10px] text-zinc-500">
                     <th className="py-3.5 px-4 sm:px-5 font-semibold">Key Capabilities</th>
-                    <th className="py-3.5 px-4 sm:px-5 font-semibold text-zinc-600">Hospital / Legacy Systems</th>
-                    <th className="py-3.5 px-4 sm:px-5 font-semibold text-zinc-600">Consumer Gadgets &amp; Apps</th>
+                    <th className="py-3.5 px-4 sm:px-5 font-semibold text-zinc-600">Traditional Clinical Systems</th>
+                    <th className="py-3.5 px-4 sm:px-5 font-semibold text-zinc-600">Standard Consumer Apps</th>
                     <th className="py-3.5 px-4 sm:px-5 font-bold text-zinc-950 bg-zinc-100/80 border-l border-r border-zinc-200">
                       NeuroSense Platform
                     </th>
@@ -413,38 +413,38 @@ export default function LandingPage() {
                   {[
                     {
                       feature: "Comprehensive Health Scope",
-                      sub: "What conditions are analyzed",
-                      legacy: "Fragmented single-purpose tools. Requires separate appointments and software for sleep tests vs mental fatigue.",
-                      consumer: "Vague, uncalibrated scores (such as a generic 'calmness' meter) that lack clinical depth.",
-                      neurosense: "Unified intelligence: simultaneously evaluates sleep quality, breathing risk, and daytime stress on one test.",
+                      sub: "Scope of physiological analysis",
+                      legacy: "Multi-visit workflows typically evaluating sleep disorders and cognitive fatigue through separate, isolated tests.",
+                      consumer: "Generalized wellness indicators without direct neurophysiological biomarker tracking.",
+                      neurosense: "Unified neural analysis: simultaneously evaluates sleep architecture, respiratory risk, and cognitive strain in one session.",
                     },
                     {
                       feature: "Medical Standards & Trust",
-                      sub: "Reliability of advice",
-                      legacy: "Hundreds of pages of dense clinical PDFs requiring days of manual review by specialized technicians.",
-                      consumer: "Generic wellness tips with blanket disclaimers and no grounding in clinical guidelines.",
-                      neurosense: "Directly linked to recognized clinical manuals (AASM, APA, NICE) so you and your doctor can verify every finding.",
+                      sub: "Clinical grounding & guidance",
+                      legacy: "Comprehensive technical reports requiring specialized clinical technician interpretation.",
+                      consumer: "Broad lifestyle suggestions without citation to accredited clinical protocols.",
+                      neurosense: "Directly anchored in gold-standard clinical protocols (AASM, APA, NICE) for clear, verifiable recommendations.",
                     },
                     {
                       feature: "Signal Clarity & Detail",
-                      sub: "How accurately brainwaves are read",
-                      legacy: "Standard graphs prone to visual blurring, making it hard to catch brief, vital neural events.",
-                      consumer: "Coarse averages easily distorted by eye blinks, muscle twitching, or minor head movement.",
-                      neurosense: "High-definition signal filtering that preserves subtle micro-transients and sleep spindles without loss of detail.",
+                      sub: "Brainwave representation fidelity",
+                      legacy: "Standard time-series waveforms susceptible to visual artifacts and prolonged manual review.",
+                      consumer: "Coarse temporal averages that can blur micro-transients and rapid state transitions.",
+                      neurosense: "High-definition SST spectral representations preserving discrete micro-transients and sleep spindles in full fidelity.",
                     },
                     {
-                      feature: "Turnaround Speed",
-                      sub: "How fast you receive answers",
-                      legacy: "Slow overnight workflows requiring 1 to 3 hours of manual technician scoring per patient record.",
-                      consumer: "Cloud delays often taking 15 to 60 seconds to process and refresh basic data.",
-                      neurosense: "Instant real-time evaluation in under 20 milliseconds for immediate clinical awareness.",
+                      feature: "Analysis Speed",
+                      sub: "Time-to-insight for assessments",
+                      legacy: "Retrospective batch processing typically requiring hours to days for manual scoring.",
+                      consumer: "Cloud-dependent synchronization taking anywhere from several seconds to minutes.",
+                      neurosense: "Real-time inference in under 20 milliseconds, delivering immediate, responsive assessment.",
                     },
                     {
-                      feature: "Proven Clinical Testing",
-                      sub: "Real-world validation",
-                      legacy: "Tested only on small, closed hospital groups that are rarely accessible for independent verification.",
-                      consumer: "Proprietary black-box algorithms with unverified claims and no published clinical trials.",
-                      neurosense: "Validated on 103 real patient and student recordings with strict zero-leakage testing and 98.4% accuracy.",
+                      feature: "Validation Rigor",
+                      sub: "Benchmark testing methodology",
+                      legacy: "Often benchmarked on restricted, proprietary hospital cohorts with limited public transparency.",
+                      consumer: "Proprietary heuristics without published peer-reviewed validation datasets.",
+                      neurosense: "Validated across 103 real patient and subject recordings with rigorous zero-leakage protocols and 98.4% accuracy.",
                     },
                   ].map((row, i) => (
                     <tr key={i} className="hover:bg-zinc-50/50 transition-colors">

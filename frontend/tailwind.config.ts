@@ -20,7 +20,8 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["'Plus Jakarta Sans'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
-        display: ["'Space Grotesk'", "'Plus Jakarta Sans'", "sans-serif"],
+        display: ["'Outfit'", "'Space Grotesk'", "'Plus Jakarta Sans'", "sans-serif"],
+        outfit: ["'Outfit'", "sans-serif"],
         mono: ["'JetBrains Mono'", "Fira Code", "Courier New", "monospace"],
       },
       animation: {

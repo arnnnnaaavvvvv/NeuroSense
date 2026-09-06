@@ -23,6 +23,7 @@ import {
   SlidersHorizontal,
   Cpu,
   Stethoscope,
+  ShieldCheck,
   ExternalLink
 } from "lucide-react";
 import ScrollReveal, { useScrollRevealInit } from "../components/ScrollReveal";
@@ -499,48 +500,140 @@ export default function LandingPage() {
       {/* =========================================================================
           SECTION 04: CLINICAL GOVERNANCE & MEDICAL GUIDELINES (Scroll Reveal)
           ========================================================================= */}
-      <section className="bg-zinc-50 rounded-2xl p-8 sm:p-10 border border-zinc-200 text-center space-y-6">
+      {/* =========================================================================
+          SECTION 04: CLINICAL GOVERNANCE & MEDICAL GUIDELINES (Scroll Reveal)
+          ========================================================================= */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-zinc-50/90 via-white to-zinc-50/90 rounded-3xl p-8 sm:p-12 border border-zinc-200/90 text-center space-y-8 shadow-sm">
+        {/* Subtle Ambient Glow */}
+        <div className="absolute -top-24 -left-24 w-72 h-72 bg-zinc-200/40 rounded-full blur-3xl pointer-events-none animate-pulse_slow" />
+        <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-zinc-200/40 rounded-full blur-3xl pointer-events-none animate-pulse_slow" />
+
         <ScrollReveal animation="fade-up">
-          <div className="max-w-2xl mx-auto space-y-3">
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-950 font-display">
+          <div className="max-w-2xl mx-auto space-y-3 relative z-10">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-950 font-outfit">
               Grounded in Trusted Medical Guidelines
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-zinc-600 leading-relaxed font-normal font-sans">
               Every health recommendation, sleep guideline, and caution provided by NeuroSense comes directly from verified clinical care protocols created by international medical boards—never fabricated by AI.
             </p>
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto pt-4 text-left text-xs">
-          <ScrollReveal animation="fade-up" delay={100}>
-            <div className="bg-white p-4 rounded-xl border border-zinc-200 space-y-2 h-full flex flex-col justify-between shadow-sm">
-              <span className="font-mono font-bold text-zinc-950 block">American Academy of Sleep Medicine (AASM)</span>
-              <p className="text-zinc-600 leading-relaxed">Official clinical guidelines for adult sleep staging, insomnia evaluation, and apnea risk screening.</p>
-              <span className="text-[10px] font-mono text-zinc-400 block pt-1 border-t border-zinc-100">
-                Sleep Quality Standards
-              </span>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto pt-4 text-left relative z-10">
+          {/* Card 1: AASM */}
+          <ScrollReveal animation="fade-up" delay={100} className="h-full">
+            <div className="group relative bg-white rounded-2xl p-6 sm:p-7 border border-zinc-200 hover:border-zinc-900/60 shadow-sm hover:shadow-2xl hover:shadow-zinc-950/8 transition-all duration-300 ease-out flex flex-col justify-between overflow-hidden hover:-translate-y-2 h-full">
+              {/* Animated Top Shimmer Beam */}
+              <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-zinc-950 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out rounded-t-2xl" />
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-xl bg-zinc-100/90 border border-zinc-200/80 flex items-center justify-center text-zinc-900 group-hover:bg-zinc-950 group-hover:text-white group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-xs">
+                    <Moon className="w-5 h-5 stroke-[2]" />
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-zinc-100 text-zinc-800 border border-zinc-200/80 font-outfit">
+                    AASM Protocol
+                  </span>
+                </div>
+
+                <div className="space-y-1.5">
+                  <h3 className="font-outfit font-bold text-base sm:text-lg text-zinc-950 tracking-tight leading-snug group-hover:text-black transition-colors">
+                    American Academy of Sleep Medicine
+                  </h3>
+                  <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-normal font-sans">
+                    Official clinical guidelines for adult sleep staging, insomnia evaluation, and apnea risk screening.
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-4 mt-6 border-t border-zinc-100 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-[11px] font-medium text-emerald-600 font-outfit">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <span>Sleep Quality Standards</span>
+                </div>
+                <span className="text-[11px] font-mono text-zinc-400 font-medium">Standard v3.0</span>
+              </div>
             </div>
           </ScrollReveal>
 
-          <ScrollReveal animation="fade-up" delay={200}>
-            <div className="bg-white p-4 rounded-xl border border-zinc-200 space-y-2 h-full flex flex-col justify-between shadow-sm">
-              <span className="font-mono font-bold text-zinc-950 block">American Psychological Association (APA)</span>
-              <p className="text-zinc-600 leading-relaxed">
-                Evidence-based clinical protocols for identifying acute cognitive overload, academic stress, and mental fatigue.
-              </p>
-              <span className="text-[10px] font-mono text-zinc-400 block pt-1 border-t border-zinc-100">
-                Stress &amp; Anxiety Protocols
-              </span>
+          {/* Card 2: APA */}
+          <ScrollReveal animation="fade-up" delay={200} className="h-full">
+            <div className="group relative bg-white rounded-2xl p-6 sm:p-7 border border-zinc-200 hover:border-zinc-900/60 shadow-sm hover:shadow-2xl hover:shadow-zinc-950/8 transition-all duration-300 ease-out flex flex-col justify-between overflow-hidden hover:-translate-y-2 h-full">
+              {/* Animated Top Shimmer Beam */}
+              <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-zinc-950 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out rounded-t-2xl" />
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-xl bg-zinc-100/90 border border-zinc-200/80 flex items-center justify-center text-zinc-900 group-hover:bg-zinc-950 group-hover:text-white group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-xs">
+                    <Brain className="w-5 h-5 stroke-[2]" />
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-zinc-100 text-zinc-800 border border-zinc-200/80 font-outfit">
+                    APA Guideline
+                  </span>
+                </div>
+
+                <div className="space-y-1.5">
+                  <h3 className="font-outfit font-bold text-base sm:text-lg text-zinc-950 tracking-tight leading-snug group-hover:text-black transition-colors">
+                    American Psychological Association
+                  </h3>
+                  <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-normal font-sans">
+                    Evidence-based clinical protocols for identifying acute cognitive overload, academic stress, and mental fatigue.
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-4 mt-6 border-t border-zinc-100 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-[11px] font-medium text-emerald-600 font-outfit">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <span>Stress &amp; Anxiety Protocols</span>
+                </div>
+                <span className="text-[11px] font-mono text-zinc-400 font-medium">Evidence-Based</span>
+              </div>
             </div>
           </ScrollReveal>
 
-          <ScrollReveal animation="fade-up" delay={300}>
-            <div className="bg-white p-4 rounded-xl border border-zinc-200 space-y-2 h-full flex flex-col justify-between shadow-sm">
-              <span className="font-mono font-bold text-zinc-950 block">National Institute for Health &amp; Care Excellence (NICE)</span>
-              <p className="text-zinc-600 leading-relaxed">Internationally recognized healthcare standards for general anxiety management and airway obstruction screening.</p>
-              <span className="text-[10px] font-mono text-zinc-400 block pt-1 border-t border-zinc-100">
-                Clinical Care Standards
-              </span>
+          {/* Card 3: NICE */}
+          <ScrollReveal animation="fade-up" delay={300} className="h-full">
+            <div className="group relative bg-white rounded-2xl p-6 sm:p-7 border border-zinc-200 hover:border-zinc-900/60 shadow-sm hover:shadow-2xl hover:shadow-zinc-950/8 transition-all duration-300 ease-out flex flex-col justify-between overflow-hidden hover:-translate-y-2 h-full">
+              {/* Animated Top Shimmer Beam */}
+              <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-zinc-950 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out rounded-t-2xl" />
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-xl bg-zinc-100/90 border border-zinc-200/80 flex items-center justify-center text-zinc-900 group-hover:bg-zinc-950 group-hover:text-white group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-xs">
+                    <ShieldCheck className="w-5 h-5 stroke-[2]" />
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-zinc-100 text-zinc-800 border border-zinc-200/80 font-outfit">
+                    NICE Standards
+                  </span>
+                </div>
+
+                <div className="space-y-1.5">
+                  <h3 className="font-outfit font-bold text-base sm:text-lg text-zinc-950 tracking-tight leading-snug group-hover:text-black transition-colors">
+                    National Institute for Health &amp; Care Excellence
+                  </h3>
+                  <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-normal font-sans">
+                    Internationally recognized healthcare standards for general anxiety management and airway obstruction screening.
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-4 mt-6 border-t border-zinc-100 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-[11px] font-medium text-emerald-600 font-outfit">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <span>Clinical Care Standards</span>
+                </div>
+                <span className="text-[11px] font-mono text-zinc-400 font-medium">CG113 &amp; NG148</span>
+              </div>
             </div>
           </ScrollReveal>
         </div>

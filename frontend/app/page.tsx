@@ -38,22 +38,6 @@ export default function LandingPage() {
           ========================================================================= */}
       <section className="relative pt-6 sm:pt-12 pb-8 border-b border-zinc-200/80">
         <div className="max-w-5xl mx-auto text-center space-y-8">
-          {/* Official Brand Badge */}
-          <ScrollReveal animation="fade-up" delay={50}>
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-zinc-900 text-zinc-200 text-xs font-medium shadow-md shadow-zinc-950/5 border border-zinc-800/80 mb-2">
-              <div className="w-5 h-5 rounded-md overflow-hidden flex-shrink-0">
-                <Image
-                  src="/logo.png"
-                  alt="NeuroSense Logo"
-                  width={20}
-                  height={20}
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <span className="tracking-tight font-medium">NeuroSense Neural Intelligence</span>
-            </div>
-          </ScrollReveal>
-
           {/* Monumental Headline */}
           <ScrollReveal animation="fade-up" delay={100}>
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-zinc-950 font-display leading-[1.08]">
@@ -117,10 +101,6 @@ export default function LandingPage() {
               
               {/* Executive Summary & Mission */}
               <div className="max-w-3xl space-y-3">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-900 text-xs font-mono font-semibold">
-                  <Sparkles className="w-3.5 h-3.5 text-zinc-900" />
-                  <span>THE NEUROSENSE INITIATIVE</span>
-                </div>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-zinc-950 font-display">
                   Transforming Continuous Scalp EEG into Proactive Clinical Action
                 </h2>
@@ -404,10 +384,6 @@ export default function LandingPage() {
       <section className="space-y-10">
         <ScrollReveal animation="fade-up">
           <div className="max-w-3xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-900 text-xs font-mono font-semibold">
-              <Database className="w-3.5 h-3.5 text-zinc-900" />
-              <span>HOW NEUROSENSE DIFFERS FROM EXISTING PRODUCTS</span>
-            </div>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950 font-display">
               Built for Clinical Precision, Not Consumer Guesswork
             </h2>
@@ -499,10 +475,6 @@ export default function LandingPage() {
         <ScrollReveal animation="fade-up" delay={200}>
           <div className="rounded-2xl p-7 sm:p-9 border border-zinc-200 bg-white shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="space-y-2 max-w-2xl">
-              <div className="flex items-center gap-2 text-xs font-mono font-semibold text-zinc-900">
-                <span className="w-2 h-2 rounded-full bg-zinc-950 animate-pulse" />
-                <span>10 VERIFIED GROUND-TRUTH CLINICAL CASES READY TO INSPECT</span>
-              </div>
               <h3 className="text-xl sm:text-2xl font-bold text-zinc-950 font-display">
                 Explore the Clinical Benchmark Dashboard
               </h3>
@@ -530,10 +502,6 @@ export default function LandingPage() {
       <section className="bg-zinc-50 rounded-2xl p-8 sm:p-10 border border-zinc-200 text-center space-y-6">
         <ScrollReveal animation="fade-up">
           <div className="max-w-2xl mx-auto space-y-3">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-zinc-200 text-zinc-800 text-xs font-mono font-semibold">
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>VERIFIED CLINICAL EVIDENCE BASE</span>
-            </div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-950 font-display">
               Grounded in Peer-Reviewed Medical Guidelines
             </h2>

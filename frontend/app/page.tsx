@@ -33,7 +33,7 @@ export default function LandingPage() {
   useScrollRevealInit();
 
   return (
-    <div className="space-y-24 sm:space-y-32">
+    <div className="space-y-24 sm:space-y-32 font-outfit">
       {/* =========================================================================
           HERO SECTION (Pure White Background, Crisp Black Typography)
           ========================================================================= */}

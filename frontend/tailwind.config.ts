@@ -19,7 +19,7 @@ const config: Config = {
         "foreground-muted": "#71717a",
       },
       fontFamily: {
-        sans: ["'Plus Jakarta Sans'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        sans: ["'Outfit'", "'Plus Jakarta Sans'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
         display: ["'Outfit'", "'Space Grotesk'", "'Plus Jakarta Sans'", "sans-serif"],
         outfit: ["'Outfit'", "sans-serif"],
         mono: ["'JetBrains Mono'", "Fira Code", "Courier New", "monospace"],

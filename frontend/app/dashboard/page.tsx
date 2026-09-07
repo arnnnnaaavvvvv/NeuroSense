@@ -24,7 +24,6 @@ import {
 } from "lucide-react";
 import { fetchCases } from "../../lib/api";
 import { CaseItem } from "../../lib/types";
-import EarlyWarningStressSection from "../../components/EarlyWarningStressSection";
 import ScrollReveal, { useScrollRevealInit } from "../../components/ScrollReveal";
 
 export default function BenchmarkDashboardPage() {
@@ -34,7 +33,6 @@ export default function BenchmarkDashboardPage() {
 
   // Active Navigation Filters
   const [activeDomain, setActiveDomain] = useState<"sleep" | "early_warning">("sleep");
-  const [selectedDataset, setSelectedDataset] = useState<string>("all");
   const [stageFilter, setStageFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -58,18 +56,13 @@ export default function BenchmarkDashboardPage() {
     loadCases();
   }, []);
 
-  // Filter cases by domain, dataset, stage, and search query
+  // Filter cases by domain, stage, and search query
   const domainFilteredCases = cases.filter((c) => {
     const cDomain = (c.domain || "sleep").toLowerCase();
     return cDomain === activeDomain;
   });
 
-  const datasetFilteredCases = domainFilteredCases.filter((c) => {
-    if (selectedDataset === "all") return true;
-    return (c.dataset_source || "").toLowerCase() === selectedDataset.toLowerCase();
-  });
-
-  const stageFilteredCases = datasetFilteredCases.filter((c) => {
+  const stageFilteredCases = domainFilteredCases.filter((c) => {
     if (stageFilter === "all") return true;
     const stageStr = (c.risk_stage || "").toLowerCase();
     const classStr = (c.predicted_class || "").toLowerCase();
@@ -117,7 +110,6 @@ export default function BenchmarkDashboardPage() {
 
   const handleDomainChange = (domain: "sleep" | "early_warning") => {
     setActiveDomain(domain);
-    setSelectedDataset("all");
     setStageFilter("all");
   };
 
@@ -134,11 +126,6 @@ export default function BenchmarkDashboardPage() {
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Platform Overview</span>
             </Link>
-
-            <div className="flex items-center gap-2 text-xs font-mono text-zinc-500">
-              <span className="w-2 h-2 rounded-full bg-zinc-950 animate-pulse" />
-              <span>Özdemir Conv2D CNN Backbone &bull; 10 Validated Records</span>
-            </div>
           </div>
 
           <div className="space-y-2">
@@ -213,45 +200,18 @@ export default function BenchmarkDashboardPage() {
         </div>
       </ScrollReveal>
 
-      {/* Dataset & Stage Filters */}
+      {/* State / Stage Filters */}
       <ScrollReveal animation="fade-up">
         <div className="flex flex-wrap items-center justify-between gap-4 bg-zinc-50 p-4 rounded-xl border border-zinc-200 text-xs">
-          {/* Dataset Pills */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-semibold uppercase tracking-wider text-[10px] text-zinc-500 font-mono">Dataset:</span>
-            {activeDomain === "sleep" ? (
-              <span className="px-2.5 py-1 rounded-lg bg-zinc-200 text-zinc-900 border border-zinc-300 font-mono font-bold">
-                PhysioNet Sleep-EDF Expanded (100 Hz PSG)
-              </span>
-            ) : (
-              <>
-                {[
-                  { id: "all", label: "All Cohorts" },
-                  { id: "sam40", label: "SAM-40 (Stress)" },
-                  { id: "student_stress", label: "Student EEG (Stress)" },
-                  { id: "dasps", label: "DASPS (Anxiety)" },
-                  { id: "slpdb", label: "MIT-BIH (Apnea)" },
-                ].map((ds) => (
-                  <button
-                    key={ds.id}
-                    onClick={() => setSelectedDataset(ds.id)}
-                    className={`px-2.5 py-1 rounded-lg transition-colors font-mono ${
-                      selectedDataset === ds.id
-                        ? "bg-black text-white font-bold"
-                        : "text-zinc-600 hover:text-zinc-950 bg-white border border-zinc-200"
-                    }`}
-                  >
-                    {ds.label}
-                  </button>
-                ))}
-              </>
-            )}
+            <Filter className="w-3.5 h-3.5 text-zinc-500" />
+            <span className="font-semibold uppercase tracking-wider text-[10px] text-zinc-500 font-mono">
+              {activeDomain === "sleep" ? "Filter by Sleep Stage:" : "Filter by Physiological State:"}
+            </span>
           </div>
 
           {/* Stage Filter Buttons */}
           <div className="flex flex-wrap items-center gap-1.5">
-            <Filter className="w-3.5 h-3.5 text-zinc-500" />
-            <span className="font-semibold uppercase tracking-wider text-[10px] text-zinc-500 font-mono">Stage:</span>
             {activeDomain === "sleep" ? (
               [
                 { id: "all", label: "All" },
@@ -339,7 +299,6 @@ export default function BenchmarkDashboardPage() {
             onClick={() => {
               setSearchQuery("");
               setStageFilter("all");
-              setSelectedDataset("all");
             }}
             className="px-4 py-2 rounded-lg bg-black text-white text-xs font-semibold hover:bg-zinc-800 transition-colors"
           >
@@ -485,15 +444,6 @@ export default function BenchmarkDashboardPage() {
             );
           })}
         </div>
-      )}
-
-      {/* Early-Warning Simulation Head & Confusion Matrix (Interactive Tab) */}
-      {activeDomain === "early_warning" && (
-        <ScrollReveal animation="fade-up">
-          <div className="pt-8 border-t border-zinc-200">
-            <EarlyWarningStressSection />
-          </div>
-        </ScrollReveal>
       )}
     </div>
   );

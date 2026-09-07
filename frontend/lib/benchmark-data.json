@@ -7,13 +7,15 @@
       "gender": "Female",
       "eeg_sampling_rate_hz": 100,
       "total_segments": 1,
-      "description": "PhysioNet Sleep-EDF (SC4002E0): Consolidated nocturnal sleep with prominent 13 Hz sleep spindles and characteristic K-complexes. Normal healthy adult sleep architecture.",
+      "title": "Stable Restorative Sleep (Stage N2)",
+      "description": "Healthy adult sleep characterized by natural brainwave bursts (sleep spindles and K-complexes) that protect the brain from waking up and help lock in memory.",
       "domain": "sleep",
       "dataset_source": "sleep-edf",
       "montage_channel": "Fpz-Cz & Pz-Oz PSG",
       "predicted_class": "n2",
       "risk_stage": "Stage N2 (Stable NREM Sleep)",
-      "sleep_stage": "N2"
+      "sleep_stage": "N2",
+      "highlights": ["Sleep Spindles & K-Complexes", "Memory Consolidation", "Normal Sleep Structure"]
     },
     {
       "id": "sleep_cassette_sc4102e0",
@@ -22,13 +24,15 @@
       "gender": "Male",
       "eeg_sampling_rate_hz": 100,
       "total_segments": 1,
-      "description": "PhysioNet Sleep-EDF (SC4102E0): High-voltage synchronized delta waves (>75 uV, 0.5-2 Hz) spanning >50% of the epoch. Restorative deep NREM slow-wave sleep.",
+      "title": "Deep Slow-Wave Sleep (Stage N3)",
+      "description": "The deepest, most physically restorative sleep stage marked by synchronized delta waves, responsible for muscle repair, immune rebuilding, and brain detoxification.",
       "domain": "sleep",
       "dataset_source": "sleep-edf",
       "montage_channel": "Fpz-Cz & Pz-Oz PSG",
       "predicted_class": "n3",
       "risk_stage": "Stage N3 (Deep Slow-Wave Sleep)",
-      "sleep_stage": "N3"
+      "sleep_stage": "N3",
+      "highlights": ["High-Voltage Delta Waves", "Cellular & Tissue Repair", "Deep Recovery Sleep"]
     },
     {
       "id": "sleep_telemetry_st7022j0",
@@ -37,13 +41,15 @@
       "gender": "Male",
       "eeg_sampling_rate_hz": 100,
       "total_segments": 1,
-      "description": "PhysioNet Sleep-EDF Telemetry (ST7022J0): Nocturnal wakefulness after sleep onset (WASO) with persistent alpha intrusions and motor arousals. High sleep fragmentation index.",
+      "title": "Fragmented Sleep & Night Arousals (WASO)",
+      "description": "Frequent night awakenings and restless light sleep after initial sleep onset, showing persistent wakefulness brain patterns that disrupt restful sleep cycles.",
       "domain": "sleep",
       "dataset_source": "sleep-edf",
       "montage_channel": "Fpz-Cz & Pz-Oz PSG",
       "predicted_class": "wake",
       "risk_stage": "Wake / WASO (Fragmented Sleep Profile)",
-      "sleep_stage": "Wake"
+      "sleep_stage": "Wake",
+      "highlights": ["Nighttime Wakings", "Alpha Arousal Intrusions", "High Sleep Fragmentation"]
     },
     {
       "id": "sleep_telemetry_st7121j0",
@@ -52,13 +58,15 @@
       "gender": "Female",
       "eeg_sampling_rate_hz": 100,
       "total_segments": 1,
-      "description": "PhysioNet Sleep-EDF Telemetry (ST7121J0): Desynchronized low-voltage mixed EEG with rapid conjugate eye movements, pre-REM sawtooth waves, and submental muscular atonia.",
+      "title": "Active Dream State (Stage REM)",
+      "description": "Vivid dreaming sleep featuring rapid eye movements, low-voltage active brain signals, and complete muscle relaxation to process daily emotions and ideas.",
       "domain": "sleep",
       "dataset_source": "sleep-edf",
       "montage_channel": "Fpz-Cz & Pz-Oz PSG",
       "predicted_class": "rem",
       "risk_stage": "Stage REM (Rapid Eye Movement)",
-      "sleep_stage": "REM"
+      "sleep_stage": "REM",
+      "highlights": ["Rapid Eye Movements", "Dream Processing", "Healthy Muscle Atonia"]
     },
     {
       "id": "sam40_sub01_math_stress",
@@ -67,13 +75,15 @@
       "gender": "Male",
       "eeg_sampling_rate_hz": 128,
       "total_segments": 1,
-      "description": "SAM-40 Real 32-Channel EEG: Acute mental arithmetic stress protocol. Demonstrates marked frontal alpha suppression (alpha blocking) and 22-26 Hz beta energy bursts.",
+      "title": "Acute Cognitive Stress (Mental Math)",
+      "description": "Sharp increase in mental tension recorded during speed arithmetic, displaying sudden frontal brainwave suppression and fast beta stress bursts.",
       "domain": "early_warning",
       "dataset_source": "sam40",
       "montage_channel": "F3",
       "predicted_class": "elevated_risk",
       "risk_stage": "Elevated Stress Risk",
-      "sleep_stage": null
+      "sleep_stage": null,
+      "highlights": ["Frontal Alpha Suppression", "22-26 Hz Beta Bursts", "High Cognitive Load"]
     },
     {
       "id": "sam40_sub01_relax_baseline",
@@ -82,13 +92,15 @@
       "gender": "Male",
       "eeg_sampling_rate_hz": 128,
       "total_segments": 1,
-      "description": "SAM-40 Real 32-Channel EEG: Resting-state relaxation baseline with eyes closed. Shows prominent synchronized 10 Hz posterior alpha rhythm and stable baseline theta.",
+      "title": "Relaxed Baseline Rest (Eyes Closed)",
+      "description": "Calm resting condition with steady 10 Hz alpha brain rhythms, showing an unburdened, relaxed neural baseline free from acute tension or strain.",
       "domain": "early_warning",
       "dataset_source": "sam40",
       "montage_channel": "O1",
       "predicted_class": "baseline",
       "risk_stage": "Baseline (Low Risk)",
-      "sleep_stage": null
+      "sleep_stage": null,
+      "highlights": ["Steady 10 Hz Alpha Rhythm", "Low Mental Load", "Healthy Baseline State"]
     },
     {
       "id": "student_sub11_stroop_stress",
@@ -97,13 +109,15 @@
       "gender": "Female",
       "eeg_sampling_rate_hz": 128,
       "total_segments": 1,
-      "description": "Student EEG Stress Cohort (Mean age 21.5): Acute Stroop color-word conflict test. High frontal cognitive conflict index with high beta power across frontal-central leads.",
+      "title": "Cognitive Conflict & Exam Stress",
+      "description": "Mental strain and friction triggered during timed decision-making tests, capturing strong frontal-central neural indicators of student workload stress.",
       "domain": "early_warning",
       "dataset_source": "student_stress",
       "montage_channel": "Fz",
       "predicted_class": "elevated_risk",
       "risk_stage": "Elevated Stress Risk",
-      "sleep_stage": null
+      "sleep_stage": null,
+      "highlights": ["Prefrontal Conflict Index", "High Frontal Beta Power", "Exam Stress Biomarkers"]
     },
     {
       "id": "dasps_s01_high_anxiety",
@@ -112,13 +126,15 @@
       "gender": "Female",
       "eeg_sampling_rate_hz": 128,
       "total_segments": 1,
-      "description": "DASPS Database for Anxious States: Standardized psychological stimulation exposure therapy phase. Characterized by acute emotional arousal paroxysms and prefrontal desynchronization.",
+      "title": "Acute State Anxiety & Emotional Arousal",
+      "description": "Heightened emotional tension and nervous arousal during psychological stimulation, showing rapid desynchronized prefrontal brainwave patterns.",
       "domain": "early_warning",
       "dataset_source": "dasps",
       "montage_channel": "Fp1",
       "predicted_class": "elevated_risk",
       "risk_stage": "Elevated Anxiety Risk",
-      "sleep_stage": null
+      "sleep_stage": null,
+      "highlights": ["Prefrontal Desynchronization", "Heightened Emotional Arousal", "State Anxiety Signs"]
     },
     {
       "id": "dasps_s01_relax_baseline",
@@ -127,13 +143,15 @@
       "gender": "Female",
       "eeg_sampling_rate_hz": 128,
       "total_segments": 1,
-      "description": "DASPS Database for Anxious States: Pre-stimulation baseline resting condition. Stable background rhythm without emotional paroxysms.",
+      "title": "Peaceful Pre-Test Baseline",
+      "description": "Smooth, balanced background brainwaves recorded before stimulation, confirming a peaceful state without signs of panic, agitation, or anxious distress.",
       "domain": "early_warning",
       "dataset_source": "dasps",
       "montage_channel": "O1",
       "predicted_class": "baseline",
       "risk_stage": "Baseline (Low Risk)",
-      "sleep_stage": null
+      "sleep_stage": null,
+      "highlights": ["Balanced Resting Waves", "Absence of Panic Spikes", "Calm Emotional State"]
     },
     {
       "id": "mitbih_slp01_preapnea_01",
@@ -142,13 +160,15 @@
       "gender": "Male",
       "eeg_sampling_rate_hz": 250,
       "total_segments": 1,
-      "description": "MIT-BIH Polysomnographic Database: 90-second pre-apnea lookback window prior to obstructive collapse. Characterized by progressive delta slowing and autonomic respiratory effort variance.",
+      "title": "Pre-Apnea Early Warning Window",
+      "description": "Early warning brainwave and breathing indicators captured 90 seconds prior to airway obstruction, detecting subtle oxygen and autonomic changes before collapse.",
       "domain": "early_warning",
       "dataset_source": "slpdb",
       "montage_channel": "F3",
       "predicted_class": "elevated_risk",
       "risk_stage": "Elevated Pre-Apnea Risk",
-      "sleep_stage": null
+      "sleep_stage": null,
+      "highlights": ["90-Second Warning Window", "Autonomic Rhythm Shift", "Pre-Collapse Detection"]
     }
   ],
   "predictions": {

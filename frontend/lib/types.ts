@@ -12,6 +12,8 @@ export interface CaseItem {
   dataset_source?: string;
   montage_channel?: string | null;
   sleep_stage?: string | null;
+  title?: string;
+  highlights?: string[];
 }
 
 export interface TimeWindow {

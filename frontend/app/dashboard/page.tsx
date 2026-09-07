@@ -96,11 +96,24 @@ export default function BenchmarkDashboardPage() {
     return (
       c.id.toLowerCase().includes(q) ||
       c.patient_anon_id.toLowerCase().includes(q) ||
+      (c.title || "").toLowerCase().includes(q) ||
       (c.description || "").toLowerCase().includes(q) ||
       (c.risk_stage || "").toLowerCase().includes(q) ||
-      (c.predicted_class || "").toLowerCase().includes(q)
+      (c.predicted_class || "").toLowerCase().includes(q) ||
+      (c.highlights || []).some((h) => h.toLowerCase().includes(q))
     );
   });
+
+  function formatPatientBadge(patientId: string): string {
+    const p = (patientId || "").toLowerCase();
+    if (p.startsWith("sc")) return p.toUpperCase();
+    if (p.startsWith("st")) return p.toUpperCase();
+    if (p.includes("sam40")) return "SAM-01";
+    if (p.includes("student")) return "STU-11";
+    if (p.includes("dasps")) return "DASPS";
+    if (p.includes("mitbih")) return "MIT-01";
+    return patientId.slice(0, 6).toUpperCase();
+  }
 
   const handleDomainChange = (domain: "sleep" | "early_warning") => {
     setActiveDomain(domain);
@@ -380,56 +393,89 @@ export default function BenchmarkDashboardPage() {
             }
 
             const datasetLabels: Record<string, { label: string; style: string }> = {
-              "sleep-edf": { label: "PhysioNet Sleep-EDF", style: "bg-zinc-900 text-zinc-300 border-zinc-800" },
-              sam40: { label: "SAM-40 (Stress)", style: "bg-zinc-900 text-zinc-300 border-zinc-800" },
-              student_stress: { label: "Student EEG (Stress)", style: "bg-zinc-900 text-zinc-300 border-zinc-800" },
-              dasps: { label: "DASPS (State Anxiety)", style: "bg-zinc-900 text-zinc-300 border-zinc-800" },
-              slpdb: { label: "MIT-BIH (Apnea)", style: "bg-zinc-900 text-zinc-300 border-zinc-800" },
+              "sleep-edf": { label: "PhysioNet Sleep-EDF", style: "border-zinc-700/80 bg-zinc-900/90 text-zinc-300" },
+              sam40: { label: "SAM-40 (Stress Study)", style: "border-zinc-700/80 bg-zinc-900/90 text-zinc-300" },
+              student_stress: { label: "Student EEG Cohort", style: "border-zinc-700/80 bg-zinc-900/90 text-zinc-300" },
+              dasps: { label: "DASPS (Anxiety Cohort)", style: "border-zinc-700/80 bg-zinc-900/90 text-zinc-300" },
+              slpdb: { label: "MIT-BIH (Apnea Cohort)", style: "border-zinc-700/80 bg-zinc-900/90 text-zinc-300" },
             };
-            const dsInfo = datasetLabels[c.dataset_source || "sleep-edf"] || { label: c.dataset_source || "Benchmark", style: "bg-zinc-900 text-zinc-300 border-zinc-800" };
+            const dsInfo = datasetLabels[c.dataset_source || "sleep-edf"] || { label: c.dataset_source || "Benchmark Cohort", style: "border-zinc-700/80 bg-zinc-900/90 text-zinc-300" };
 
             return (
               <ScrollReveal key={c.id} animation="fade-up" delay={i * 50}>
                 <Link
                   href={`/analysis/${c.id}`}
-                  className="bg-zinc-950 text-white rounded-2xl p-6 border border-zinc-800 hover:border-zinc-500 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all flex flex-col justify-between group cursor-pointer h-full relative overflow-hidden"
+                  className="bg-gradient-to-b from-zinc-900 via-zinc-950 to-zinc-950 text-white rounded-2xl p-6 sm:p-7 border border-zinc-800/90 hover:border-zinc-600 shadow-xl hover:shadow-2xl hover:shadow-black/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group cursor-pointer h-full relative overflow-hidden font-outfit"
                 >
-                  <div className="space-y-4">
-                    {/* Card Header */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center font-mono font-bold text-xs text-zinc-200 group-hover:bg-white group-hover:text-zinc-950 transition-colors shadow-inner">
-                          {c.patient_anon_id.slice(0, 5).toUpperCase()}
+                  {/* Subtle top ambient glowing rim */}
+                  <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-zinc-400/40 to-transparent group-hover:via-white/70 transition-all duration-500" />
+
+                  {/* Ambient hover light */}
+                  <div className="absolute -top-16 -right-16 w-40 h-40 bg-white/[0.03] group-hover:bg-white/[0.07] rounded-full blur-2xl transition-all duration-500 pointer-events-none" />
+
+                  <div className="space-y-4 relative z-10">
+                    {/* Header: Demographics + Dataset Source */}
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-zinc-800/90 border border-zinc-700/80 flex items-center justify-center font-mono font-bold text-[11px] text-zinc-300 group-hover:bg-white group-hover:text-zinc-950 transition-colors shadow-xs">
+                          {formatPatientBadge(c.patient_anon_id)}
                         </div>
-                        <div>
-                          <h3 className="font-bold text-sm text-white font-mono tracking-tight group-hover:text-zinc-200 transition-colors">
-                            {c.id}
-                          </h3>
-                          <span className="text-[11px] text-zinc-400 font-mono">
-                            {c.age_years ? `${c.age_years}y` : "Adult"} &bull; {c.gender || "Participant"} &bull; {c.eeg_sampling_rate_hz} Hz
-                          </span>
+                        <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 font-mono">
+                          <span className="text-zinc-200 font-semibold">{c.age_years ? `${c.age_years}y` : "Adult"}</span>
+                          <span>&bull;</span>
+                          <span>{c.gender || "Subject"}</span>
+                          <span>&bull;</span>
+                          <span className="text-zinc-400">{c.eeg_sampling_rate_hz} Hz</span>
                         </div>
                       </div>
 
-                      <span className={`text-[10px] font-mono px-2.5 py-1 rounded-md border ${dsInfo.style}`}>
+                      <span className={`text-[10px] font-mono font-semibold tracking-wide px-2.5 py-1 rounded-full border shadow-xs shrink-0 ${dsInfo.style}`}>
                         {dsInfo.label}
                       </span>
                     </div>
 
-                    {/* Description */}
-                    <p className="text-xs text-zinc-300 line-clamp-2 leading-relaxed font-normal">
+                    {/* Case Title & Technical Subtitle */}
+                    <div className="space-y-1">
+                      <h3 className="font-bold text-base sm:text-lg text-white font-display tracking-tight group-hover:text-zinc-100 transition-colors leading-snug">
+                        {c.title || c.id}
+                      </h3>
+                      <div className="flex items-center gap-2 text-[11px] font-mono text-zinc-400">
+                        <span>Lead: {c.montage_channel || "1-Ch EEG"}</span>
+                        <span>&bull;</span>
+                        <span className="text-zinc-500 truncate max-w-[170px]" title={c.id}>
+                          {c.id}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Simplified Plain-English Description */}
+                    <p className="text-xs sm:text-[13px] text-zinc-300/90 leading-relaxed font-normal">
                       {c.description || "No description provided."}
                     </p>
+
+                    {/* Biomarker Highlight Chips */}
+                    {c.highlights && c.highlights.length > 0 && (
+                      <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                        {c.highlights.map((tag, tagIdx) => (
+                          <span
+                            key={tagIdx}
+                            className="text-[10px] font-mono px-2.5 py-0.5 rounded-md bg-zinc-800/90 text-zinc-300 border border-zinc-700/60 group-hover:border-zinc-500/80 transition-colors shadow-xs"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
-                  {/* Card Footer */}
-                  <div className="pt-5 border-t border-zinc-800/80 flex items-center justify-between gap-2 mt-5">
-                    <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs ${badgeStyle}`}>
+                  {/* Footer: Stage Status Badge + Action Button */}
+                  <div className="pt-4 mt-6 border-t border-zinc-800/90 flex items-center justify-between gap-3 relative z-10">
+                    <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold ${badgeStyle}`}>
                       <StageIcon className="w-3.5 h-3.5 shrink-0" />
                       <span className="truncate">{c.risk_stage}</span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-xs text-zinc-300 group-hover:text-white transition-colors font-medium">
+                    <div className="flex items-center gap-1.5 text-xs text-zinc-300 group-hover:text-white font-medium transition-colors">
                       <span>Inspect Signal</span>
                       <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </div>

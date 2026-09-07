@@ -7,7 +7,6 @@ import {
   ShieldAlert, 
   AlertCircle, 
   CheckCircle2, 
-  Database, 
   ChevronRight, 
   Filter, 
   Moon, 
@@ -130,10 +129,6 @@ export default function BenchmarkDashboardPage() {
           </div>
 
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-800 text-xs font-mono font-semibold">
-              <Database className="w-3.5 h-3.5 text-zinc-900" />
-              <span>CLINICAL BENCHMARK DASHBOARD</span>
-            </div>
             <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-zinc-950 font-display">
               Benchmark Cases & Risk Telemetry
             </h1>

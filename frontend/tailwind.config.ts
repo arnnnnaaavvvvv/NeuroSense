@@ -19,10 +19,10 @@ const config: Config = {
         "foreground-muted": "#71717a",
       },
       fontFamily: {
-        sans: ["var(--font-outfit)", "var(--font-plus-jakarta)", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
-        display: ["var(--font-outfit)", "var(--font-plus-jakarta)", "sans-serif"],
-        outfit: ["var(--font-outfit)", "sans-serif"],
-        mono: ["var(--font-mono)", "monospace"],
+        sans: ["var(--font-inter)", "var(--font-plus-jakarta)", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        display: ["var(--font-plus-jakarta)", "var(--font-inter)", "-apple-system", "sans-serif"],
+        outfit: ["var(--font-plus-jakarta)", "var(--font-inter)", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
       animation: {
         pulse_slow: "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",

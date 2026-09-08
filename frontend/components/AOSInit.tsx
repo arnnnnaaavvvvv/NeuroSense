@@ -7,11 +7,13 @@ import "aos/dist/aos.css";
 export default function AOSInit() {
   useEffect(() => {
     AOS.init({
-      duration: 600,
+      duration: 500,
       easing: "ease-out-cubic",
-      once: true,
-      offset: 60,
-      delay: 50,
+      once: false,
+      mirror: true,
+      offset: 50,
+      delay: 0,
+      anchorPlacement: "top-bottom",
     });
     
     // Refresh after DOM layout is ready

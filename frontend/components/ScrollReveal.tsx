@@ -20,8 +20,8 @@ export default function ScrollReveal({
   animation = "fade-up",
   delay = 0,
   className = "",
-  threshold = 0.02,
-  once = true,
+  threshold = 0.04,
+  once = false,
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -47,7 +47,7 @@ export default function ScrollReveal({
       },
       {
         threshold,
-        rootMargin: "0px 0px 80px 0px",
+        rootMargin: "0px 0px 40px 0px",
       }
     );
 
@@ -64,6 +64,7 @@ export default function ScrollReveal({
       data-aos={animation}
       data-aos-delay={delay > 0 ? delay : undefined}
       data-aos-once={once ? "true" : "false"}
+      data-aos-mirror={!once ? "true" : "false"}
       data-reveal={animation}
       data-reveal-delay={delay > 0 ? String(delay) : undefined}
       style={delay > 0 ? { transitionDelay: `${delay}ms` } : undefined}
@@ -76,7 +77,7 @@ export default function ScrollReveal({
 
 /**
  * Hook to automatically observe all raw elements with `[data-reveal]` on the page
- * with smooth, instantaneous hardware-accelerated reveals.
+ * with smooth, live bidirectional scrolling animations (scrolling up & down).
  */
 export function useScrollRevealInit() {
   useEffect(() => {
@@ -92,13 +93,14 @@ export function useScrollRevealInit() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
+          } else {
+            entry.target.classList.remove("is-visible");
           }
         });
       },
       {
-        threshold: 0.02,
-        rootMargin: "0px 0px 80px 0px",
+        threshold: 0.04,
+        rootMargin: "0px 0px 40px 0px",
       }
     );
 

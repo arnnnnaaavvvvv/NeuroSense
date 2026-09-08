@@ -61,6 +61,9 @@ export default function ScrollReveal({
   return (
     <div
       ref={ref}
+      data-aos={animation}
+      data-aos-delay={delay > 0 ? delay : undefined}
+      data-aos-once={once ? "true" : "false"}
       data-reveal={animation}
       data-reveal-delay={delay > 0 ? String(delay) : undefined}
       style={delay > 0 ? { transitionDelay: `${delay}ms` } : undefined}

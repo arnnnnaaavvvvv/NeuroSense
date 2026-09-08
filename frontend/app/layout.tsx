@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import DisclaimerModal from "../components/DisclaimerModal";
+import AOSInit from "../components/AOSInit";
 
 export const metadata: Metadata = {
   title: "NeuroSense | Multi-Disorder Clinical EEG Intelligence Platform",
@@ -23,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-white text-zinc-950 flex flex-col bg-eeg-grid antialiased selection:bg-black selection:text-white font-outfit">
+        <AOSInit />
         <Navbar />
         <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {children}

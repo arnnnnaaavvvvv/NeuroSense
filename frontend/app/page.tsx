@@ -113,82 +113,96 @@ export default function LandingPage() {
               {/* Three Core Scientific Innovations (Editorial Bento Grid) */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
                 {/* Innovation 1: Signal Clarity */}
-                <div className="p-6 rounded-2xl bg-zinc-50/80 border border-zinc-200/90 space-y-4 hover:border-zinc-300 transition-colors">
-                  <div className="w-10 h-10 rounded-xl bg-zinc-950 text-white flex items-center justify-center shadow-xs">
-                    <Layers className="w-5 h-5 stroke-[2]" />
+                <ScrollReveal animation="fade-up" delay={80} className="h-full">
+                  <div className="p-6 rounded-2xl bg-zinc-50/80 border border-zinc-200/90 space-y-4 hover:border-zinc-300 transition-colors h-full flex flex-col justify-between">
+                    <div className="space-y-4">
+                      <div className="w-10 h-10 rounded-xl bg-zinc-950 text-white flex items-center justify-center shadow-xs">
+                        <Layers className="w-5 h-5 stroke-[2]" />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold block">Signal Clarity</span>
+                        <h3 className="font-bold text-base text-zinc-950 font-display">
+                          High-Definition Waveform Imaging
+                        </h3>
+                      </div>
+                      <p className="text-xs text-zinc-600 leading-relaxed">
+                        Ordinary monitors often produce blurry or noisy signal traces. NeuroSense sharpens electrical brainwave data, capturing subtle rhythms—from deep restorative sleep waves to sudden bursts of mental tension—with pinpoint precision.
+                      </p>
+                    </div>
                   </div>
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold block">Signal Clarity</span>
-                    <h3 className="font-bold text-base text-zinc-950 font-display">
-                      High-Definition Waveform Imaging
-                    </h3>
-                  </div>
-                  <p className="text-xs text-zinc-600 leading-relaxed">
-                    Ordinary monitors often produce blurry or noisy signal traces. NeuroSense sharpens electrical brainwave data, capturing subtle rhythms—from deep restorative sleep waves to sudden bursts of mental tension—with pinpoint precision.
-                  </p>
-                </div>
+                </ScrollReveal>
 
                 {/* Innovation 2: Unified Intelligence */}
-                <div className="p-6 rounded-2xl bg-zinc-50/80 border border-zinc-200/90 space-y-4 hover:border-zinc-300 transition-colors">
-                  <div className="w-10 h-10 rounded-xl bg-zinc-950 text-white flex items-center justify-center shadow-xs">
-                    <Cpu className="w-5 h-5 stroke-[2]" />
+                <ScrollReveal animation="fade-up" delay={160} className="h-full">
+                  <div className="p-6 rounded-2xl bg-zinc-50/80 border border-zinc-200/90 space-y-4 hover:border-zinc-300 transition-colors h-full flex flex-col justify-between">
+                    <div className="space-y-4">
+                      <div className="w-10 h-10 rounded-xl bg-zinc-950 text-white flex items-center justify-center shadow-xs">
+                        <Cpu className="w-5 h-5 stroke-[2]" />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold block">Unified Intelligence</span>
+                        <h3 className="font-bold text-base text-zinc-950 font-display">
+                          All-in-One Health Assessment
+                        </h3>
+                      </div>
+                      <p className="text-xs text-zinc-600 leading-relaxed">
+                        Instead of requiring separate tools for sleep tests and daytime stress checks, our smart AI engine evaluates both overnight sleep recovery and daytime cognitive strain simultaneously in less than 20 milliseconds.
+                      </p>
+                    </div>
                   </div>
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold block">Unified Intelligence</span>
-                    <h3 className="font-bold text-base text-zinc-950 font-display">
-                      All-in-One Health Assessment
-                    </h3>
-                  </div>
-                  <p className="text-xs text-zinc-600 leading-relaxed">
-                    Instead of requiring separate tools for sleep tests and daytime stress checks, our smart AI engine evaluates both overnight sleep recovery and daytime cognitive strain simultaneously in less than 20 milliseconds.
-                  </p>
-                </div>
+                </ScrollReveal>
 
                 {/* Innovation 3: Doctor-Ready Communication */}
-                <div className="p-6 rounded-2xl bg-zinc-50/80 border border-zinc-200/90 space-y-4 hover:border-zinc-300 transition-colors">
-                  <div className="w-10 h-10 rounded-xl bg-zinc-950 text-white flex items-center justify-center shadow-xs">
-                    <Stethoscope className="w-5 h-5 stroke-[2]" />
+                <ScrollReveal animation="fade-up" delay={240} className="h-full">
+                  <div className="p-6 rounded-2xl bg-zinc-50/80 border border-zinc-200/90 space-y-4 hover:border-zinc-300 transition-colors h-full flex flex-col justify-between">
+                    <div className="space-y-4">
+                      <div className="w-10 h-10 rounded-xl bg-zinc-950 text-white flex items-center justify-center shadow-xs">
+                        <Stethoscope className="w-5 h-5 stroke-[2]" />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold block">Doctor-Ready Communication</span>
+                        <h3 className="font-bold text-base text-zinc-950 font-display">
+                          Plain-English Reports &amp; Next Steps
+                        </h3>
+                      </div>
+                      <p className="text-xs text-zinc-600 leading-relaxed">
+                        You never need a medical background to understand your results. NeuroSense translates raw brain signals into simple descriptions of your symptoms, everyday root causes, and clear diagnostic questions to share with your doctor.
+                      </p>
+                    </div>
                   </div>
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold block">Doctor-Ready Communication</span>
-                    <h3 className="font-bold text-base text-zinc-950 font-display">
-                      Plain-English Reports &amp; Next Steps
-                    </h3>
-                  </div>
-                  <p className="text-xs text-zinc-600 leading-relaxed">
-                    You never need a medical background to understand your results. NeuroSense translates raw brain signals into simple descriptions of your symptoms, everyday root causes, and clear diagnostic questions to share with your doctor.
-                  </p>
-                </div>
+                </ScrollReveal>
               </div>
 
               {/* Research Lineage & Verified Cohorts Ribbon */}
-              <div className="pt-6 border-t border-zinc-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="font-mono text-zinc-500 text-[11px] uppercase font-bold tracking-wider">
-                    Validated Benchmark Cohorts:
-                  </span>
-                  <span className="px-2.5 py-1 rounded-lg bg-zinc-100 text-zinc-800 font-mono text-[11px] border border-zinc-200">
-                    PhysioNet Sleep-EDF Expanded
-                  </span>
-                  <span className="px-2.5 py-1 rounded-lg bg-zinc-100 text-zinc-800 font-mono text-[11px] border border-zinc-200">
-                    SAM-40 (32-Ch Stress Cohort)
-                  </span>
-                  <span className="px-2.5 py-1 rounded-lg bg-zinc-100 text-zinc-800 font-mono text-[11px] border border-zinc-200">
-                    DASPS State Anxiety Database
-                  </span>
-                  <span className="px-2.5 py-1 rounded-lg bg-zinc-100 text-zinc-800 font-mono text-[11px] border border-zinc-200">
-                    MIT-BIH Polysomnography
-                  </span>
-                </div>
+              <ScrollReveal animation="fade-up" delay={120}>
+                <div className="pt-6 border-t border-zinc-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="font-mono text-zinc-500 text-[11px] uppercase font-bold tracking-wider">
+                      Validated Benchmark Cohorts:
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-zinc-100 text-zinc-800 font-mono text-[11px] border border-zinc-200">
+                      PhysioNet Sleep-EDF Expanded
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-zinc-100 text-zinc-800 font-mono text-[11px] border border-zinc-200">
+                      SAM-40 (32-Ch Stress Cohort)
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-zinc-100 text-zinc-800 font-mono text-[11px] border border-zinc-200">
+                      DASPS State Anxiety Database
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-zinc-100 text-zinc-800 font-mono text-[11px] border border-zinc-200">
+                      MIT-BIH Polysomnography
+                    </span>
+                  </div>
 
-                <Link
-                  href="/dashboard"
-                  className="inline-flex items-center gap-1.5 font-semibold text-zinc-950 hover:text-zinc-700 transition-colors shrink-0 text-xs group"
-                >
-                  <span>Explore Benchmark Cases in Dashboard</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                </Link>
-              </div>
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center gap-1.5 font-semibold text-zinc-950 hover:text-zinc-700 transition-colors shrink-0 text-xs group"
+                  >
+                    <span>Explore Benchmark Cases in Dashboard</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                </div>
+              </ScrollReveal>
 
             </div>
           </ScrollReveal>

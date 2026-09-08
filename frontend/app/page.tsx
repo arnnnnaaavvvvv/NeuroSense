@@ -83,7 +83,7 @@ export default function LandingPage() {
               { label: "Benchmark Accuracy", value: "98.40%", note: "Tested on Real EEG Cohorts" },
               { label: "Clinical Cohorts", value: "10 Records", note: "Sleep, Stress & Anxiety" },
             ].map((stat, i) => (
-              <ScrollReveal key={i} animation="fade-up" delay={350 + i * 80}>
+              <ScrollReveal key={i} animation="fade-up" delay={i * 40}>
                 <div className="bg-zinc-50/80 border border-zinc-200 rounded-xl p-4 text-left shadow-sm hover:border-zinc-400 transition-colors">
                   <span className="text-[11px] font-mono text-zinc-500 uppercase block">{stat.label}</span>
                   <span className="text-2xl font-bold font-display text-zinc-950 tracking-tight block mt-0.5">{stat.value}</span>
@@ -97,7 +97,7 @@ export default function LandingPage() {
               ABOUT THE PROJECT & CLINICAL BREAKTHROUGHS
               Elevated, Professional Project Presentation (Zero Dashboard Clutter)
               ===================================================================== */}
-          <ScrollReveal animation="fade-up" delay={500}>
+          <ScrollReveal animation="fade-up">
             <div className="mt-12 bg-white border border-zinc-200 rounded-3xl p-6 sm:p-10 text-left shadow-sm space-y-10">
               
               {/* Executive Summary & Mission */}

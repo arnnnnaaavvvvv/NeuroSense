@@ -64,40 +64,40 @@ body {
    ============================================================ */
 [data-reveal] {
   opacity: 0;
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform, filter;
 }
 
-/* Instantly reset transition delay when exiting viewport so re-entry stagger animates immediately */
+/* Instantly reset transition delay when exiting viewport */
 [data-reveal]:not(.is-visible) {
   transition-delay: 0ms !important;
 }
 
 [data-reveal="fade-up"] {
-  transform: translateY(32px);
+  transform: translateY(16px);
 }
 
 [data-reveal="fade-down"] {
-  transform: translateY(-32px);
+  transform: translateY(-16px);
 }
 
 [data-reveal="fade-left"] {
-  transform: translateX(32px);
+  transform: translateX(16px);
 }
 
 [data-reveal="fade-right"] {
-  transform: translateX(-32px);
+  transform: translateX(-16px);
 }
 
 [data-reveal="zoom-in"] {
-  transform: scale(0.94);
+  transform: scale(0.97);
 }
 
 [data-reveal="blur-in"] {
-  filter: blur(10px);
-  transform: translateY(20px);
+  filter: blur(6px);
+  transform: translateY(12px);
 }
 
 /* Revealed active state */

@@ -47,7 +47,7 @@ export default function ScrollReveal({
       },
       {
         threshold,
-        rootMargin: "0px 0px 40px 0px",
+        rootMargin: "0px 0px -30px 0px",
       }
     );
 
@@ -61,10 +61,6 @@ export default function ScrollReveal({
   return (
     <div
       ref={ref}
-      data-aos={animation}
-      data-aos-delay={delay > 0 ? delay : undefined}
-      data-aos-once={once ? "true" : "false"}
-      data-aos-mirror={!once ? "true" : "false"}
       data-reveal={animation}
       data-reveal-delay={delay > 0 ? String(delay) : undefined}
       style={delay > 0 ? { transitionDelay: `${delay}ms` } : undefined}
@@ -100,7 +96,7 @@ export function useScrollRevealInit() {
       },
       {
         threshold: 0.04,
-        rootMargin: "0px 0px 40px 0px",
+        rootMargin: "0px 0px -30px 0px",
       }
     );
 

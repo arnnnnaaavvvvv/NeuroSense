@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,13 +12,19 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   color: #09090b;
   background-color: #ffffff;
-  font-family: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-outfit), var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* Crisp Clean EEG Grid on White Background */
@@ -60,14 +64,13 @@ body {
 }
 
 /* ============================================================
-   Scroll-Triggered Reveal Animation Engine (Hardware-Accelerated)
+   Premium Scroll-Triggered Reveal Animation Engine
+   Guaranteed Zero Font Degradation / 100% Native Clarity
    ============================================================ */
 [data-reveal] {
   opacity: 0;
-  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform, filter;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Instantly reset transition delay when exiting viewport */
@@ -76,19 +79,19 @@ body {
 }
 
 [data-reveal="fade-up"] {
-  transform: translateY(16px);
+  transform: translateY(20px);
 }
 
 [data-reveal="fade-down"] {
-  transform: translateY(-16px);
+  transform: translateY(-20px);
 }
 
 [data-reveal="fade-left"] {
-  transform: translateX(16px);
+  transform: translateX(20px);
 }
 
 [data-reveal="fade-right"] {
-  transform: translateX(-16px);
+  transform: translateX(-20px);
 }
 
 [data-reveal="zoom-in"] {
@@ -96,15 +99,13 @@ body {
 }
 
 [data-reveal="blur-in"] {
-  filter: blur(6px);
-  transform: translateY(12px);
+  transform: translateY(16px);
 }
 
-/* Revealed active state */
+/* Revealed active state: transform is completely removed to guarantee native subpixel font rendering */
 [data-reveal].is-visible {
   opacity: 1;
-  transform: translate(0) scale(1);
-  filter: blur(0);
+  transform: none !important;
 }
 
 /* Stagger Delay Controls */

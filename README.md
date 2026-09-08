@@ -2,6 +2,9 @@
   <img src="frontend/public/logo.png" alt="NeuroSense Logo" width="110" height="110" style="border-radius: 24px;" />
   <h1>NeuroSense: Multi-Disorder EEG Intelligence Platform</h1>
   <p><strong>Clinical Seizure Risk Staging, Polysomnography Sleep Architecture & Early-Warning Physiological Risk Detection</strong></p>
+  <p>
+    <a href="https://neurosense-orcin.vercel.app"><img src="https://img.shields.io/badge/Live%20Demo-Vercel-black?style=flat&logo=vercel" alt="Live Demo (Vercel)" /></a>
+  </p>
 </div>
 
 NeuroSense is an experimental research and clinical intelligence platform designed to analyze electroencephalogram (EEG) and polysomnography (PSG) signals. It bridges automated time-frequency signal processing, deep convolutional neural networks (reusing the validated **Özdemir et al. Conv2D** architecture), and a source-grounded **Retrieval-Augmented Generation (RAG)** clinical precaution retrieval layer.

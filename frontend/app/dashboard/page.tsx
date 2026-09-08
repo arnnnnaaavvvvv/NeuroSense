@@ -308,135 +308,148 @@ export default function BenchmarkDashboardPage() {
       )}
 
       {!loading && !error && finalCases.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {finalCases.map((c, i) => {
-            const isSleep = c.domain === "sleep";
             const isEarlyWarning = c.domain === "early_warning";
 
-            let badgeStyle = "bg-white text-zinc-950 border-white font-bold";
+            let badgeStyle = "bg-zinc-800/90 text-zinc-200 border-zinc-700/80";
+            let iconColor = "text-zinc-400";
             let StageIcon = CheckCircle2;
 
             if (isEarlyWarning) {
               const rLower = (c.risk_stage || "").toLowerCase();
               if (rLower.includes("stress")) {
-                badgeStyle = "bg-white text-zinc-950 border-white font-bold ring-2 ring-white/20";
+                badgeStyle = "bg-rose-950/50 text-rose-200 border-rose-500/40 ring-1 ring-rose-500/20";
+                iconColor = "text-rose-400";
                 StageIcon = Brain;
               } else if (rLower.includes("anxiety")) {
-                badgeStyle = "bg-white text-zinc-950 border-white font-bold ring-2 ring-white/20";
+                badgeStyle = "bg-amber-950/50 text-amber-200 border-amber-500/40 ring-1 ring-amber-500/20";
+                iconColor = "text-amber-400";
                 StageIcon = HeartPulse;
               } else if (rLower.includes("apnea")) {
-                badgeStyle = "bg-zinc-100 text-zinc-950 border-zinc-200 font-bold";
+                badgeStyle = "bg-sky-950/50 text-sky-200 border-sky-500/40 ring-1 ring-sky-500/20";
+                iconColor = "text-sky-400";
                 StageIcon = Activity;
               } else {
-                badgeStyle = "bg-zinc-800 text-zinc-100 border-zinc-700 font-medium";
+                badgeStyle = "bg-emerald-950/50 text-emerald-200 border-emerald-500/40 ring-1 ring-emerald-500/20";
+                iconColor = "text-emerald-400";
                 StageIcon = CheckCircle2;
               }
             } else {
               const stUpper = (c.sleep_stage || c.predicted_class || "").toUpperCase();
               if (stUpper.includes("N3")) {
-                badgeStyle = "bg-white text-zinc-950 border-white font-bold shadow-sm";
+                badgeStyle = "bg-indigo-950/50 text-indigo-200 border-indigo-500/40 ring-1 ring-indigo-500/20";
+                iconColor = "text-indigo-400";
                 StageIcon = Moon;
               } else if (stUpper.includes("N2")) {
-                badgeStyle = "bg-zinc-100 text-zinc-950 border-zinc-200 font-bold shadow-sm";
+                badgeStyle = "bg-emerald-950/50 text-emerald-200 border-emerald-500/40 ring-1 ring-emerald-500/20";
+                iconColor = "text-emerald-400";
                 StageIcon = Activity;
               } else if (stUpper.includes("N1")) {
-                badgeStyle = "bg-zinc-200 text-zinc-900 border-zinc-300 font-semibold";
+                badgeStyle = "bg-amber-950/50 text-amber-200 border-amber-500/40 ring-1 ring-amber-500/20";
+                iconColor = "text-amber-400";
                 StageIcon = AlertCircle;
               } else if (stUpper.includes("REM")) {
-                badgeStyle = "bg-white text-zinc-950 border-white font-bold shadow-sm";
+                badgeStyle = "bg-purple-950/50 text-purple-200 border-purple-500/40 ring-1 ring-purple-500/20";
+                iconColor = "text-purple-400";
                 StageIcon = Wind;
               } else {
-                badgeStyle = "bg-zinc-300 text-zinc-950 border-zinc-400 font-semibold";
+                badgeStyle = "bg-rose-950/50 text-rose-200 border-rose-500/40 ring-1 ring-rose-500/20";
+                iconColor = "text-rose-400";
                 StageIcon = Sun;
               }
             }
 
             const datasetLabels: Record<string, { label: string; style: string }> = {
-              "sleep-edf": { label: "PhysioNet Sleep-EDF", style: "border-zinc-700/80 bg-zinc-900/90 text-zinc-300" },
-              sam40: { label: "SAM-40 (Stress Study)", style: "border-zinc-700/80 bg-zinc-900/90 text-zinc-300" },
-              student_stress: { label: "Student EEG Cohort", style: "border-zinc-700/80 bg-zinc-900/90 text-zinc-300" },
-              dasps: { label: "DASPS (Anxiety Cohort)", style: "border-zinc-700/80 bg-zinc-900/90 text-zinc-300" },
-              slpdb: { label: "MIT-BIH (Apnea Cohort)", style: "border-zinc-700/80 bg-zinc-900/90 text-zinc-300" },
+              "sleep-edf": { label: "PhysioNet Sleep-EDF", style: "border-zinc-700/80 bg-zinc-800/80 text-zinc-300" },
+              sam40: { label: "SAM-40 (Stress Study)", style: "border-zinc-700/80 bg-zinc-800/80 text-zinc-300" },
+              student_stress: { label: "Student EEG Cohort", style: "border-zinc-700/80 bg-zinc-800/80 text-zinc-300" },
+              dasps: { label: "DASPS (Anxiety Cohort)", style: "border-zinc-700/80 bg-zinc-800/80 text-zinc-300" },
+              slpdb: { label: "MIT-BIH (Apnea Cohort)", style: "border-zinc-700/80 bg-zinc-800/80 text-zinc-300" },
             };
-            const dsInfo = datasetLabels[c.dataset_source || "sleep-edf"] || { label: c.dataset_source || "Benchmark Cohort", style: "border-zinc-700/80 bg-zinc-900/90 text-zinc-300" };
+            const dsInfo = datasetLabels[c.dataset_source || "sleep-edf"] || { label: c.dataset_source || "Benchmark Cohort", style: "border-zinc-700/80 bg-zinc-800/80 text-zinc-300" };
 
             return (
               <ScrollReveal key={c.id} animation="fade-up" delay={i * 50}>
                 <Link
                   href={`/analysis/${c.id}`}
-                  className="bg-gradient-to-b from-zinc-900 via-zinc-950 to-zinc-950 text-white rounded-2xl p-6 sm:p-7 border border-zinc-800/90 hover:border-zinc-600 shadow-xl hover:shadow-2xl hover:shadow-black/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group cursor-pointer h-full relative overflow-hidden font-outfit"
+                  className="bg-gradient-to-b from-zinc-900/95 via-zinc-950 to-zinc-950 text-white rounded-2xl p-6 border border-zinc-800/90 hover:border-zinc-700 shadow-xl hover:shadow-2xl hover:shadow-black/60 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group cursor-pointer h-full relative overflow-hidden font-outfit"
                 >
                   {/* Subtle top ambient glowing rim */}
-                  <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-zinc-400/40 to-transparent group-hover:via-white/70 transition-all duration-500" />
+                  <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-zinc-500/30 to-transparent group-hover:via-zinc-300/60 transition-all duration-500" />
 
                   {/* Ambient hover light */}
-                  <div className="absolute -top-16 -right-16 w-40 h-40 bg-white/[0.03] group-hover:bg-white/[0.07] rounded-full blur-2xl transition-all duration-500 pointer-events-none" />
+                  <div className="absolute -top-16 -right-16 w-40 h-40 bg-white/[0.02] group-hover:bg-white/[0.05] rounded-full blur-2xl transition-all duration-500 pointer-events-none" />
 
-                  <div className="space-y-4 relative z-10">
+                  <div className="flex flex-col flex-1 space-y-4 relative z-10">
                     {/* Header: Demographics + Dataset Source */}
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-lg bg-zinc-800/90 border border-zinc-700/80 flex items-center justify-center font-mono font-bold text-[11px] text-zinc-300 group-hover:bg-white group-hover:text-zinc-950 transition-colors shadow-xs">
+                    <div className="flex items-center justify-between gap-2.5 min-w-0">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="px-2 py-0.5 rounded-md bg-zinc-800/90 border border-zinc-700/80 font-mono font-bold text-[11px] text-zinc-200 shrink-0 group-hover:border-zinc-600 transition-colors shadow-xs">
                           {formatPatientBadge(c.patient_anon_id)}
-                        </div>
-                        <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 font-mono">
+                        </span>
+                        <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 font-mono shrink-0">
                           <span className="text-zinc-200 font-semibold">{c.age_years ? `${c.age_years}y` : "Adult"}</span>
-                          <span>&bull;</span>
+                          <span className="text-zinc-600">&bull;</span>
                           <span>{c.gender || "Subject"}</span>
-                          <span>&bull;</span>
+                          <span className="text-zinc-600">&bull;</span>
                           <span className="text-zinc-400">{c.eeg_sampling_rate_hz} Hz</span>
                         </div>
                       </div>
 
-                      <span className={`text-[10px] font-mono font-semibold tracking-wide px-2.5 py-1 rounded-full border shadow-xs shrink-0 ${dsInfo.style}`}>
+                      <span className={`text-[10px] font-mono font-medium tracking-wide px-2.5 py-0.5 rounded-full border shadow-xs shrink-0 whitespace-nowrap ${dsInfo.style}`}>
                         {dsInfo.label}
                       </span>
                     </div>
 
                     {/* Case Title & Technical Subtitle */}
-                    <div className="space-y-1">
-                      <h3 className="font-bold text-base sm:text-lg text-white font-display tracking-tight group-hover:text-zinc-100 transition-colors leading-snug">
-                        {c.title || c.id}
-                      </h3>
-                      <div className="flex items-center gap-2 text-[11px] font-mono text-zinc-400">
-                        <span>Lead: {c.montage_channel || "1-Ch EEG"}</span>
-                        <span>&bull;</span>
-                        <span className="text-zinc-500 truncate max-w-[170px]" title={c.id}>
-                          {c.id}
+                    <div className="space-y-1.5">
+                      <div className="min-h-[2.85rem] flex items-start">
+                        <h3 className="font-bold text-base sm:text-[17px] text-white font-display tracking-tight group-hover:text-zinc-100 transition-colors leading-snug line-clamp-2">
+                          {c.title || c.id}
+                        </h3>
+                      </div>
+                      <div className="flex items-center justify-between gap-2 text-[11px] font-mono text-zinc-400 pt-0.5">
+                        <div className="flex items-center gap-1.5 min-w-0 truncate">
+                          <span className="text-zinc-500 shrink-0">Lead:</span>
+                          <span className="text-zinc-300 font-medium truncate">{c.montage_channel || "1-Ch EEG"}</span>
+                        </div>
+                        <span className="shrink-0 text-[10px] font-mono text-zinc-400 bg-zinc-800/80 px-2 py-0.5 rounded border border-zinc-700/60" title={c.id}>
+                          {c.id.length > 18 ? `${c.id.slice(0, 15)}...` : c.id}
                         </span>
                       </div>
                     </div>
 
                     {/* Simplified Plain-English Description */}
-                    <p className="text-xs sm:text-[13px] text-zinc-300/90 leading-relaxed font-normal">
+                    <p className="text-xs sm:text-[13px] text-zinc-400 group-hover:text-zinc-300/90 leading-relaxed font-normal line-clamp-3 min-h-[3.6rem] transition-colors">
                       {c.description || "No description provided."}
                     </p>
 
                     {/* Biomarker Highlight Chips */}
-                    {c.highlights && c.highlights.length > 0 && (
-                      <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                        {c.highlights.map((tag, tagIdx) => (
+                    <div className="min-h-[3.25rem] flex flex-wrap content-start items-center gap-1.5 pt-0.5">
+                      {c.highlights && c.highlights.length > 0 &&
+                        c.highlights.map((tag, tagIdx) => (
                           <span
                             key={tagIdx}
-                            className="text-[10px] font-mono px-2.5 py-0.5 rounded-md bg-zinc-800/90 text-zinc-300 border border-zinc-700/60 group-hover:border-zinc-500/80 transition-colors shadow-xs"
+                            className="text-[10px] font-mono px-2.5 py-1 rounded-md bg-zinc-800/70 text-zinc-300 border border-zinc-700/60 group-hover:border-zinc-500/80 group-hover:bg-zinc-800/90 transition-colors shadow-xs"
                           >
                             {tag}
                           </span>
-                        ))}
-                      </div>
-                    )}
+                        ))
+                      }
+                    </div>
                   </div>
 
                   {/* Footer: Stage Status Badge + Action Button */}
-                  <div className="pt-4 mt-6 border-t border-zinc-800/90 flex items-center justify-between gap-3 relative z-10">
-                    <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold ${badgeStyle}`}>
-                      <StageIcon className="w-3.5 h-3.5 shrink-0" />
+                  <div className="pt-4 mt-6 border-t border-zinc-800/80 flex items-center justify-between gap-3 relative z-10">
+                    <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold min-w-0 max-w-[62%] sm:max-w-[66%] shadow-xs ${badgeStyle}`}>
+                      <StageIcon className={`w-3.5 h-3.5 shrink-0 ${iconColor}`} />
                       <span className="truncate">{c.risk_stage}</span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-xs text-zinc-300 group-hover:text-white font-medium transition-colors">
+                    <div className="flex items-center gap-1 text-xs text-zinc-300 group-hover:text-white font-medium shrink-0 whitespace-nowrap transition-colors">
                       <span>Inspect Signal</span>
-                      <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:text-white group-hover:translate-x-1 transition-all" />
                     </div>
                   </div>
                 </Link>

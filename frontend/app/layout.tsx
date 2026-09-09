@@ -3,6 +3,7 @@ import { Inter, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import DisclaimerModal from "../components/DisclaimerModal";
+import Footer from "../components/Footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -50,11 +51,7 @@ export default function RootLayout({
           {children}
         </main>
         <DisclaimerModal />
-        <footer className="border-t border-zinc-200 bg-zinc-50/80 py-8 text-center text-xs text-zinc-500">
-          <p className="text-zinc-400">
-            For academic and clinical engineering demonstration purposes only. Not for clinical diagnosis or prescription adjustment.
-          </p>
-        </footer>
+        <Footer />
       </body>
     </html>
   );

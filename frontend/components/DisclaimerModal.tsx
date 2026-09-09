@@ -26,7 +26,7 @@ export default function DisclaimerModal() {
         <div className="flex items-center gap-3 text-zinc-900 mb-4">
           <ShieldAlert className="w-7 h-7 shrink-0 text-zinc-950" />
           <h2 className="text-lg font-bold text-zinc-950 tracking-tight font-display">
-            Clinical Research Prototype Disclaimer
+            Clinical Research Disclaimer
           </h2>
         </div>
 

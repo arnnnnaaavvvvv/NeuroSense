@@ -27,7 +27,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "NeuroSense | Multi-Disorder Clinical EEG Intelligence Platform",
-  description: "Clinical research prototype for EEG time-frequency feature extraction, AASM sleep staging, and student stress/anxiety early-warning using a shared 128×128 SST representation and multi-head CNN.",
+  description: "Clinical intelligence platform for EEG time-frequency feature extraction, AASM sleep staging, and student stress/anxiety early-warning using a shared 128×128 SST representation and multi-head CNN.",
   icons: {
     icon: [
       { url: "/icon.png", sizes: "192x192", type: "image/png" },
@@ -51,10 +51,7 @@ export default function RootLayout({
         </main>
         <DisclaimerModal />
         <footer className="border-t border-zinc-200 bg-zinc-50/80 py-8 text-center text-xs text-zinc-500">
-          <p>
-            NeuroSense Research Prototype &bull; Model Checkpoint: <span className="font-mono font-semibold text-zinc-800">m32.h5 Shared Backbone</span> &bull; Verified Cohorts: <span className="font-mono text-zinc-700">PhysioNet Sleep-EDF, SAM-40 Stress & DASPS Anxiety</span>
-          </p>
-          <p className="mt-1 text-zinc-400">
+          <p className="text-zinc-400">
             For academic and clinical engineering demonstration purposes only. Not for clinical diagnosis or prescription adjustment.
           </p>
         </footer>

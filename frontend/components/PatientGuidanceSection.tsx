@@ -15,7 +15,10 @@ import {
   ChevronUp,
   Clock,
   Sparkles,
-  Info
+  Info,
+  Pill,
+  ShieldAlert,
+  Zap
 } from "lucide-react";
 
 interface PatientGuidanceSectionProps {
@@ -25,10 +28,35 @@ interface PatientGuidanceSectionProps {
   patientAnonId?: string;
 }
 
-interface CaseClinicalInfo {
+export interface SignalAnomalyDetail {
+  status: "abnormal" | "caution" | "optimal";
+  statusBadge: string;
+  abnormalLocation: string; // "Where the signal is not good"
+  signalPathologyDescription: string;
+  normalBaselineComparison: string;
+}
+
+export interface RedFlagSign {
+  sign: string;
+  clinicalContext: string;
+  urgency: "Immediate Medical Attention" | "Clinical Follow-Up" | "Monitor Daily";
+}
+
+export interface RealMedicalTreatment {
+  treatmentName: string;
+  category: "First-Line Medical Therapy" | "Behavioral & Neuro-Regulation" | "Clinical Device / Appliance" | "Medical Specialist Care";
+  howItWorks: string;
+  evidenceBase: string;
+}
+
+export interface CaseClinicalInfo {
   conditionTitle: string;
   simpleSummary: string;
   whatSignalMeans: string;
+  whyNeedsAttention: string;
+  signalAnomaly: SignalAnomalyDetail;
+  thingsToPayAttentionTo: RedFlagSign[];
+  realTreatments: RealMedicalTreatment[];
   causes: {
     title: string;
     description: string;
@@ -51,34 +79,92 @@ interface CaseClinicalInfo {
   };
 }
 
-const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
+export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
   // 1. MIT-BIH Pre-Apnea
   "mitbih_slp01_preapnea_01": {
     conditionTitle: "Obstructive Sleep Apnea Warning (Pre-Apnea Airway Collapse)",
     simpleSummary:
-      "This test shows moments right before the patient's throat muscles relax too much and briefly block airflow during sleep. The brain is repeatedly struggling to keep the airway open, disrupting normal restful breathing.",
+      "This test captures the crucial moments right before throat muscles relax excessively and block airflow during sleep. The brain is repeatedly struggling to keep the airway open, disrupting restorative breathing.",
     whatSignalMeans:
       "The brain waves slow down abnormally while the heart rhythm becomes uneven. This shows the body is running low on oxygen and fighting against a blocked windpipe just seconds before a full breathing pause.",
+    whyNeedsAttention:
+      "Repeated nocturnal airway collapses trigger severe blood oxygen dips (SpO2 dropping below 90%) and nocturnal adrenaline spikes. Left untreated, sleep apnea significantly raises the risk of severe hypertension, cardiac arrhythmias (such as atrial fibrillation), heart disease, stroke, and life-threatening daytime motor vehicle accidents caused by involuntary micro-sleeps.",
+    signalAnomaly: {
+      status: "abnormal",
+      statusBadge: "Abnormal Airway & Waveform Strain",
+      abnormalLocation: "Pre-apnea baseline flattening (0.5–2 Hz suppression) with sudden high-amplitude respiratory struggle bursts & cyclic heart rate surges",
+      signalPathologyDescription: "The signal demonstrates microvolt amplitude suppression punctuated by chaotic low-frequency high-amplitude movement artifacts as the upper airway collapses, accompanied by sudden tachypnea and sympathetic cardiac surges.",
+      normalBaselineComparison: "Healthy restful sleep maintains steady, smooth sinusoidal oscillations and a rhythmic resting sinus rhythm with uninterrupted slow Delta waves."
+    },
+    thingsToPayAttentionTo: [
+      {
+        sign: "Waking up suddenly gasping, choking, or snorting with a racing pulse",
+        clinicalContext: "Direct indicator of complete airway obstruction where the brain jolts itself awake to prevent asphyxiation.",
+        urgency: "Immediate Medical Attention"
+      },
+      {
+        sign: "Severe daytime sleepiness or nodding off while driving or in meetings",
+        clinicalContext: "Signals critical nocturnal sleep debt and profound micro-sleep vulnerability.",
+        urgency: "Immediate Medical Attention"
+      },
+      {
+        sign: "Bed partner noticing silence for 10+ seconds followed by a violent snort",
+        clinicalContext: "Classic witnessed apnea pause confirming significant physical airway obstruction.",
+        urgency: "Clinical Follow-Up"
+      },
+      {
+        sign: "Dull morning front headaches and severe dry mouth / parched throat upon waking",
+        clinicalContext: "Direct consequence of overnight carbon dioxide retention, hypoxemia, and forced mouth breathing.",
+        urgency: "Clinical Follow-Up"
+      },
+      {
+        sign: "Stubborn morning blood pressure spikes resistant to standard medication",
+        clinicalContext: "Driven by overnight adrenaline surges triggered by repeated suffocation reflexes.",
+        urgency: "Clinical Follow-Up"
+      }
+    ],
+    realTreatments: [
+      {
+        treatmentName: "Automatic Positive Airway Pressure (APAP / CPAP Therapy)",
+        category: "First-Line Medical Therapy",
+        howItWorks: "Gently delivers continuous, filtered room air through a nasal or full-face mask, acting as an invisible pneumatic splint that keeps the airway continuously patent throughout the night.",
+        evidenceBase: "AASM Clinical Practice Guideline — Gold Standard (eliminates 95%+ of apneic events)"
+      },
+      {
+        treatmentName: "Custom Mandibular Advancement Oral Appliance (MAD)",
+        category: "Clinical Device / Appliance",
+        howItWorks: "Custom-fitted by an accredited dental sleep specialist; advances the lower jaw and tongue base forward by 3–6 mm to enlarge the pharyngeal space and prevent airway collapse.",
+        evidenceBase: "AASM & AADSM Practice Guideline for Mild-to-Moderate OSA and CPAP-intolerant patients"
+      },
+      {
+        treatmentName: "Positional Sleep Therapy & Side-Sleeping Apparatus",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "Uses smart vibrotactile feedback or contoured ergonomic bolsters to stop supine (back) sleeping where gravity pulls the tongue into the airway.",
+        evidenceBase: "AASM Recommended Adjunctive Therapy (reduces positional AHI by >50%)"
+      },
+      {
+        treatmentName: "ENT Airway Evaluation & Hypoglossal Nerve Stimulation (Inspire)",
+        category: "Medical Specialist Care",
+        howItWorks: "Specialist surgical review for deviated septum, tonsillar hypertrophy, or minimally invasive implanted neuro-stimulation that gently moves the tongue forward during inhalation.",
+        evidenceBase: "FDA-Approved Surgical Alternative for moderate-to-severe OSA"
+      }
+    ],
     causes: [
       {
         title: "Throat & Tongue Muscle Relaxation",
-        description:
-          "During deep relaxation at night, the muscles at the back of the throat collapse backward, partially blocking the windpipe."
+        description: "During deep relaxation at night, the muscles at the back of the throat collapse backward, partially blocking the windpipe."
       },
       {
         title: "Sleeping Flat on the Back",
-        description:
-          "Gravity pulls the soft palate and tongue downward, making it much harder for air to flow smoothly into the lungs."
+        description: "Gravity pulls the soft palate and tongue downward, making it much harder for air to flow smoothly into the lungs."
       },
       {
         title: "Nasal or Airway Narrowing",
-        description:
-          "Enlarged tonsils, a deviated nasal septum, or a naturally narrower neck airway can restrict night-time airflow."
+        description: "Enlarged tonsils, a deviated nasal septum, or a naturally narrower neck airway can restrict night-time airflow."
       },
       {
         title: "Evening Alcohol or Sedative Intake",
-        description:
-          "Substances that relax the central nervous system make airway muscles unusually loose and unresponsive."
+        description: "Substances that relax the central nervous system make airway muscles unusually loose and unresponsive."
       }
     ],
     symptoms: [
@@ -149,6 +235,63 @@ const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
       "This test shows that while the patient is in bed, their brain keeps snapping back into an alert, awake state throughout the night. Sleep is broken up into shallow fragments instead of flowing smoothly through restorative cycles.",
     whatSignalMeans:
       "Instead of smooth, calm brain waves, the EEG shows sudden sharp bursts of rapid 'Alpha' waves (which normally only appear when you are awake with your eyes open). Muscle tone also stays tense.",
+    whyNeedsAttention:
+      "Frequent nocturnal micro-awakenings prevent the brain from completing full 90-minute sleep cycles, dramatically cutting deep Stage N3 physical repair and REM dream integration. Chronic sleep fragmentation causes systemic neuroinflammation, elevated resting cortisol, impaired glucose metabolism, memory loss, and severe emotional exhaustion.",
+    signalAnomaly: {
+      status: "abnormal",
+      statusBadge: "Abnormal Cortical Arousals & Alpha Intrusion",
+      abnormalLocation: "Recurrent rapid Alpha (8–12 Hz) & Beta (13–30 Hz) rhythm intrusions fracturing slow Delta oscillations",
+      signalPathologyDescription: "Instead of sustained, synchronized slow waves (<2 Hz), the recording demonstrates repeated 3 to 15-second cortical micro-arousals accompanied by heightened submental EMG muscle tone and erratic autonomic heart rate surges.",
+      normalBaselineComparison: "Healthy slow-wave sleep consists of continuous high-voltage (>75 µV) synchronized Delta waves and profound submental EMG muscle relaxation."
+    },
+    thingsToPayAttentionTo: [
+      {
+        sign: "Waking up between 2 AM and 4 AM with catastrophic racing thoughts or physical restlessness",
+        clinicalContext: "Indicates elevated nocturnal cortisol and sympathetic nervous system hyper-arousal.",
+        urgency: "Clinical Follow-Up"
+      },
+      {
+        sign: "Uncomfortable creeping, crawling, or tingling urges to move legs when resting in bed",
+        clinicalContext: "Hallmark sign of Restless Legs Syndrome (RLS), frequently triggered by low brain iron/ferritin stores.",
+        urgency: "Clinical Follow-Up"
+      },
+      {
+        sign: "Relying on escalating doses of alcohol, sedatives, or over-the-counter sleep aids",
+        clinicalContext: "Sedatives suppress natural sleep architecture and cause rapid tolerance and rebound awakenings.",
+        urgency: "Immediate Medical Attention"
+      },
+      {
+        sign: "Persistent brain fog, irritability, and afternoon caffeine cravings",
+        clinicalContext: "Direct daytime consequence of lacking restorative deep sleep cycles.",
+        urgency: "Monitor Daily"
+      }
+    ],
+    realTreatments: [
+      {
+        treatmentName: "Cognitive Behavioral Therapy for Insomnia (CBT-I)",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "Structured multicomponent protocol combining sleep restriction therapy, stimulus control, and sleep scheduling to recondition the brain that bed equals rapid, consolidated sleep.",
+        evidenceBase: "American College of Physicians (ACP) First-Line Guideline — Proven superior to medication"
+      },
+      {
+        treatmentName: "Dual Orexin Receptor Antagonists (DORAs: Daridorexant / Suvorexant)",
+        category: "First-Line Medical Therapy",
+        howItWorks: "Physician-prescribed medications that selectively silence the brain's hyperactive wakefulness neurotransmitter (orexin) without creating chemical dependence or morning grogginess.",
+        evidenceBase: "FDA-Approved & AASM Clinical Guidelines for sleep maintenance insomnia"
+      },
+      {
+        treatmentName: "Circadian Phototherapy & Morning Light Entrainment",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "10,000 lux broad-spectrum light exposure within 30 minutes of waking to anchor the circadian suprachiasmatic nucleus and optimize nighttime melatonin timing.",
+        evidenceBase: "AASM Recommended Chronobiological Therapy"
+      },
+      {
+        treatmentName: "Serum Ferritin & Iron Optimization Protocol",
+        category: "Medical Specialist Care",
+        howItWorks: "Targeted therapeutic iron supplementation under physician guidance to bring ferritin levels above 75 ng/mL, eliminating neurological restless leg micro-awakenings.",
+        evidenceBase: "International Restless Legs Syndrome Study Group (IRLSSG) Consensus"
+      }
+    ],
     causes: [
       {
         title: "High Stress & Nervous System Overdrive",
@@ -234,6 +377,52 @@ const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
       "This test shows optimal, healthy deep sleep. During this phase, the body repairs muscles, strengthens the immune system, flushes toxins out of the brain, and builds long-term memory.",
     whatSignalMeans:
       "The recording displays huge, gentle, synchronized rolling waves called 'Delta waves'. The brain's electrical activity is working in harmony at a calm, low frequency (0.5 to 2 cycles per second).",
+    whyNeedsAttention:
+      "Stage N3 is the primary physical restoration window where Human Growth Hormone (HGH) is released and the brain's glymphatic system washes away metabolic waste (including beta-amyloid). Sustaining healthy slow-wave sleep is essential to prevent cognitive decline, support athletic recovery, and maintain a robust immune defense.",
+    signalAnomaly: {
+      status: "optimal",
+      statusBadge: "Optimal Synchronized Delta Wave Architecture",
+      abnormalLocation: "No pathology detected — Pristine 0.5–2.0 Hz Delta slow-wave synchrony (>75 µV)",
+      signalPathologyDescription: "High-voltage, highly synchronized slow Delta waves dominate across frontal and central brain leads with complete physical stillness, representing ideal restorative deep sleep.",
+      normalBaselineComparison: "Matches gold-standard American Academy of Sleep Medicine (AASM) criteria for Stage N3 slow-wave sleep."
+    },
+    thingsToPayAttentionTo: [
+      {
+        sign: "Heavy grogginess or disorientation for 15–30 minutes if woken abruptly",
+        clinicalContext: "Normal 'sleep inertia' caused by waking directly out of deep Delta slow waves; resolves with hydration and morning light.",
+        urgency: "Monitor Daily"
+      },
+      {
+        sign: "Inadvertent sleepwalking, confusion, or night terrors (parasomnias)",
+        clinicalContext: "Partial arousals out of deep slow-wave sleep; requires clinical evaluation if movements become unsafe.",
+        urgency: "Clinical Follow-Up"
+      },
+      {
+        sign: "Sudden drop in daytime stamina despite long total hours in bed",
+        clinicalContext: "May signal reduction in slow-wave percentage due to alcohol, stress, or age.",
+        urgency: "Monitor Daily"
+      }
+    ],
+    realTreatments: [
+      {
+        treatmentName: "Sleep Architecture Preservation Protocol",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "Maintaining a strict consistent sleep-wake schedule and avoiding evening alcohol (which suppresses delta wave generation by >40%).",
+        evidenceBase: "AASM Standard Sleep Hygiene & Recovery Guidelines"
+      },
+      {
+        treatmentName: "Thermal Regulation & Bedroom Cooling",
+        category: "Clinical Device / Appliance",
+        howItWorks: "Keeping sleep room temperature between 65°F–68°F (18°C–20°C) to support the natural 1°C core body temperature drop required for deep slow-wave generation.",
+        evidenceBase: "Clinical Chronobiology & Thermoregulation Standards"
+      },
+      {
+        treatmentName: "Adenosine Building Daytime Exercise",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "30–45 minutes of moderate aerobic or resistance training completed at least 3 hours before bed to maximize daytime adenosine breakdown and slow-wave depth.",
+        evidenceBase: "Sports Medicine & Sleep Quality Consensus"
+      }
+    ],
     causes: [
       {
         title: "Normal Healthy Sleep Cycle Architecture",
@@ -305,6 +494,52 @@ const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
       "This test captures Stage N2 sleep, which makes up about 50% of a healthy adult's night. The brain uses this stage to protect sleep from outside noises and organize new memories from the day.",
     whatSignalMeans:
       "The signal shows two healthy signature patterns: 'Sleep Spindles' (quick, rhythmic 12–14 Hz ripples) and 'K-Complexes' (tall, sharp hill-and-valley waves). These act like a natural sound muffler for your brain.",
+    whyNeedsAttention:
+      "While Stage N2 is an important transitional stage, spending excessive portions of the night stuck in light sleep without deepening into Stage N3 slow-wave sleep or REM results in chronic unrefreshing sleep syndrome, daytime fatigue, cognitive sluggishness, and increased vulnerability to waking from trivial sounds.",
+    signalAnomaly: {
+      status: "caution",
+      statusBadge: "Borderline / Light Sleep Stage N2",
+      abnormalLocation: "Sub-optimal sleep spindle density (11–16 Hz) and prominent theta background (4–7 Hz)",
+      signalPathologyDescription: "The signal reflects transitional Stage N2 sleep with K-complexes and sleep spindles. If prolonged without transition to Stage N3 deep sleep, it indicates shallow sleep fragility susceptible to acoustic awakening.",
+      normalBaselineComparison: "Healthy sleep transitions smoothly every 90 minutes from Stage N2 into deep Stage N3 slow-wave repair and REM dreaming."
+    },
+    thingsToPayAttentionTo: [
+      {
+        sign: "Waking up easily from minor room sounds, pet movements, or distant traffic",
+        clinicalContext: "Indicates fragile sensory gating and low sleep spindle density.",
+        urgency: "Monitor Daily"
+      },
+      {
+        sign: "Feeling like you were 'half-awake' dreaming or resting all night",
+        clinicalContext: "Common symptom of alpha-delta intrusion during light Stage N2 sleep.",
+        urgency: "Clinical Follow-Up"
+      },
+      {
+        sign: "Mid-afternoon energy dips requiring caffeine or sugary snacks to stay functional",
+        clinicalContext: "Reflects lack of progression into deep restorative sleep stages.",
+        urgency: "Monitor Daily"
+      }
+    ],
+    realTreatments: [
+      {
+        treatmentName: "Acoustic Sound Masking & White/Pink Noise Conditioning",
+        category: "Clinical Device / Appliance",
+        howItWorks: "Generates constant, broad-frequency soundscapes to raise the auditory baseline, preventing sudden environmental noises from triggering cortical arousals during spindle phases.",
+        evidenceBase: "AASM Behavioral Environmental Guidelines"
+      },
+      {
+        treatmentName: "Adenosine Sleep-Drive Optimization",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "Eliminates afternoon naps longer than 20 minutes and enforces regular morning wake times to deepen homeostatic drive from Stage N2 into Stage N3.",
+        evidenceBase: "Behavioral Sleep Medicine Best Practices"
+      },
+      {
+        treatmentName: "Clinical Medication Audit with Prescribing Physician",
+        category: "Medical Specialist Care",
+        howItWorks: "Review of prescription medications (e.g. beta-blockers, stimulating SSRIs, decongestants) that may suppress sleep spindles or inhibit deep sleep progression.",
+        evidenceBase: "Clinical Pharmacotherapy Review Protocol"
+      }
+    ],
     causes: [
       {
         title: "Core Adult Sleep Architecture",
@@ -370,6 +605,58 @@ const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
       "This test captures Stage REM, the phase where vivid dreaming happens. Your brain is as electrically active as when you are awake, but your voluntary muscles are completely relaxed (temporarily paralyzed) so you do not physically act out your dreams.",
     whatSignalMeans:
       "The brain waves look fast and irregular with characteristic 'sawtooth' patterns. The eye sensor (EOG) detects rapid side-to-side darting movements, while the chin sensor (EMG) shows near-zero muscle tension.",
+    whyNeedsAttention:
+      "REM sleep is essential for emotional memory consolidation, threat de-escalation, mood stability, and neuroplasticity. Crucially, your brain must maintain total skeletal muscle paralysis (atonia). If atonia fails, individuals can physically act out dreams, causing severe trauma, falls, or injury to themselves and their bed partner.",
+    signalAnomaly: {
+      status: "caution",
+      statusBadge: "REM Dream State / Muscle Atonia Telemetry",
+      abnormalLocation: "Desynchronized low-voltage saw-tooth EEG waves with muscle atonia fluctuations",
+      signalPathologyDescription: "Fast, desynchronized cortical EEG signals with characteristic saw-tooth waves alongside transient twitches. If chin EMG registers persistent muscle tone or movement spikes, it flags potential REM motor disinhibition.",
+      normalBaselineComparison: "Normal REM exhibits high cortical EEG activity, bursts of rapid eye movements (EOG), and complete muscle paralysis (atonia) on EMG."
+    },
+    thingsToPayAttentionTo: [
+      {
+        sign: "Kicking, punching, flailing, or leaping out of bed during vivid dreams",
+        clinicalContext: "Critical red flag for REM Sleep Behavior Disorder (RBD), requiring immediate neurological workup.",
+        urgency: "Immediate Medical Attention"
+      },
+      {
+        sign: "Waking up fully conscious but completely unable to move or speak for 30–60 seconds",
+        clinicalContext: "Sleep paralysis — harmless but distressing intrusion of REM atonia into wakefulness.",
+        urgency: "Clinical Follow-Up"
+      },
+      {
+        sign: "Frequent terrifying nightmares or waking up in cold sweat with rapid breathing",
+        clinicalContext: "Indicates autonomic stress overload interfering with REM emotional processing.",
+        urgency: "Clinical Follow-Up"
+      }
+    ],
+    realTreatments: [
+      {
+        treatmentName: "Video-Polysomnography with Full-Limb Electromyography",
+        category: "First-Line Medical Therapy",
+        howItWorks: "Hospital-grade sleep recording with synchronized video and limb sensors to definitively verify whether muscle paralysis is intact.",
+        evidenceBase: "AASM Clinical Diagnostic Standard for REM Disorders"
+      },
+      {
+        treatmentName: "Neurologist-Prescribed Pharmacotherapy (High-Dose Melatonin / Clonazepam)",
+        category: "Medical Specialist Care",
+        howItWorks: "High-dose pharmaceutical melatonin (3–12 mg) or low-dose clonazepam prescribed specifically by a neurologist to restore brainstem motor inhibition.",
+        evidenceBase: "AASM Practice Guideline for REM Sleep Behavior Disorder"
+      },
+      {
+        treatmentName: "Imagery Rehearsal Therapy (IRT) for Nightmare Disorder",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "Evidence-based cognitive protocol where recurring nightmares are scripted into new, peaceful outcomes and rehearsed mentally during daytime relaxation.",
+        evidenceBase: "APA & AASM Standard Treatment for Chronic Nightmares"
+      },
+      {
+        treatmentName: "Bedroom Physical Safety Modifications",
+        category: "Clinical Device / Appliance",
+        howItWorks: "Removing bedside furniture with sharp corners, padding bedside flooring, and installing soft bed rails to prevent sleep-related injury.",
+        evidenceBase: "Clinical Neurological Safety Protocol"
+      }
+    ],
     causes: [
       {
         title: "Normal Circadian REM Cycling",
@@ -442,6 +729,63 @@ const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
       "This test shows the brain under immediate mental strain from difficult, timed math calculations. The brain's working memory is pushed to its limit, triggering a temporary surge in mental tension and fast electrical rhythms.",
     whatSignalMeans:
       "Calm, relaxing 10 Hz 'Alpha' waves disappear (a process called alpha-blocking) and are replaced by fast, buzzing 20–26 Hz 'Beta' waves across the left frontal forehead (F3 sensor), showing high mental effort.",
+    whyNeedsAttention:
+      "Prolonged frontal hyper-metabolic Beta bursts indicate acute sympathetic nervous system overdrive ('fight-or-flight' lock). Sustained overload exhausts adrenal reserves, causes blood pressure surges, triggers gastrointestinal distress, and leads to cognitive burnout and impaired executive decision-making.",
+    signalAnomaly: {
+      status: "abnormal",
+      statusBadge: "Abnormal Frontal Beta Surge & Sympathetic Overdrive",
+      abnormalLocation: "Frontal lead (F3/F4) excessive Beta (18–30 Hz) & Low-Gamma power with suppression of resting Alpha (8–12 Hz)",
+      signalPathologyDescription: "Electrophysiological recording exhibits marked bilateral frontal beta desynchronization, severe suppression of restful alpha rhythms, and ECG tachycardia with blunted vagal HRV (RMSSD < 18 ms).",
+      normalBaselineComparison: "Calm cognitive readiness maintains dominant occipital-parietal Alpha waves (8–12 Hz, >30 µV) and resilient heart rate variability (RMSSD > 35 ms)."
+    },
+    thingsToPayAttentionTo: [
+      {
+        sign: "Sudden chest tightness, pounding heart, or shortness of breath during mental tasks",
+        clinicalContext: "Sympathetic nervous system tachycardia driven by acute mental stress hormones.",
+        urgency: "Immediate Medical Attention"
+      },
+      {
+        sign: "Clenched jaw (bruxism), tension headaches behind eyes, or trembling fingers",
+        clinicalContext: "Somatic motor manifestation of continuous high-frequency Beta brain wave firing.",
+        urgency: "Monitor Daily"
+      },
+      {
+        sign: "Mental paralysis, stumbling over words, or inability to make executive decisions",
+        clinicalContext: "Sign of prefrontal cortex working-memory depletion under cognitive pressure.",
+        urgency: "Clinical Follow-Up"
+      },
+      {
+        sign: "Inability to calm down or relax hours after the mental stressor has ended",
+        clinicalContext: "Autonomic nervous system failing to switch back to parasympathetic recovery mode.",
+        urgency: "Clinical Follow-Up"
+      }
+    ],
+    realTreatments: [
+      {
+        treatmentName: "Resonant Frequency HRV Biofeedback Training",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "Real-time biometric training pacing respiration at 0.1 Hz (~6 breaths per minute) to stimulate the baroreflex and vagus nerve, rapidly suppressing frontal Beta spikes.",
+        evidenceBase: "AAPB Level 5 Evidence — Efficacious and Specific for Autonomic Strain"
+      },
+      {
+        treatmentName: "4-Point Diurnal Salivary Cortisol & DHEA Panel",
+        category: "First-Line Medical Therapy",
+        howItWorks: "Physician-ordered diagnostic saliva testing measuring morning, noon, evening, and bedtime cortisol to diagnose Hypothalamic-Pituitary-Adrenal (HPA) axis fatigue.",
+        evidenceBase: "Endocrine Society Clinical Practice Guidelines"
+      },
+      {
+        treatmentName: "Cognitive Stress Inoculation & Pacing Therapy",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "Structured psychological training to restructure catastrophic performance beliefs and implement neuro-ergonomic focus/rest intervals.",
+        evidenceBase: "APA Practice Guideline for Occupational Stress Management"
+      },
+      {
+        treatmentName: "Cardioselective Beta-Blocker Medical Consultation (e.g. Propranolol)",
+        category: "Medical Specialist Care",
+        howItWorks: "Evaluation by a physician for short-term, targeted autonomic stabilization to block somatic adrenaline receptors during severe sympathetic surges.",
+        evidenceBase: "Clinical Pharmacological Protocol for Somatic Stress"
+      }
+    ],
     causes: [
       {
         title: "Intense Mental Calculation & Time Pressure",
@@ -519,6 +863,63 @@ const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
       "This test reflects mental conflict (tested via the Stroop color-word test, where the word 'BLUE' is written in red ink). The brain has to actively fight off its automatic impulse to read the word, creating intense mental friction.",
     whatSignalMeans:
       "The midline forehead sensor (Fz) detects strong 'Frontal Midline Theta' waves along with high-frequency Beta spikes. This confirms the brain's error-detection and conflict-resolution network is working overtime.",
+    whyNeedsAttention:
+      "Repeated cognitive conflict crashes prefrontal working memory and depletes Anterior Cingulate Cortex (ACC) glucose reserves, leading to severe error vulnerability, academic burnout, micro-blackouts, sensory hypersensitivity, and chronic tension headaches.",
+    signalAnomaly: {
+      status: "abnormal",
+      statusBadge: "Abnormal Anterior Cingulate Overload & Midline Theta Surge",
+      abnormalLocation: "Frontal Midline sensor (Fz) intense Theta (4–7 Hz) power surge with concurrent temporal-parietal Beta synchronization",
+      signalPathologyDescription: "Signal reveals erratic bursts of high-amplitude Frontal Midline Theta (Fm-theta) coupled with sudden galvanic skin response (GSR) surges, reflecting intense neural friction in error-monitoring networks.",
+      normalBaselineComparison: "Stable, organized low-variability theta rhythms with smooth autonomic baseline and balanced bilateral hemispheric activity."
+    },
+    thingsToPayAttentionTo: [
+      {
+        sign: "Momentary cognitive freezing or repeating errors on simple, familiar tasks",
+        clinicalContext: "Indicates anterior cingulate cortex fatigue and executive resource depletion.",
+        urgency: "Clinical Follow-Up"
+      },
+      {
+        sign: "Dull, tight band of pressure wrapping around forehead and temples (tension headache)",
+        clinicalContext: "Direct outcome of sustained squinting, facial motor clenching, and cognitive friction.",
+        urgency: "Monitor Daily"
+      },
+      {
+        sign: "Sudden emotional frustration, tearfulness, or intense irritation when multi-tasking",
+        clinicalContext: "Signals loss of prefrontal emotional inhibition due to cognitive exhaustion.",
+        urgency: "Clinical Follow-Up"
+      },
+      {
+        sign: "Consuming escalating amounts of energy drinks, high-dose caffeine, or study stimulants",
+        clinicalContext: "Increases cortical irritability and worsens the post-stimulant cognitive crash.",
+        urgency: "Immediate Medical Attention"
+      }
+    ],
+    realTreatments: [
+      {
+        treatmentName: "Neuro-Ergonomic Pomodoro & Physiological Sigh Protocol",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "Strict 25-minute focus blocks separated by 5 minutes of physiological sighs (two quick nasal inhales followed by one long, slow mouth exhale) to restore prefrontal metabolic reserves.",
+        evidenceBase: "Clinical Neuroergonomics & Stanford Neurobiology Protocol"
+      },
+      {
+        treatmentName: "Quantitative EEG (qEEG) Brain Mapping Evaluation",
+        category: "Medical Specialist Care",
+        howItWorks: "Clinical 19-channel EEG brain mapping to calculate Theta/Beta power ratios, ruling out underlying ADHD, executive dysregulation, or learning processing deficits.",
+        evidenceBase: "American Academy of Neurology Clinical Diagnostic Protocol"
+      },
+      {
+        treatmentName: "Mindfulness-Based Cognitive Therapy (MBCT)",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "Teaches patients to decouple emotional reactivity from challenging cognitive stimuli, reducing anterior cingulate friction by >30%.",
+        evidenceBase: "NICE Recommended Guideline for Cognitive Overload"
+      },
+      {
+        treatmentName: "Nutritional & Neurochemical Screen (Serum B12, Folate, Complete Blood Count)",
+        category: "First-Line Medical Therapy",
+        howItWorks: "Laboratory blood screening to eliminate micronutrient and neurotransmitter cofactor deficiencies that impair neural transmission speed.",
+        evidenceBase: "Clinical Biochemical Assessment Guidelines"
+      }
+    ],
     causes: [
       {
         title: "Sensory & Informational Overload",
@@ -596,6 +997,63 @@ const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
       "This test captures a sudden spike of acute psychological anxiety or panic. The emotional centers of the brain (the limbic system) have temporarily hijacked the conscious thinking areas, triggering a fight-or-flight emergency alert.",
     whatSignalMeans:
       "The left and right forehead sensors (Fp1 & Fp2) show an intense imbalance, with jagged high-frequency waves and rapid eye flutters. The brain is scanning frantically for perceived threats.",
+    whyNeedsAttention:
+      "Right-frontal cortical hyperactivity combined with vagal parasympathetic withdrawal leaves the autonomic nervous system defenseless against panic attacks, chronic tachycardia, hyperventilation, gastrointestinal inflammation, and crippling agoraphobic avoidance.",
+    signalAnomaly: {
+      status: "abnormal",
+      statusBadge: "Abnormal Right-Frontal Asymmetry & Vagal Withdrawal",
+      abnormalLocation: "Right hemisphere hyperactivation (Alpha asymmetry F4 < F3) with prominent Gamma oscillations (>35 Hz)",
+      signalPathologyDescription: "Marked electrophysiological right-frontal hyper-activation paired with severe parasympathetic vagal withdrawal (LF/HF ratio > 4.5), reflecting acute neurochemical distress and panic vulnerability.",
+      normalBaselineComparison: "Balanced bilateral frontal alpha power (F3/F4 ratio ~ 1.0) with robust respiratory sinus arrhythmia (parasympathetic vagal engagement)."
+    },
+    thingsToPayAttentionTo: [
+      {
+        sign: "Acute panic surge: pounding heart, dizziness, numb/tingling fingers, feeling like passing out",
+        clinicalContext: "Acute panic attack accompanied by hyperventilation and respiratory alkalosis.",
+        urgency: "Immediate Medical Attention"
+      },
+      {
+        sign: "Persistent sense of impending doom, uncontrollable catastrophic worry lasting months",
+        clinicalContext: "Indicates continuous limbic amygdala firing without cortical prefrontal inhibition.",
+        urgency: "Clinical Follow-Up"
+      },
+      {
+        sign: "Chronic gastrointestinal distress (nausea, cramping, irritable bowel flare-ups)",
+        clinicalContext: "Direct consequence of the gut-brain axis shutting down digestive blood flow during fear states.",
+        urgency: "Clinical Follow-Up"
+      },
+      {
+        sign: "Avoiding social, work, or public environments out of fear of having an episode",
+        clinicalContext: "Development of agoraphobic avoidance behavior requiring specialized clinical therapy.",
+        urgency: "Clinical Follow-Up"
+      }
+    ],
+    realTreatments: [
+      {
+        treatmentName: "Cognitive Behavioral Therapy for Panic & Anxiety (CBT)",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "Gold-standard structured psychotherapy using interoceptive exposure (gradually desensitizing harmless physical sensations) and cognitive restructuring of catastrophic misinterpretations.",
+        evidenceBase: "APA & NICE Clinical Practice Guidelines — Gold Standard First-Line Treatment"
+      },
+      {
+        treatmentName: "Medical Evaluation for SSRI / SNRI Pharmacotherapy",
+        category: "First-Line Medical Therapy",
+        howItWorks: "Evaluation by a psychiatrist or primary care physician for evidence-based neurochemical stabilization (e.g. escitalopram, sertraline) to balance serotonin-norepinephrine pathways.",
+        evidenceBase: "APA Practice Guidelines for Major Anxiety & Panic Disorders"
+      },
+      {
+        treatmentName: "Autonomic Vagus Nerve Stimulation (tVNS) & Somatic Grounding",
+        category: "Clinical Device / Appliance",
+        howItWorks: "Targeted transcutaneous auricular vagus nerve stimulation devices or diaphragmatic biofeedback to immediately activate the parasympathetic vagal brake and decrease heart rate.",
+        evidenceBase: "FDA-Cleared Modalities & Clinical Neurophysiology Standards"
+      },
+      {
+        treatmentName: "12-Lead Ambulatory Holter ECG Monitoring",
+        category: "Medical Specialist Care",
+        howItWorks: "24-hour continuous cardiac rhythm recording to definitively distinguish benign sinus tachycardia from underlying supraventricular arrhythmias.",
+        evidenceBase: "AHA/ACC Clinical Diagnostic Protocol"
+      }
+    ],
     causes: [
       {
         title: "Fight-or-Flight Adrenaline Surge",
@@ -670,7 +1128,7 @@ const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
         "Could my symptoms be linked to my thyroid, blood sugar, or medications?",
         "What evidence-based psychological therapies (like CBT or Exposure Therapy) do you recommend for my anxiety pattern?"
       ],
-      specialistToConsult: "Licensed Clinical Psychologist / Psychiatrist & Board-Certified Cardiologist (to rule out heart arrhythmias)"
+      specialistToConsult: "Licensed Clinical Psychologist / Psychiatrist & Board-Certified Cardiologist"
     }
   },
 
@@ -681,6 +1139,52 @@ const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
       "This test shows a calm, peaceful brain at rest with eyes gently closed. The nervous system is operating in its 'rest-and-digest' parasympathetic mode, with no acute signs of emotional distress or cognitive strain.",
     whatSignalMeans:
       "The sensor at the back of the head (O1) displays a continuous, rhythmic, wavy 9–11 Hz rhythm known as the 'Alpha rhythm'. This rhythm appears when visual input is stopped and the brain is resting serenely.",
+    whyNeedsAttention:
+      "Maintaining this calm, restorative neuro-cardiac state protects against degenerative cardiovascular stress, systemic inflammation, and burnout. It represents the healthy biological standard for daytime nervous system resilience.",
+    signalAnomaly: {
+      status: "optimal",
+      statusBadge: "Optimal Restorative Alpha Synchrony",
+      abnormalLocation: "No pathology detected — Dominant Occipital Alpha (8–12 Hz) with High Vagal HRV",
+      signalPathologyDescription: "Continuous, smooth sinusoidal Alpha waves (8–12 Hz, 40–60 µV) dominating posterior leads with minimal muscle artifact and resilient parasympathetic vagal engagement.",
+      normalBaselineComparison: "Benchmark standard for a healthy, relaxed human nervous system."
+    },
+    thingsToPayAttentionTo: [
+      {
+        sign: "Sudden difficulty relaxing or persistent restlessness when sitting quietly",
+        clinicalContext: "Early warning sign of emerging sympathetic nervous system overdrive.",
+        urgency: "Monitor Daily"
+      },
+      {
+        sign: "Gradual sleep disruptions or waking unrefreshed after prior healthy baselines",
+        clinicalContext: "Flags an emerging sleep hygiene or stress deficit before it turns into chronic insomnia.",
+        urgency: "Monitor Daily"
+      },
+      {
+        sign: "Frequent palpitations or heart fluttering without mental stress",
+        clinicalContext: "Requires standard clinical screening to rule out underlying cardiac irregularities.",
+        urgency: "Clinical Follow-Up"
+      }
+    ],
+    realTreatments: [
+      {
+        treatmentName: "Preventive Nervous System Conditioning & Mindfulness",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "Daily 15–20 minutes of mindfulness meditation or open-monitoring practice to preserve occipital alpha synchrony and down-regulate stress reactivity.",
+        evidenceBase: "Clinical Evidence-Based Preventive Health Protocol"
+      },
+      {
+        treatmentName: "Zone 2 Aerobic Conditioning (150 mins/week)",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "Steady-state aerobic exercise that stimulates mitochondrial density, improves vascular elasticity, and maximizes vagal recovery.",
+        evidenceBase: "American Heart Association (AHA) Gold Standard Guidelines"
+      },
+      {
+        treatmentName: "Annual Preventive Medical & Metabolic Physical",
+        category: "First-Line Medical Therapy",
+        howItWorks: "Regular physician checkup monitoring blood pressure, lipid panel, fasting glucose, and thyroid markers to maintain optimal neuro-vascular balance.",
+        evidenceBase: "Standard Preventive Clinical Practice"
+      }
+    ],
     causes: [
       {
         title: "Resting State with Eyes Closed",
@@ -778,7 +1282,7 @@ export default function PatientGuidanceSection({
           <div className="space-y-1 max-w-2xl">
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wider uppercase bg-sky-500/20 text-sky-300 border border-sky-500/30">
-                Patient & Non-Medical Guide
+                Patient & Clinical Telemetry Guide
               </span>
               <span className="text-xs text-slate-400 font-mono">
                 Case: {patientAnonId || caseId}
@@ -800,7 +1304,7 @@ export default function PatientGuidanceSection({
               {stageOrRisk}
             </div>
             <div className="text-[11px] text-slate-400">
-              Written in simple, everyday language
+              Clinical telemetry translated for patients
             </div>
           </div>
         </div>
@@ -815,7 +1319,7 @@ export default function PatientGuidanceSection({
                 : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
             }`}
           >
-            1. Plain English Overview
+            1. Overview & Signals
           </button>
           <button
             onClick={() => setActiveTab("causes")}
@@ -845,7 +1349,7 @@ export default function PatientGuidanceSection({
                 : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
             }`}
           >
-            4. Required Medical Tests ({caseData.requiredTests.length})
+            4. Real Tests & Treatments ({caseData.requiredTests.length + caseData.realTreatments.length})
           </button>
           <button
             onClick={() => setActiveTab("actions")}
@@ -862,9 +1366,10 @@ export default function PatientGuidanceSection({
 
       {/* Main Content Area */}
       <div className="p-5 sm:p-6 bg-slate-50/50">
-        {/* TAB 1: OVERVIEW */}
+        {/* TAB 1: OVERVIEW & SIGNAL DIAGNOSTICS */}
         {activeTab === "overview" && (
           <div className="space-y-6">
+            {/* Plain English Meaning */}
             <div className="bg-sky-50 border border-sky-200 rounded-xl p-4 sm:p-5 flex items-start gap-3.5">
               <Info className="w-5 h-5 text-sky-700 shrink-0 mt-0.5" />
               <div className="space-y-1">
@@ -877,51 +1382,180 @@ export default function PatientGuidanceSection({
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs space-y-2">
-                <div className="flex items-center gap-2 text-rose-600 font-semibold text-sm">
-                  <AlertTriangle className="w-4 h-4" />
-                  <span>Why This Needs Attention</span>
+            {/* Two-Card Grid: Signal Finding + Specialist */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {/* Card 1: Where the signal is not good & Why It Needs Attention */}
+              <div className="p-4 sm:p-5 rounded-xl bg-white border border-slate-200 shadow-xs space-y-3.5">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 text-rose-600 font-bold text-sm">
+                    <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                    <span>Why This Needs Attention</span>
+                  </div>
+                  <span
+                    className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border uppercase tracking-wider ${
+                      caseData.signalAnomaly.status === "abnormal"
+                        ? "bg-rose-100 text-rose-800 border-rose-200"
+                        : caseData.signalAnomaly.status === "caution"
+                        ? "bg-amber-100 text-amber-800 border-amber-200"
+                        : "bg-emerald-100 text-emerald-800 border-emerald-200"
+                    }`}
+                  >
+                    {caseData.signalAnomaly.statusBadge}
+                  </span>
                 </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Early detection allows doctors to treat issues before they turn into long-term fatigue, cardiovascular strain, chronic anxiety, or daily burnout.
-                </p>
+
+                {/* Where the signal is not good */}
+                <div className="p-3.5 rounded-lg bg-rose-50/70 border border-rose-200/80 space-y-1.5">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-rose-800 flex items-center gap-1.5">
+                    <Activity className="w-3.5 h-3.5 text-rose-600" />
+                    <span>Where The Signal Is Not Good (Waveform Anomaly)</span>
+                  </div>
+                  <p className="text-xs font-bold text-slate-900 leading-snug">
+                    {caseData.signalAnomaly.abnormalLocation}
+                  </p>
+                  <p className="text-[11px] text-slate-700 leading-relaxed pt-0.5">
+                    {caseData.signalAnomaly.signalPathologyDescription}
+                  </p>
+                </div>
+
+                {/* Why it needs medical attention */}
+                <div className="text-xs text-slate-700 leading-relaxed pt-0.5">
+                  <strong className="text-slate-900">Clinical Justification: </strong>
+                  {caseData.whyNeedsAttention}
+                </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs space-y-2">
-                <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm">
-                  <Stethoscope className="w-4 h-4" />
-                  <span>Recommended Specialist</span>
+              {/* Card 2: Recommended Specialist */}
+              <div className="p-4 sm:p-5 rounded-xl bg-white border border-slate-200 shadow-xs space-y-3.5 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
+                    <Stethoscope className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Recommended Specialist</span>
+                  </div>
+                  <div className="p-3.5 rounded-lg bg-emerald-50/70 border border-emerald-200/80">
+                    <p className="text-xs font-bold text-slate-900 leading-snug">
+                      {caseData.actionableGuidance.specialistToConsult}
+                    </p>
+                    <p className="text-[11px] text-emerald-900 pt-1 leading-relaxed">
+                      Consult with this medical specialist to evaluate confirmatory gold-standard tests and discuss evidence-based therapeutic options.
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+                    <div className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">
+                      Healthy Baseline Comparison
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      {caseData.signalAnomaly.normalBaselineComparison}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-xs font-bold text-slate-900">
-                  {caseData.actionableGuidance.specialistToConsult}
-                </p>
-                <p className="text-[11px] text-slate-500">
+
+                <p className="text-[11px] text-slate-500 pt-1">
                   Share this summary and the exported report with your healthcare team.
                 </p>
               </div>
             </div>
 
-            {/* Quick Teaser of Tests & Actions */}
-            <div className="p-4 rounded-xl bg-white border border-slate-200 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <ClipboardList className="w-5 h-5 text-amber-500" />
+            {/* CARD 3: REAL THINGS ON WHICH THE PATIENT NEEDS TO PAY ATTENTION (RED FLAGS) */}
+            <div className="p-4 sm:p-5 rounded-xl bg-white border border-slate-200 shadow-xs space-y-3.5">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-2">
+                  <ShieldAlert className="w-4 h-4 text-rose-600" />
+                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                    Real Things on Which the Patient Needs to Pay Attention
+                  </h3>
+                </div>
+                <span className="text-[11px] text-slate-500">
+                  Critical Physiological Warning Signs & Red Flags
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {caseData.thingsToPayAttentionTo.map((item, idx) => {
+                  let badgeStyle = "bg-slate-100 text-slate-700 border-slate-200";
+                  if (item.urgency === "Immediate Medical Attention") {
+                    badgeStyle = "bg-rose-100 text-rose-900 border-rose-300 font-extrabold";
+                  } else if (item.urgency === "Clinical Follow-Up") {
+                    badgeStyle = "bg-amber-100 text-amber-900 border-amber-300 font-bold";
+                  } else {
+                    badgeStyle = "bg-sky-100 text-sky-900 border-sky-300 font-medium";
+                  }
+
+                  return (
+                    <div
+                      key={idx}
+                      className="p-3.5 rounded-lg border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-slate-300 transition-all space-y-1.5"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="text-xs font-bold text-slate-900 leading-snug">
+                          {item.sign}
+                        </span>
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full border shrink-0 ${badgeStyle}`}>
+                          {item.urgency}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-600 leading-relaxed">
+                        {item.clinicalContext}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* CARD 4: REAL TESTS & REAL TREATMENTS OVERVIEW TEASER */}
+            <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white shadow-xs space-y-3.5">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <div className="text-xs font-bold text-slate-900">
-                    {caseData.requiredTests.length} Medical Diagnostic Tests Recommended
+                  <div className="flex items-center gap-2 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                    <Pill className="w-4 h-4" />
+                    <span>Real Diagnostic Tests & Real Medical Treatments</span>
                   </div>
-                  <div className="text-[11px] text-slate-500">
-                    Click tab 4 above to see full details of each test, how it works, and why your doctor orders it.
+                  <h4 className="text-sm sm:text-base font-bold text-white pt-1">
+                    {caseData.requiredTests.length} Confirmatory Clinical Tests & {caseData.realTreatments.length} Evidence-Based Therapies
+                  </h4>
+                  <p className="text-xs text-slate-300 pt-0.5">
+                    Clinically validated diagnostic evaluations and physician-directed treatments matching this waveform pattern.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setActiveTab("tests")}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-lg text-xs font-bold transition-all shadow-sm shrink-0"
+                >
+                  <span>View Full Tests & Treatments</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Quick Pills */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-slate-700/60 text-xs">
+                <div className="space-y-1">
+                  <div className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
+                    Diagnostic Tests:
                   </div>
+                  <ul className="text-slate-200 text-[11px] space-y-0.5">
+                    {caseData.requiredTests.slice(0, 2).map((t, i) => (
+                      <li key={i} className="flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
+                        <span className="truncate">{t.plainEnglishName}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="space-y-1">
+                  <div className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
+                    Medical Treatments:
+                  </div>
+                  <ul className="text-slate-200 text-[11px] space-y-0.5">
+                    {caseData.realTreatments.slice(0, 2).map((tr, i) => (
+                      <li key={i} className="flex items-center gap-1.5">
+                        <Zap className="w-3 h-3 text-amber-400 shrink-0" />
+                        <span className="truncate">{tr.treatmentName}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-              <button
-                onClick={() => setActiveTab("tests")}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-medium transition-colors"
-              >
-                <span>View Required Tests</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
             </div>
           </div>
         )}
@@ -1006,61 +1640,128 @@ export default function PatientGuidanceSection({
           </div>
         )}
 
-        {/* TAB 4: REQUIRED MEDICAL TESTS */}
+        {/* TAB 4: REAL TESTS & REAL TREATMENTS */}
         {activeTab === "tests" && (
-          <div className="space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-2 pb-1">
-              <div>
-                <h3 className="text-base font-bold text-slate-900">
-                  Required Diagnostic Tests for This Condition
-                </h3>
-                <p className="text-xs text-slate-500">
-                  Bring this checklist to your physician to request or verify these formal clinical evaluations:
-                </p>
+          <div className="space-y-6">
+            {/* SECTION 1: REQUIRED DIAGNOSTIC TESTS */}
+            <div className="space-y-3.5">
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-1 border-b border-slate-200">
+                <div>
+                  <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <ClipboardList className="w-4 h-4 text-amber-600" />
+                    <span>Real Diagnostic Tests for This Condition</span>
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Bring this checklist to your physician to request or verify these formal clinical evaluations:
+                  </p>
+                </div>
+                <span className="text-xs font-semibold px-2.5 py-1 bg-amber-100 text-amber-900 rounded-full border border-amber-200">
+                  Diagnostic Workup ({caseData.requiredTests.length} Tests)
+                </span>
               </div>
-              <span className="text-xs font-semibold px-2.5 py-1 bg-amber-100 text-amber-900 rounded-full border border-amber-200">
-                Diagnostic Workup
-              </span>
+
+              <div className="space-y-3">
+                {caseData.requiredTests.map((t, idx) => {
+                  let badgeColor = "bg-slate-100 text-slate-700 border-slate-200";
+                  if (t.urgency === "Priority") {
+                    badgeColor = "bg-rose-100 text-rose-800 border-rose-200";
+                  } else if (t.urgency === "Recommended") {
+                    badgeColor = "bg-amber-100 text-amber-800 border-amber-200";
+                  }
+
+                  return (
+                    <div
+                      key={idx}
+                      className="bg-white rounded-xl p-4 border border-slate-200 shadow-xs hover:border-slate-300 transition-all space-y-2"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <div>
+                            <span className="font-bold text-sm text-slate-900">
+                              {t.plainEnglishName}
+                            </span>
+                            <span className="text-xs text-slate-500 font-mono ml-2">
+                              ({t.testName})
+                            </span>
+                          </div>
+                        </div>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${badgeColor}`}>
+                          {t.urgency}
+                        </span>
+                      </div>
+
+                      <div className="pl-6 text-xs text-slate-600 leading-relaxed">
+                        <strong className="text-slate-800">Why your doctor orders this: </strong>
+                        {t.whyNeeded}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
-            <div className="space-y-3">
-              {caseData.requiredTests.map((t, idx) => {
-                let badgeColor = "bg-slate-100 text-slate-700 border-slate-200";
-                if (t.urgency === "Priority") {
-                  badgeColor = "bg-rose-100 text-rose-800 border-rose-200";
-                } else if (t.urgency === "Recommended") {
-                  badgeColor = "bg-amber-100 text-amber-800 border-amber-200";
-                }
+            {/* SECTION 2: REAL MEDICAL TREATMENTS & THERAPIES */}
+            <div className="space-y-3.5 pt-2">
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-1 border-b border-slate-200">
+                <div>
+                  <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <Pill className="w-4 h-4 text-emerald-600" />
+                    <span>Real Medical Treatments & Evidence-Based Therapies</span>
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Clinically established medical therapies, devices, and protocols prescribed by physicians for this specific pattern:
+                  </p>
+                </div>
+                <span className="text-xs font-semibold px-2.5 py-1 bg-emerald-100 text-emerald-900 rounded-full border border-emerald-200">
+                  Evidence-Based Treatments ({caseData.realTreatments.length})
+                </span>
+              </div>
 
-                return (
-                  <div
-                    key={idx}
-                    className="bg-white rounded-xl p-4 border border-slate-200 shadow-xs hover:border-slate-300 transition-all space-y-2"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                        <div>
+              <div className="space-y-3">
+                {caseData.realTreatments.map((tr, idx) => {
+                  let catBadge = "bg-sky-50 text-sky-800 border-sky-200";
+                  if (tr.category === "First-Line Medical Therapy") {
+                    catBadge = "bg-rose-50 text-rose-800 border-rose-200";
+                  } else if (tr.category === "Clinical Device / Appliance") {
+                    catBadge = "bg-amber-50 text-amber-800 border-amber-200";
+                  } else if (tr.category === "Medical Specialist Care") {
+                    catBadge = "bg-purple-50 text-purple-800 border-purple-200";
+                  }
+
+                  return (
+                    <div
+                      key={idx}
+                      className="bg-white rounded-xl p-4 border border-slate-200 shadow-xs hover:border-slate-300 transition-all space-y-2"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <Zap className="w-4 h-4 text-amber-500 shrink-0" />
                           <span className="font-bold text-sm text-slate-900">
-                            {t.plainEnglishName}
+                            {tr.treatmentName}
                           </span>
-                          <span className="text-xs text-slate-500 font-mono ml-2">
-                            ({t.testName})
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${catBadge}`}>
+                            {tr.category}
                           </span>
                         </div>
                       </div>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${badgeColor}`}>
-                        {t.urgency}
-                      </span>
-                    </div>
 
-                    <div className="pl-6 text-xs text-slate-600 leading-relaxed">
-                      <strong className="text-slate-800">Why your doctor orders this: </strong>
-                      {t.whyNeeded}
+                      <div className="pl-6 text-xs text-slate-600 leading-relaxed space-y-1">
+                        <div>
+                          <strong className="text-slate-800">How It Works Clinically: </strong>
+                          {tr.howItWorks}
+                        </div>
+                        <div className="text-[11px] text-emerald-800 font-medium bg-emerald-50/60 p-2 rounded-lg border border-emerald-100">
+                          <strong>Clinical Evidence: </strong>
+                          {tr.evidenceBase}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         )}

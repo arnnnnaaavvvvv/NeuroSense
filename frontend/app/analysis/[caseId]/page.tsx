@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, ArrowRight, AlertCircle, CheckCircle2, FileDown, Activity, Sparkles, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight, AlertCircle, FileDown, Activity, Sparkles, RotateCcw } from "lucide-react";
 
 import { fetchAnalysis, fetchPrecautions, fetchWaveformData } from "../../../lib/api";
 import { AnalysisResponse, PrecautionResponse, RawWaveformData } from "../../../lib/types";
@@ -211,11 +211,6 @@ export default function CaseAnalysisPage() {
               <span>Signal Stream Active</span>
             </div>
           )}
-
-          <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            <span>Precomputed Telemetry</span>
-          </div>
         </div>
       </div>
 

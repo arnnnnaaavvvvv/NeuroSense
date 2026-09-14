@@ -121,19 +121,9 @@ function DashboardContent() {
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Platform Overview</span>
             </Link>
-
-            <div className="flex items-center gap-2 text-xs font-mono text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Stress & Anxiety Neural Telemetry Live</span>
-            </div>
           </div>
 
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-rose-100 text-rose-800 border border-rose-200 font-mono">
-                Mental Health & Neuro-Cognitive Intelligence
-              </span>
-            </div>
             <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-zinc-950 font-display">
               Clinical Stress & Anxiety Telemetry
             </h1>

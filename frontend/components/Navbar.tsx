@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Database, Moon, Brain } from "lucide-react";
+import { Database } from "lucide-react";
 
 export default function Navbar() {
   return (
@@ -36,14 +36,6 @@ export default function Navbar() {
             >
               <Database className="w-4 h-4 text-zinc-900" />
               <span className="hidden sm:inline">Benchmark Dashboard</span>
-            </Link>
-
-            <Link
-              href="/#architecture-bento"
-              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-zinc-700 hover:text-black hover:bg-zinc-100 transition-colors font-medium"
-            >
-              <Brain className="w-4 h-4 text-zinc-900" />
-              <span>Architecture</span>
             </Link>
           </nav>
         </div>

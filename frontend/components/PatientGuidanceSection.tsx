@@ -40,7 +40,7 @@ export interface SignalAnomalyDetail {
 export interface RedFlagSign {
   sign: string;
   clinicalContext: string;
-  urgency: "Immediate Medical Attention" | "Clinical Follow-Up" | "Monitor Daily";
+  urgency: "Immediate Medical Attention" | "Clinical Follow-Up" | "Monitor Daily" | "Physician Recommended" | "Cognitive Hygiene" | "Autonomic Health" | "Lifestyle Medicine";
 }
 
 export interface RealMedicalTreatment {
@@ -503,25 +503,30 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
     signalAnomaly: {
       status: "optimal",
       statusBadge: "Optimal Restorative Alpha Synchrony",
-      abnormalLocation: "No pathology detected — Dominant Occipital Alpha (8–12 Hz) with High Vagal HRV",
-      signalPathologyDescription: "Continuous, smooth sinusoidal Alpha waves (8–12 Hz, 40–60 µV) dominating posterior leads with minimal muscle artifact and resilient parasympathetic vagal engagement.",
-      normalBaselineComparison: "Benchmark standard for a healthy, relaxed human nervous system."
+      abnormalLocation: "Dominant Anterior & Posterior Alpha Synchrony (8–12 Hz) with High Vagal HRV",
+      signalPathologyDescription: "Continuous, smooth sinusoidal Alpha waves (8–12 Hz, 40–60 µV) are evenly distributed across leads with clean baseline stability, no epileptiform transients, and balanced parasympathetic vagal engagement.",
+      normalBaselineComparison: "Confirmed gold-standard benchmark for a healthy, relaxed, and resilient human nervous system."
     },
     thingsToPayAttentionTo: [
       {
-        sign: "Sudden difficulty relaxing or persistent restlessness when sitting quietly",
-        clinicalContext: "Early warning sign of emerging sympathetic nervous system overdrive.",
-        urgency: "Monitor Daily"
+        sign: "Circadian Rhythm & Sleep-Wake Regularity",
+        clinicalContext: "Aim for 7–8 hours of consistent nightly sleep; regular sleep schedules protect natural daytime alpha synchrony and metabolic brain clearance.",
+        urgency: "Physician Recommended"
       },
       {
-        sign: "Gradual sleep disruptions or waking unrefreshed after prior healthy baselines",
-        clinicalContext: "Flags an emerging sleep hygiene or stress deficit before it turns into chronic insomnia.",
-        urgency: "Monitor Daily"
+        sign: "Active Cognitive Pacing & 5-Minute Micro-Rest",
+        clinicalContext: "Incorporate brief mental pauses every 60–90 minutes during intense computer work to prevent frontal high-beta power hyperarousal.",
+        urgency: "Cognitive Hygiene"
       },
       {
-        sign: "Frequent palpitations or heart fluttering without mental stress",
-        clinicalContext: "Requires standard clinical screening to rule out underlying cardiac irregularities.",
-        urgency: "Clinical Follow-Up"
+        sign: "Resonant Breathing & Autonomic Conditioning",
+        clinicalContext: "Practice 5–10 minutes of slow diaphragmatic breathing (5–6 breaths per minute) to sustain high heart-rate variability (HRV) and strong vagal tone.",
+        urgency: "Autonomic Health"
+      },
+      {
+        sign: "Hydration, Nutrition & Stimulant Moderation",
+        clinicalContext: "Maintain balanced hydration and moderate afternoon caffeine intake to prevent artificial sympathetic nervous system triggers.",
+        urgency: "Lifestyle Medicine"
       }
     ],
     realTreatments: [
@@ -625,6 +630,11 @@ export default function PatientGuidanceSection({
     caseData = CLINICAL_KNOWLEDGE_BASE["sam40_sub01_math_stress"];
   }
 
+  const isOptimal =
+    caseData.signalAnomaly.status === "optimal" ||
+    stageOrRisk.toLowerCase().includes("baseline") ||
+    stageOrRisk.toLowerCase().includes("relax");
+
   return (
     <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden text-slate-900 transition-all">
       {/* Header Banner */}
@@ -632,8 +642,12 @@ export default function PatientGuidanceSection({
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-1 max-w-2xl">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wider uppercase bg-rose-500/20 text-rose-300 border border-rose-500/30 font-mono">
-                Stress & Anxiety Telemetry Guide
+              <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wider uppercase border font-mono ${
+                isOptimal
+                  ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+                  : "bg-rose-500/20 text-rose-300 border-rose-500/30"
+              }`}>
+                {isOptimal ? "Clinical Health & Baseline Verification" : "Stress & Anxiety Telemetry Guide"}
               </span>
               <span className="text-xs text-slate-400 font-mono">
                 Case: {patientAnonId || caseId}
@@ -735,65 +749,88 @@ export default function PatientGuidanceSection({
 
             {/* Two-Card Grid: Signal Finding + Specialist */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {/* Card 1: Where the signal is not good & Why It Needs Attention */}
+              {/* Card 1: Physician Signal Verification */}
               <div className="p-4 sm:p-5 rounded-xl bg-white border border-slate-200 shadow-xs space-y-3.5">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 text-rose-600 font-bold text-sm">
-                    <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
-                    <span>Why This Needs Attention</span>
+                  <div className={`flex items-center gap-2 font-bold text-sm ${isOptimal ? "text-emerald-600" : "text-rose-600"}`}>
+                    {isOptimal ? (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    ) : (
+                      <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                    )}
+                    <span>{isOptimal ? "Physician Signal Evaluation: Healthy Baseline" : "Why This Needs Attention"}</span>
                   </div>
                   <span
                     className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border uppercase tracking-wider ${
-                      caseData.signalAnomaly.status === "abnormal"
+                      isOptimal
+                        ? "bg-emerald-100 text-emerald-800 border-emerald-200"
+                        : caseData.signalAnomaly.status === "abnormal"
                         ? "bg-rose-100 text-rose-800 border-rose-200"
-                        : caseData.signalAnomaly.status === "caution"
-                        ? "bg-amber-100 text-amber-800 border-amber-200"
-                        : "bg-emerald-100 text-emerald-800 border-emerald-200"
+                        : "bg-amber-100 text-amber-800 border-amber-200"
                     }`}
                   >
                     {caseData.signalAnomaly.statusBadge}
                   </span>
                 </div>
 
-                {/* Where the signal is not good */}
-                <div className="p-3.5 rounded-lg bg-rose-50/70 border border-rose-200/80 space-y-1.5">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-rose-800 flex items-center gap-1.5">
-                    <Activity className="w-3.5 h-3.5 text-rose-600" />
-                    <span>Where The Signal Is Not Good (Waveform Anomaly)</span>
+                {/* Waveform Finding Callout Box */}
+                {isOptimal ? (
+                  <div className="p-3.5 rounded-lg bg-emerald-50/70 border border-emerald-200/80 space-y-1.5">
+                    <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Physiological Rhythm Status: Optimal &amp; Balanced (No Pathology Detected)</span>
+                    </div>
+                    <p className="text-xs font-bold text-slate-900 leading-snug">
+                      {caseData.signalAnomaly.abnormalLocation}
+                    </p>
+                    <p className="text-[11px] text-slate-700 leading-relaxed pt-0.5">
+                      {caseData.signalAnomaly.signalPathologyDescription}
+                    </p>
                   </div>
-                  <p className="text-xs font-bold text-slate-900 leading-snug">
-                    {caseData.signalAnomaly.abnormalLocation}
-                  </p>
-                  <p className="text-[11px] text-slate-700 leading-relaxed pt-0.5">
-                    {caseData.signalAnomaly.signalPathologyDescription}
-                  </p>
-                </div>
+                ) : (
+                  <div className="p-3.5 rounded-lg bg-rose-50/70 border border-rose-200/80 space-y-1.5">
+                    <div className="text-[11px] font-bold uppercase tracking-wider text-rose-800 flex items-center gap-1.5">
+                      <Activity className="w-3.5 h-3.5 text-rose-600" />
+                      <span>Where The Signal Is Not Good (Waveform Anomaly)</span>
+                    </div>
+                    <p className="text-xs font-bold text-slate-900 leading-snug">
+                      {caseData.signalAnomaly.abnormalLocation}
+                    </p>
+                    <p className="text-[11px] text-slate-700 leading-relaxed pt-0.5">
+                      {caseData.signalAnomaly.signalPathologyDescription}
+                    </p>
+                  </div>
+                )}
 
-                {/* Why it needs medical attention */}
+                {/* Clinical Justification / Interpretation */}
                 <div className="text-xs text-slate-700 leading-relaxed pt-0.5">
-                  <strong className="text-slate-900">Clinical Justification: </strong>
+                  <strong className="text-slate-900">
+                    {isOptimal ? "Physician Interpretation: " : "Clinical Justification: "}
+                  </strong>
                   {caseData.whyNeedsAttention}
                 </div>
               </div>
 
-              {/* Card 2: Recommended Specialist */}
+              {/* Card 2: Recommended Specialist / Physician Follow-up */}
               <div className="p-4 sm:p-5 rounded-xl bg-white border border-slate-200 shadow-xs space-y-3.5 flex flex-col justify-between">
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
                     <Stethoscope className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Recommended Specialist</span>
+                    <span>{isOptimal ? "Recommended Physician Follow-Up" : "Recommended Specialist"}</span>
                   </div>
                   <div className="p-3.5 rounded-lg bg-emerald-50/70 border border-emerald-200/80">
                     <p className="text-xs font-bold text-slate-900 leading-snug">
-                      {caseData.actionableGuidance.specialistToConsult}
+                      {isOptimal ? "Routine Primary Care & Preventative Wellness" : caseData.actionableGuidance.specialistToConsult}
                     </p>
                     <p className="text-[11px] text-emerald-900 pt-1 leading-relaxed">
-                      Consult with this medical specialist to evaluate confirmatory gold-standard tests and discuss evidence-based therapeutic options.
+                      {isOptimal
+                        ? "No specialist consultation or medical intervention is required. Continue routine annual preventative wellness checkups with your primary care physician to sustain this healthy nervous system baseline."
+                        : "Consult with this medical specialist to evaluate confirmatory gold-standard tests and discuss evidence-based therapeutic options."}
                     </p>
                   </div>
                   <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
                     <div className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">
-                      Healthy Baseline Comparison
+                      {isOptimal ? "Clinical Baseline Verification" : "Healthy Baseline Comparison"}
                     </div>
                     <p className="text-[11px] text-slate-600 leading-relaxed">
                       {caseData.signalAnomaly.normalBaselineComparison}
@@ -802,29 +839,41 @@ export default function PatientGuidanceSection({
                 </div>
 
                 <p className="text-[11px] text-slate-500 pt-1">
-                  Share this summary and the exported report with your healthcare team.
+                  {isOptimal
+                    ? "Share this summary with your primary care provider during your next routine annual health checkup."
+                    : "Share this summary and the exported report with your healthcare team."}
                 </p>
               </div>
             </div>
 
-            {/* CARD 3: REAL THINGS ON WHICH THE PATIENT NEEDS TO PAY ATTENTION (RED FLAGS) */}
+            {/* CARD 3: DOCTOR-RECOMMENDED PRACTICES OR WARNING SIGNS */}
             <div className="p-4 sm:p-5 rounded-xl bg-white border border-slate-200 shadow-xs space-y-3.5">
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-2">
-                  <ShieldAlert className="w-4 h-4 text-rose-600" />
+                  {isOptimal ? (
+                    <Sparkles className="w-4 h-4 text-emerald-600" />
+                  ) : (
+                    <ShieldAlert className="w-4 h-4 text-rose-600" />
+                  )}
                   <h3 className="font-bold text-slate-900 text-sm sm:text-base">
-                    Real Things on Which the Patient Needs to Pay Attention
+                    {isOptimal
+                      ? "Doctor-Recommended Practices to Maintain Neural Health & Resilience"
+                      : "Real Things on Which the Patient Needs to Pay Attention"}
                   </h3>
                 </div>
-                <span className="text-[11px] text-slate-500">
-                  Critical Physiological Warning Signs & Red Flags
+                <span className={`text-[11px] ${isOptimal ? "text-emerald-700 font-medium" : "text-slate-500"}`}>
+                  {isOptimal
+                    ? "Evidence-Based Preventive Health & Brain Hygiene Protocols"
+                    : "Critical Physiological Warning Signs & Red Flags"}
                 </span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {caseData.thingsToPayAttentionTo.map((item, idx) => {
                   let badgeStyle = "bg-slate-100 text-slate-700 border-slate-200";
-                  if (item.urgency === "Immediate Medical Attention") {
+                  if (isOptimal) {
+                    badgeStyle = "bg-emerald-100 text-emerald-900 border-emerald-300 font-bold";
+                  } else if (item.urgency === "Immediate Medical Attention") {
                     badgeStyle = "bg-rose-100 text-rose-900 border-rose-300 font-extrabold";
                   } else if (item.urgency === "Clinical Follow-Up") {
                     badgeStyle = "bg-amber-100 text-amber-900 border-amber-300 font-bold";
@@ -835,7 +884,11 @@ export default function PatientGuidanceSection({
                   return (
                     <div
                       key={idx}
-                      className="p-3.5 rounded-lg border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-slate-300 transition-all space-y-1.5"
+                      className={`p-3.5 rounded-lg border transition-all space-y-1.5 ${
+                        isOptimal
+                          ? "border-emerald-200/80 bg-emerald-50/40 hover:bg-emerald-50/70 hover:border-emerald-300"
+                          : "border-slate-200 bg-slate-50/50 hover:bg-white hover:border-slate-300"
+                      }`}
                     >
                       <div className="flex items-start justify-between gap-2">
                         <span className="text-xs font-bold text-slate-900 leading-snug">
@@ -858,22 +911,34 @@ export default function PatientGuidanceSection({
             <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white shadow-xs space-y-3.5">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <div className="flex items-center gap-2 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-300">
                     <Pill className="w-4 h-4" />
-                    <span>Real Diagnostic Tests & Real Medical Treatments</span>
+                    <span>
+                      {isOptimal
+                        ? "Routine Health Screenings & Doctor-Recommended Lifestyle Protocols"
+                        : "Real Diagnostic Tests & Real Medical Treatments"}
+                    </span>
                   </div>
                   <h4 className="text-sm sm:text-base font-bold text-white pt-1">
-                    {caseData.requiredTests.length} Confirmatory Clinical Tests & {caseData.realTreatments.length} Evidence-Based Therapies
+                    {isOptimal
+                      ? `${caseData.requiredTests.length} Preventive Wellness Checkup & ${caseData.realTreatments.length} Evidence-Based Lifestyle Practices`
+                      : `${caseData.requiredTests.length} Confirmatory Clinical Tests & ${caseData.realTreatments.length} Evidence-Based Therapies`}
                   </h4>
                   <p className="text-xs text-slate-300 pt-0.5">
-                    Clinically validated diagnostic evaluations and physician-directed treatments matching this stress/anxiety pattern.
+                    {isOptimal
+                      ? "Clinically validated preventive evaluations and physician-directed lifestyle medicine guidelines to sustain optimal baseline health."
+                      : "Clinically validated diagnostic evaluations and physician-directed treatments matching this stress/anxiety pattern."}
                   </p>
                 </div>
                 <button
                   onClick={() => setActiveTab("tests")}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-lg text-xs font-bold transition-all shadow-sm shrink-0"
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-sm shrink-0 ${
+                    isOptimal
+                      ? "bg-emerald-400 hover:bg-emerald-300 text-slate-950"
+                      : "bg-amber-400 hover:bg-amber-300 text-slate-950"
+                  }`}
                 >
-                  <span>View Full Tests & Treatments</span>
+                  <span>{isOptimal ? "View Preventive Screenings & Guidance" : "View Full Tests & Treatments"}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>

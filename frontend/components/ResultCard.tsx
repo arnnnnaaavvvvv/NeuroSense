@@ -192,7 +192,7 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
           <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
             Detected Electrographic Biomarkers
           </h4>
-          <span className="text-[10px] text-slate-500 font-mono">Automated 128×128 Feature Detection</span>
+          <span className="text-[10px] text-slate-500 font-mono">Automated 128×128 Feature Detection (0.5–50 Hz)</span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           {keyMarkers.map((marker, idx) => (
@@ -217,7 +217,7 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
         {isEarlyWarning ? (
           <div className="text-xs text-slate-300 leading-relaxed space-y-2">
             <p>
-              <strong>What the Neural Network Detected:</strong> The CNN evaluates the 128×128 Synchrosqueezing Transform (SST) spectral projection. During acute cognitive stress (mental arithmetic or Stroop interference), the resting synchronized 8–12 Hz alpha rhythm undergoes <strong className="text-amber-300">Frontal Alpha Desynchronization (Alpha Blocking)</strong>, while fast 20–28 Hz beta waves surge across frontal electrodes (<span className="font-mono text-slate-200">F3, Fz, F4</span>).
+              <strong>What the Neural Network Detected:</strong> The CNN evaluates the 128×128 Synchrosqueezing Transform (SST) spectral projection within the 0.5–50 Hz physiological bandwidth (at 100 Hz sampling rate). During acute cognitive stress (mental arithmetic or Stroop interference), the resting synchronized 8–12 Hz alpha rhythm undergoes <strong className="text-amber-300">Frontal Alpha Desynchronization (Alpha Blocking)</strong>, while fast 20–28 Hz beta waves surge across frontal electrodes (<span className="font-mono text-slate-200">F3, Fz, F4</span>).
             </p>
             <p className="text-slate-400">
               <strong>Clinical Value for Early-Warning:</strong> Traditional assessments only diagnose anxiety after subjective panic or distress occurs. Real-time cortical EEG monitoring detects autonomic hyperarousal in milliseconds, enabling rapid grounding interventions before cognitive exhaustion or anxiety escalates.

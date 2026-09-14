@@ -99,12 +99,12 @@ def predict_sleep_stage(image: np.ndarray) -> Tuple[str, float, dict]:
     elif img_arr.ndim == 3 and img_arr.shape[0] == 128:
         img_arr = np.expand_dims(img_arr, axis=0)
 
-    # Spectral band energies in 128-row frequency space (log-spaced 0.5 to 60 Hz):
+    # Spectral band energies in 128-row frequency space (log-spaced 0.5 to 50 Hz Nyquist limit):
     # Rows 0-25: Delta (0.5 - 4 Hz) -> N3 slow-wave sleep
     # Rows 26-45: Theta (4 - 8 Hz) -> N1 light sleep / REM
     # Rows 46-70: Alpha (8 - 12 Hz) -> Wake posterior dominant rhythm
     # Rows 71-85: Sigma / Spindles (12 - 15 Hz) -> N2 sleep spindles & K-complexes
-    # Rows 86-127: Beta & Gamma (15 - 60 Hz) -> Muscle tone & active wakefulness
+    # Rows 86-127: Beta & Gamma (15 - 50 Hz) -> Muscle tone & active wakefulness
     delta_energy = float(np.mean(img_arr[0, 0:26, :, 0] ** 2))
     theta_energy = float(np.mean(img_arr[0, 26:46, :, 0] ** 2))
     alpha_energy = float(np.mean(img_arr[0, 46:71, :, 0] ** 2))

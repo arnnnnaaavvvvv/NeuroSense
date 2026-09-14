@@ -734,7 +734,7 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
     signalAnomaly: {
       status: "abnormal",
       statusBadge: "Abnormal Frontal Beta Surge & Sympathetic Overdrive",
-      abnormalLocation: "Frontal lead (F3/F4) excessive Beta (18–30 Hz) & Low-Gamma power with suppression of resting Alpha (8–12 Hz)",
+      abnormalLocation: "Frontal lead (F3/F4) excessive Beta (18–30 Hz) & Low-Gamma power (30–48 Hz, bounded by 50 Hz Nyquist limit) with suppression of resting Alpha (8–12 Hz)",
       signalPathologyDescription: "Electrophysiological recording exhibits marked bilateral frontal beta desynchronization, severe suppression of restful alpha rhythms, and ECG tachycardia with blunted vagal HRV (RMSSD < 18 ms).",
       normalBaselineComparison: "Calm cognitive readiness maintains dominant occipital-parietal Alpha waves (8–12 Hz, >30 µV) and resilient heart rate variability (RMSSD > 35 ms)."
     },
@@ -1002,7 +1002,7 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
     signalAnomaly: {
       status: "abnormal",
       statusBadge: "Abnormal Right-Frontal Asymmetry & Vagal Withdrawal",
-      abnormalLocation: "Right hemisphere hyperactivation (Alpha asymmetry F4 < F3) with prominent Gamma oscillations (>35 Hz)",
+      abnormalLocation: "Right hemisphere hyperactivation (Alpha asymmetry F4 < F3) with prominent Gamma oscillations (35–50 Hz Nyquist band)",
       signalPathologyDescription: "Marked electrophysiological right-frontal hyper-activation paired with severe parasympathetic vagal withdrawal (LF/HF ratio > 4.5), reflecting acute neurochemical distress and panic vulnerability.",
       normalBaselineComparison: "Balanced bilateral frontal alpha power (F3/F4 ratio ~ 1.0) with robust respiratory sinus arrhythmia (parasympathetic vagal engagement)."
     },

@@ -440,7 +440,7 @@ export default function SignalViewer({
                   Frequency Energy Heatmap
                 </h3>
                 <p className="text-[11px] text-slate-400">
-                  128×128 SST Spectrogram
+                  128×128 SST Spectrogram (0.5–50 Hz)
                 </p>
               </div>
             </div>
@@ -473,13 +473,13 @@ export default function SignalViewer({
 
             <div className="w-full flex justify-between text-[10px] font-mono text-slate-400 mt-2 px-2">
               <span>0.5 Hz (Slow Delta)</span>
-              <span>Mid Freq</span>
-              <span>60 Hz (Fast Gamma)</span>
+              <span>25 Hz (Mid Freq)</span>
+              <span>50 Hz (Fast Gamma)</span>
             </div>
           </div>
 
           <div className="mt-3 p-2 bg-slate-900/60 rounded-xl border border-slate-800/80 text-[11px] text-slate-400 text-center">
-            Bright white spots = Strongest brain energy frequencies
+            Bright white spots = Strongest brain energy frequencies (0.5–50 Hz at 100 Hz sampling)
           </div>
         </div>
       </div>
@@ -730,7 +730,7 @@ export default function SignalViewer({
                       2. The SST Spectrogram Heatmap (Top Right Box)
                     </span>
                     <p className="text-slate-400 text-xs leading-relaxed">
-                      Think of this like a musical equalizer. Instead of wave height, it separates your brainwaves into frequencies: deep slow bass notes at the bottom (Delta sleep waves) and fast treble notes at the top (Beta anxiety / mental effort waves). The bright glowing spots show which frequencies your brain is firing most powerfully.
+                      Think of this like a musical equalizer. Instead of wave height, it separates your brainwaves into frequencies up to the 50 Hz Nyquist ceiling (calibrated for 100 Hz recordings): deep slow bass notes at the bottom (Delta sleep waves) and fast treble notes near the top (Beta & Gamma waves up to 50 Hz). The bright glowing spots show which frequencies your brain is firing most powerfully.
                     </p>
                   </div>
                 </div>

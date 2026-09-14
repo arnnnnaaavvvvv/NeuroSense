@@ -40,6 +40,16 @@ export default function BenchmarkDashboardPage() {
   useScrollRevealInit();
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const domainParam = urlParams.get("domain");
+      if (domainParam === "sleep" || domainParam === "early_warning") {
+        setActiveDomain(domainParam);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     async function loadCases() {
       try {
         setLoading(true);

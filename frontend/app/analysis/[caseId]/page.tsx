@@ -127,11 +127,11 @@ export default function CaseAnalysisPage() {
         <h2 className="text-xl font-bold text-zinc-900">Case Analysis Unavailable</h2>
         <p className="text-sm text-zinc-600 max-w-md mx-auto">{error || "Case record could not be found."}</p>
         <Link
-          href="/"
+          href="/dashboard"
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 text-white hover:bg-black transition-colors text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Case Catalog
+          Back to Benchmark Cases
         </Link>
       </div>
     );
@@ -143,9 +143,9 @@ export default function CaseAnalysisPage() {
       <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-zinc-200 shadow-xs">
         <div className="flex items-center gap-3.5">
           <Link
-            href="/"
+            href={analysis?.domain ? `/dashboard?domain=${analysis.domain}` : "/dashboard"}
             className="p-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-zinc-800 transition-colors"
-            title="Return to Benchmark Cases"
+            title="Return to Benchmark Cases & Risk Telemetry"
           >
             <ArrowLeft className="w-4 h-4" />
           </Link>

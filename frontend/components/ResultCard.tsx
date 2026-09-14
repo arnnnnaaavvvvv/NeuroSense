@@ -30,7 +30,6 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
   let stageTitle = "Neural Stress & Cognitive State Classification";
   let stageLabel = risk_stage;
   let sectionHeader = "Neural Network Inference & Early-Warning Stress Classification";
-  let headBadge = "Head: stress_anxiety_risk_head (Özdemir Conv2D Multi-Head)";
   let testAccuracy = "Validation Accuracy: 98.42% (SAM-40 / Student / DASPS Cohorts)";
 
   const rLower = (risk_stage || "").toLowerCase();
@@ -69,11 +68,6 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
           <h3 className="font-bold text-sm tracking-wide text-white uppercase">
             {sectionHeader}
           </h3>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-slate-900 text-sky-400 border border-slate-700">
-            {headBadge}
-          </span>
         </div>
       </div>
 

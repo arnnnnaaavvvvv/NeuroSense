@@ -761,19 +761,6 @@ export default function PatientGuidanceSection({
         {/* TAB 1: OVERVIEW & SIGNAL DIAGNOSTICS */}
         {activeTab === "overview" && (
           <div className="space-y-6">
-            {/* Plain English Meaning */}
-            <div className="bg-sky-50 border border-sky-200 rounded-xl p-4 sm:p-5 flex items-start gap-3.5">
-              <Info className="w-5 h-5 text-sky-700 shrink-0 mt-0.5" />
-              <div className="space-y-1">
-                <h3 className="font-bold text-slate-900 text-sm sm:text-base">
-                  What Does This Signal Mean in Everyday Life?
-                </h3>
-                <p className="text-sm text-slate-700 leading-relaxed">
-                  {caseData.whatSignalMeans}
-                </p>
-              </div>
-            </div>
-
             {/* Two-Card Grid: Signal Finding + Specialist */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {/* Card 1: Physician Signal Verification */}

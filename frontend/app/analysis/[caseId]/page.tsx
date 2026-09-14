@@ -9,7 +9,6 @@ import { fetchAnalysis, fetchPrecautions, fetchWaveformData } from "../../../lib
 import { AnalysisResponse, PrecautionResponse, RawWaveformData } from "../../../lib/types";
 import SignalViewer from "../../../components/SignalViewer";
 import ResultCard from "../../../components/ResultCard";
-import PrecautionPanel from "../../../components/PrecautionPanel";
 import ClinicalAuditExportModal from "../../../components/ClinicalAuditExportModal";
 import PatientGuidanceSection from "../../../components/PatientGuidanceSection";
 
@@ -249,7 +248,7 @@ export default function CaseAnalysisPage() {
       />
 
       {/* Real-Time Signal Stream & Progressive Reveal Banner */}
-      {!isSignalCompleted ? (
+      {!isSignalCompleted && (
         <div className="bg-gradient-to-r from-zinc-950 via-slate-900 to-zinc-950 text-white rounded-2xl p-5 border border-zinc-800 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
             <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-400 shrink-0">
@@ -298,32 +297,6 @@ export default function CaseAnalysisPage() {
             </button>
           </div>
         </div>
-      ) : (
-        <div className="bg-emerald-950/40 text-emerald-100 rounded-2xl p-4 border border-emerald-500/30 shadow-sm flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
-              <CheckCircle2 className="w-4 h-4" />
-            </div>
-            <div>
-              <h4 className="text-xs sm:text-sm font-bold text-emerald-200">
-                Signal Playback Complete ({duration.toFixed(1)}s Epoch Analyzed)
-              </h4>
-              <p className="text-[11px] text-emerald-300/80">
-                CNN stress classification telemetry, electrographic biomarkers, patient guidance, and RAG precautions unlocked below.
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={() => {
-              setCurrentTime(0);
-              setIsPlaying(true);
-            }}
-            className="inline-flex items-center gap-1.5 text-xs font-mono text-emerald-300 hover:text-white px-3 py-1.5 rounded-lg border border-emerald-500/30 hover:bg-emerald-900/30 transition-colors"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Replay Signal</span>
-          </button>
-        </div>
       )}
 
       {/* REST OF THE DETAILS (Revealed ONLY after the signal plays completely) */}
@@ -335,18 +308,12 @@ export default function CaseAnalysisPage() {
             keyMarkers={analysis.key_markers}
           />
 
-          {/* 4. Non-Medical Patient Health Guidance: Causes, Symptoms, Required Tests & Doctor Questions */}
+          {/* Patient Health Guidance: Causes, Symptoms, Required Tests & Doctor Questions */}
           <PatientGuidanceSection
             caseId={caseId}
             domain={analysis.domain}
             stageOrRisk={analysis.classification.risk_stage}
             patientAnonId={analysis.patient_anon_id}
-          />
-
-          {/* 5. RAG Clinical Precaution Panel with Source Citations */}
-          <PrecautionPanel
-            precautionData={precautions}
-            isLoading={loadingPrecautions}
           />
         </div>
       )}

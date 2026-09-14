@@ -661,7 +661,14 @@ export default function PatientGuidanceSection({
   const isOptimal =
     caseData.signalAnomaly.status === "optimal" ||
     stageOrRisk.toLowerCase().includes("baseline") ||
-    stageOrRisk.toLowerCase().includes("relax");
+    stageOrRisk.toLowerCase().includes("relax") ||
+    stageOrRisk.toLowerCase().includes("optimal");
+
+  // When patient is healthy, hide triggers, symptoms, and tests tabs — they do not apply
+  const effectiveTab =
+    isOptimal && (activeTab === "causes" || activeTab === "symptoms" || activeTab === "tests")
+      ? "overview"
+      : activeTab;
 
   return (
     <section
@@ -697,74 +704,103 @@ export default function PatientGuidanceSection({
             <div className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
               Current Finding
             </div>
-            <div className="text-sm font-bold text-sky-300">
+            <div className={`text-sm font-bold ${isOptimal ? "text-emerald-400" : "text-sky-300"}`}>
               {stageOrRisk}
             </div>
             <div className="text-[11px] text-slate-400">
-              Clinical telemetry translated for patients
+              {isOptimal ? "Normal physiological rhythms confirmed" : "Clinical telemetry translated for patients"}
             </div>
           </div>
         </div>
 
         {/* Navigation Tabs */}
         <div className="flex flex-wrap items-center gap-2 pt-5 border-t border-slate-700/60 mt-4 text-xs font-medium">
-          <button
-            onClick={() => handleTabSwitch("overview")}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
-              activeTab === "overview"
-                ? "bg-sky-500 text-slate-950 font-bold shadow-sm"
-                : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
-            }`}
-          >
-            1. Overview & Signals
-          </button>
-          <button
-            onClick={() => handleTabSwitch("causes")}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
-              activeTab === "causes"
-                ? "bg-sky-500 text-slate-950 font-bold shadow-sm"
-                : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
-            }`}
-          >
-            2. Common Triggers ({caseData.causes.length})
-          </button>
-          <button
-            onClick={() => handleTabSwitch("symptoms")}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
-              activeTab === "symptoms"
-                ? "bg-sky-500 text-slate-950 font-bold shadow-sm"
-                : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
-            }`}
-          >
-            3. What You Feel ({caseData.symptoms.length})
-          </button>
-          <button
-            onClick={() => handleTabSwitch("tests")}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
-              activeTab === "tests"
-                ? "bg-amber-400 text-slate-950 font-bold shadow-sm"
-                : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
-            }`}
-          >
-            4. Real Tests & Treatments ({caseData.requiredTests.length + caseData.realTreatments.length})
-          </button>
-          <button
-            onClick={() => handleTabSwitch("actions")}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
-              activeTab === "actions"
-                ? "bg-emerald-400 text-slate-950 font-bold shadow-sm"
-                : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
-            }`}
-          >
-            5. Doctor Guidance & Steps
-          </button>
+          {isOptimal ? (
+            /* Healthy Baseline: Only 2 relevant tabs. No triggers, symptoms, or tests! */
+            <>
+              <button
+                onClick={() => handleTabSwitch("overview")}
+                className={`px-3.5 py-1.5 rounded-lg transition-all ${
+                  effectiveTab === "overview"
+                    ? "bg-emerald-400 text-slate-950 font-bold shadow-sm"
+                    : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
+                }`}
+              >
+                1. Brain Health Overview &amp; Verification
+              </button>
+              <button
+                onClick={() => handleTabSwitch("actions")}
+                className={`px-3.5 py-1.5 rounded-lg transition-all ${
+                  effectiveTab === "actions"
+                    ? "bg-emerald-400 text-slate-950 font-bold shadow-sm"
+                    : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
+                }`}
+              >
+                2. Doctor Wellness Advice &amp; Daily Habits
+              </button>
+            </>
+          ) : (
+            /* Condition Detected: Full 5-tab diagnostic guide */
+            <>
+              <button
+                onClick={() => handleTabSwitch("overview")}
+                className={`px-3.5 py-1.5 rounded-lg transition-all ${
+                  effectiveTab === "overview"
+                    ? "bg-sky-500 text-slate-950 font-bold shadow-sm"
+                    : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
+                }`}
+              >
+                1. Overview &amp; Signals
+              </button>
+              <button
+                onClick={() => handleTabSwitch("causes")}
+                className={`px-3.5 py-1.5 rounded-lg transition-all ${
+                  effectiveTab === "causes"
+                    ? "bg-sky-500 text-slate-950 font-bold shadow-sm"
+                    : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
+                }`}
+              >
+                2. Common Triggers ({caseData.causes.length})
+              </button>
+              <button
+                onClick={() => handleTabSwitch("symptoms")}
+                className={`px-3.5 py-1.5 rounded-lg transition-all ${
+                  effectiveTab === "symptoms"
+                    ? "bg-sky-500 text-slate-950 font-bold shadow-sm"
+                    : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
+                }`}
+              >
+                3. What You Feel ({caseData.symptoms.length})
+              </button>
+              <button
+                onClick={() => handleTabSwitch("tests")}
+                className={`px-3.5 py-1.5 rounded-lg transition-all ${
+                  effectiveTab === "tests"
+                    ? "bg-amber-400 text-slate-950 font-bold shadow-sm"
+                    : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
+                }`}
+              >
+                4. Real Tests &amp; Treatments ({caseData.requiredTests.length + caseData.realTreatments.length})
+              </button>
+              <button
+                onClick={() => handleTabSwitch("actions")}
+                className={`px-3.5 py-1.5 rounded-lg transition-all ${
+                  effectiveTab === "actions"
+                    ? "bg-emerald-400 text-slate-950 font-bold shadow-sm"
+                    : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
+                }`}
+              >
+                5. Doctor Guidance &amp; Steps
+              </button>
+            </>
+          )}
         </div>
       </div>
 
       {/* Main Content Area */}
       <div className="p-5 sm:p-6 bg-slate-50/50">
         {/* TAB 1: OVERVIEW & SIGNAL DIAGNOSTICS */}
-        {activeTab === "overview" && (
+        {effectiveTab === "overview" && (
           <div className="space-y-6">
             {/* Two-Card Grid: Signal Finding + Specialist */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -830,13 +866,23 @@ export default function PatientGuidanceSection({
                 </div>
 
                 <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-                  <button
-                    onClick={() => handleTabSwitch("causes")}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-sky-700 hover:text-sky-900 transition-colors"
-                  >
-                    <span>View Common Triggers ({caseData.causes.length})</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                  {isOptimal ? (
+                    <button
+                      onClick={() => handleTabSwitch("actions")}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 hover:text-emerald-900 transition-colors"
+                    >
+                      <span>View Doctor Wellness Advice</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleTabSwitch("causes")}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-sky-700 hover:text-sky-900 transition-colors"
+                    >
+                      <span>View Common Triggers ({caseData.causes.length})</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -877,7 +923,7 @@ export default function PatientGuidanceSection({
                     onClick={() => handleTabSwitch("actions")}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 transition-all shadow-2xs"
                   >
-                    <span>View Doctor Guidance & Questions</span>
+                    <span>{isOptimal ? "View Doctor Wellness Advice" : "View Doctor Guidance & Questions"}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -946,98 +992,124 @@ export default function PatientGuidanceSection({
 
               <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-100">
                 <span className="text-[11px] text-slate-500 font-medium">
-                  {isOptimal ? "Explore clinical lifestyle and symptom details:" : "Explore triggers and what you might experience daily:"}
+                  {isOptimal ? "Doctor-recommended lifestyle practices for ongoing health:" : "Explore triggers and what you might experience daily:"}
                 </span>
                 <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handleTabSwitch("causes")}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-sky-50 hover:text-sky-700 text-slate-700 border border-slate-200 transition-all"
-                  >
-                    <span>View Common Triggers ({caseData.causes.length})</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    onClick={() => handleTabSwitch("symptoms")}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 text-slate-700 border border-slate-200 transition-all"
-                  >
-                    <span>View What You Feel ({caseData.symptoms.length})</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                  {isOptimal ? (
+                    <button
+                      onClick={() => handleTabSwitch("actions")}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 transition-all"
+                    >
+                      <span>View Doctor Wellness Advice</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => handleTabSwitch("causes")}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-sky-50 hover:text-sky-700 text-slate-700 border border-slate-200 transition-all"
+                      >
+                        <span>View Common Triggers ({caseData.causes.length})</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleTabSwitch("symptoms")}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 text-slate-700 border border-slate-200 transition-all"
+                      >
+                        <span>View What You Feel ({caseData.symptoms.length})</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* CARD 4: REAL TESTS & REAL TREATMENTS OVERVIEW TEASER */}
-            <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white shadow-xs space-y-3.5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-300">
-                    <Pill className="w-4 h-4" />
-                    <span>
-                      {isOptimal
-                        ? "Routine Health Screenings & Doctor-Recommended Lifestyle Protocols"
-                        : "Real Diagnostic Tests & Real Medical Treatments"}
-                    </span>
+            {/* CARD 4: REASSURING NO-TESTS-NEEDED BANNER WHEN OPTIMAL, OR FULL TESTS/TREATMENTS TEASER WHEN ISSUE DETECTED */}
+            {isOptimal ? (
+              <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 text-white border border-emerald-800/40 shadow-xs space-y-2.5">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-300">
+                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                      <span>Optimal Neurological Health Verified</span>
+                    </div>
+                    <h4 className="text-sm sm:text-base font-bold text-white">
+                      No Diagnostic Tests or Medical Treatments Required
+                    </h4>
+                    <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
+                      All cortical brainwaves, resting alpha synchrony, and autonomic indicators are within normal healthy parameters. You do not need confirmatory scans, prescription medications, or specialist workups.
+                    </p>
                   </div>
-                  <h4 className="text-sm sm:text-base font-bold text-white pt-1">
-                    {isOptimal
-                      ? `${caseData.requiredTests.length} Preventive Wellness Checkup & ${caseData.realTreatments.length} Evidence-Based Lifestyle Practices`
-                      : `${caseData.requiredTests.length} Confirmatory Clinical Tests & ${caseData.realTreatments.length} Evidence-Based Therapies`}
-                  </h4>
-                  <p className="text-xs text-slate-300 pt-0.5">
-                    {isOptimal
-                      ? "Clinically validated preventive evaluations and physician-directed lifestyle medicine guidelines to sustain optimal baseline health."
-                      : "Clinically validated diagnostic evaluations and physician-directed treatments matching this stress/anxiety pattern."}
-                  </p>
+                  <button
+                    onClick={() => handleTabSwitch("actions")}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold bg-emerald-400 hover:bg-emerald-300 text-slate-950 transition-all shadow-sm shrink-0"
+                  >
+                    <span>View Daily Wellness Habits</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
                 </div>
-                <button
-                  onClick={() => handleTabSwitch("tests")}
-                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-sm shrink-0 ${
-                    isOptimal
-                      ? "bg-emerald-400 hover:bg-emerald-300 text-slate-950"
-                      : "bg-amber-400 hover:bg-amber-300 text-slate-950"
-                  }`}
-                >
-                  <span>{isOptimal ? "View Preventive Screenings & Guidance" : "View Full Tests & Treatments"}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
               </div>
+            ) : (
+              <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white shadow-xs space-y-3.5">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-300">
+                      <Pill className="w-4 h-4" />
+                      <span>Real Diagnostic Tests &amp; Real Medical Treatments</span>
+                    </div>
+                    <h4 className="text-sm sm:text-base font-bold text-white pt-1">
+                      {caseData.requiredTests.length} Confirmatory Clinical Tests &amp; {caseData.realTreatments.length} Evidence-Based Therapies
+                    </h4>
+                    <p className="text-xs text-slate-300 pt-0.5">
+                      Clinically validated diagnostic evaluations and physician-directed treatments matching this stress/anxiety pattern.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleTabSwitch("tests")}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 transition-all shadow-sm shrink-0"
+                  >
+                    <span>View Full Tests &amp; Treatments</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
 
-              {/* Quick Pills */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-slate-700/60 text-xs">
-                <div className="space-y-1">
-                  <div className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
-                    Diagnostic Tests:
+                {/* Quick Pills */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-slate-700/60 text-xs">
+                  <div className="space-y-1">
+                    <div className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
+                      Diagnostic Tests:
+                    </div>
+                    <ul className="text-slate-200 text-[11px] space-y-0.5">
+                      {caseData.requiredTests.slice(0, 2).map((t, i) => (
+                        <li key={i} className="flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
+                          <span className="truncate">{t.plainEnglishName}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="text-slate-200 text-[11px] space-y-0.5">
-                    {caseData.requiredTests.slice(0, 2).map((t, i) => (
-                      <li key={i} className="flex items-center gap-1.5">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
-                        <span className="truncate">{t.plainEnglishName}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="space-y-1">
-                  <div className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
-                    Medical Treatments:
+                  <div className="space-y-1">
+                    <div className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
+                      Medical Treatments:
+                    </div>
+                    <ul className="text-slate-200 text-[11px] space-y-0.5">
+                      {caseData.realTreatments.slice(0, 2).map((tr, i) => (
+                        <li key={i} className="flex items-center gap-1.5">
+                          <Zap className="w-3 h-3 text-amber-400 shrink-0" />
+                          <span className="truncate">{tr.treatmentName}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="text-slate-200 text-[11px] space-y-0.5">
-                    {caseData.realTreatments.slice(0, 2).map((tr, i) => (
-                      <li key={i} className="flex items-center gap-1.5">
-                        <Zap className="w-3 h-3 text-amber-400 shrink-0" />
-                        <span className="truncate">{tr.treatmentName}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         )}
 
         {/* TAB 2: CAUSES */}
-        {activeTab === "causes" && (
+        {!isOptimal && effectiveTab === "causes" && (
           <div className="space-y-4">
             <div className="pb-1">
               <h3 className="text-base font-bold text-slate-900">
@@ -1090,7 +1162,7 @@ export default function PatientGuidanceSection({
         )}
 
         {/* TAB 3: SYMPTOMS */}
-        {activeTab === "symptoms" && (
+        {!isOptimal && effectiveTab === "symptoms" && (
           <div className="space-y-4">
             <div className="pb-1">
               <h3 className="text-base font-bold text-slate-900">
@@ -1145,7 +1217,7 @@ export default function PatientGuidanceSection({
                 onClick={() => handleTabSwitch("tests")}
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-sm transition-all"
               >
-                <span>Next: Real Tests & Treatments ({caseData.requiredTests.length + caseData.realTreatments.length})</span>
+                <span>Next: Real Tests &amp; Treatments ({caseData.requiredTests.length + caseData.realTreatments.length})</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -1153,7 +1225,7 @@ export default function PatientGuidanceSection({
         )}
 
         {/* TAB 4: REAL TESTS & REAL TREATMENTS */}
-        {activeTab === "tests" && (
+        {!isOptimal && effectiveTab === "tests" && (
           <div className="space-y-6">
             {/* SECTION 1: REQUIRED DIAGNOSTIC TESTS */}
             <div className="space-y-3.5">
@@ -1219,7 +1291,7 @@ export default function PatientGuidanceSection({
                 <div>
                   <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                     <Pill className="w-4 h-4 text-emerald-600" />
-                    <span>Real Medical Treatments & Evidence-Based Therapies</span>
+                    <span>Real Medical Treatments &amp; Evidence-Based Therapies</span>
                   </h3>
                   <p className="text-xs text-slate-500">
                     Clinically established medical therapies, devices, and protocols prescribed by physicians for this specific pattern:
@@ -1289,7 +1361,7 @@ export default function PatientGuidanceSection({
                 onClick={() => handleTabSwitch("actions")}
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-400 hover:bg-emerald-300 text-slate-950 shadow-sm transition-all"
               >
-                <span>Next: Doctor Guidance & Questions</span>
+                <span>Next: Doctor Guidance &amp; Questions</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -1297,14 +1369,16 @@ export default function PatientGuidanceSection({
         )}
 
         {/* TAB 5: DOCTOR GUIDANCE & ACTIONABLE STEPS */}
-        {activeTab === "actions" && (
+        {effectiveTab === "actions" && (
           <div className="space-y-5">
             <div>
               <h3 className="text-base font-bold text-slate-900">
-                Patient Action Plan & Medical Guidance
+                {isOptimal ? "Doctor Wellness Advice & Daily Habits" : "Patient Action Plan & Medical Guidance"}
               </h3>
               <p className="text-xs text-slate-500">
-                Clear, practical steps you can start today, along with what to ask your doctor:
+                {isOptimal
+                  ? "Doctor-recommended lifestyle practices to sustain your healthy neural baseline, plus routine checkup guidance:"
+                  : "Clear, practical steps you can start today, along with what to ask your doctor:"}
               </p>
             </div>
 
@@ -1312,7 +1386,7 @@ export default function PatientGuidanceSection({
             <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-xs space-y-3">
               <div className="flex items-center gap-2 font-bold text-sm text-slate-900">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>Immediate Self-Care & Lifestyle Steps</span>
+                <span>{isOptimal ? "Recommended Daily Health Habits" : "Immediate Self-Care & Lifestyle Steps"}</span>
               </div>
               <ul className="space-y-2 text-xs text-slate-700 pl-2">
                 {caseData.actionableGuidance.immediateSteps.map((step, idx) => (
@@ -1329,7 +1403,7 @@ export default function PatientGuidanceSection({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 font-bold text-sm text-white">
                   <HelpCircle className="w-4 h-4 text-sky-400" />
-                  <span>Questions to Ask Your Doctor at Your Next Visit</span>
+                  <span>{isOptimal ? "Questions to Ask at Your Next Routine Checkup" : "Questions to Ask Your Doctor at Your Next Visit"}</span>
                 </div>
                 <button
                   onClick={() => setShowDoctorQuestions(!showDoctorQuestions)}
@@ -1359,26 +1433,36 @@ export default function PatientGuidanceSection({
               <div className="flex items-center gap-2">
                 <Stethoscope className="w-4 h-4 text-emerald-700 shrink-0" />
                 <span>
-                  <strong>Primary Specialist to Schedule: </strong>
-                  {caseData.actionableGuidance.specialistToConsult}
+                  <strong>{isOptimal ? "Physician Consultation Status: " : "Primary Specialist to Schedule: "}</strong>
+                  {isOptimal ? "Routine Primary Care / General Practitioner (No Specialist Required)" : caseData.actionableGuidance.specialistToConsult}
                 </span>
               </div>
             </div>
 
             {/* Tab Navigation Footer */}
             <div className="flex items-center justify-between pt-4 border-t border-slate-200">
-              <button
-                onClick={() => handleTabSwitch("tests")}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Back to Tests & Treatments</span>
-              </button>
+              {isOptimal ? (
+                <button
+                  onClick={() => handleTabSwitch("overview")}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>Back to Brain Health Overview</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleTabSwitch("tests")}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>Back to Tests &amp; Treatments</span>
+                </button>
+              )}
               <button
                 onClick={() => handleTabSwitch("overview")}
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white shadow-sm transition-all"
               >
-                <span>Return to Overview & Signals</span>
+                <span>Return to Overview &amp; Signals</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>

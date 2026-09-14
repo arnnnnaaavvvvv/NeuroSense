@@ -11,7 +11,8 @@ import {
   Info,
   Sparkles,
   Flame,
-  Zap
+  Zap,
+  ArrowRight
 } from "lucide-react";
 import { ClassificationSummary } from "../lib/types";
 
@@ -71,6 +72,21 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
           </h3>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => {
+              const el = document.getElementById("patient-guidance-section");
+              if (el) {
+                const navbarHeight = 64;
+                const topMargin = 16;
+                const offset = el.getBoundingClientRect().top + window.pageYOffset - (navbarHeight + topMargin);
+                window.scrollTo({ top: offset, behavior: "smooth" });
+              }
+            }}
+            className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-bold text-amber-300 bg-amber-950/60 hover:bg-amber-900/80 px-2.5 py-1 rounded border border-amber-500/40 transition-colors"
+          >
+            <span>View Tests &amp; Guidance</span>
+            <ArrowRight className="w-3 h-3" />
+          </button>
           <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-slate-900 text-sky-400 border border-slate-700">
             {headBadge}
           </span>
@@ -201,6 +217,27 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
           <p className="text-slate-400">
             <strong>Clinical Value for Early-Warning:</strong> Traditional assessments only diagnose anxiety or burnout after subjective panic or exhaustion occurs. Real-time cortical EEG monitoring detects autonomic hyperarousal in milliseconds, enabling rapid grounding interventions before cognitive exhaustion or anxiety escalates.
           </p>
+        </div>
+
+        <div className="pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
+          <span className="text-[11px] text-slate-400">
+            Automated clinical workup, evidence-based treatments &amp; physician guidance:
+          </span>
+          <button
+            onClick={() => {
+              const el = document.getElementById("patient-guidance-section");
+              if (el) {
+                const navbarHeight = 64;
+                const topMargin = 16;
+                const offset = el.getBoundingClientRect().top + window.pageYOffset - (navbarHeight + topMargin);
+                window.scrollTo({ top: offset, behavior: "smooth" });
+              }
+            }}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 transition-all shadow-sm"
+          >
+            <span>View Tests &amp; Guidance ↓</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   HeartPulse,
   AlertTriangle,
@@ -10,6 +10,7 @@ import {
   HelpCircle,
   Activity,
   ArrowRight,
+  ArrowLeft,
   ShieldCheck,
   ChevronDown,
   ChevronUp,
@@ -615,6 +616,28 @@ export default function PatientGuidanceSection({
 }: PatientGuidanceSectionProps) {
   const [activeTab, setActiveTab] = useState<"overview" | "causes" | "symptoms" | "tests" | "actions">("overview");
   const [showDoctorQuestions, setShowDoctorQuestions] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Smoothly scrolls to the top of the guidance section (just below sticky navbar, matching image 2)
+  const scrollToGuidanceHeader = () => {
+    if (sectionRef.current) {
+      const navbarHeight = 64; // height of sticky navbar
+      const topOffset = 16;    // margin above card header matching image 2
+      const elementPosition = sectionRef.current.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - (navbarHeight + topOffset);
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  const handleTabSwitch = (tab: "overview" | "causes" | "symptoms" | "tests" | "actions") => {
+    setActiveTab(tab);
+    requestAnimationFrame(() => {
+      scrollToGuidanceHeader();
+    });
+  };
 
   // Retrieve case-specific info or route directly to appropriate Stress & Anxiety knowledge base
   let caseData: CaseClinicalInfo;
@@ -636,7 +659,11 @@ export default function PatientGuidanceSection({
     stageOrRisk.toLowerCase().includes("relax");
 
   return (
-    <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden text-slate-900 transition-all">
+    <section
+      ref={sectionRef}
+      id="patient-guidance-section"
+      className="scroll-mt-24 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden text-slate-900 transition-all"
+    >
       {/* Header Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white p-5 sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
@@ -677,7 +704,7 @@ export default function PatientGuidanceSection({
         {/* Navigation Tabs */}
         <div className="flex flex-wrap items-center gap-2 pt-5 border-t border-slate-700/60 mt-4 text-xs font-medium">
           <button
-            onClick={() => setActiveTab("overview")}
+            onClick={() => handleTabSwitch("overview")}
             className={`px-3.5 py-1.5 rounded-lg transition-all ${
               activeTab === "overview"
                 ? "bg-sky-500 text-slate-950 font-bold shadow-sm"
@@ -687,7 +714,7 @@ export default function PatientGuidanceSection({
             1. Overview & Signals
           </button>
           <button
-            onClick={() => setActiveTab("causes")}
+            onClick={() => handleTabSwitch("causes")}
             className={`px-3.5 py-1.5 rounded-lg transition-all ${
               activeTab === "causes"
                 ? "bg-sky-500 text-slate-950 font-bold shadow-sm"
@@ -697,7 +724,7 @@ export default function PatientGuidanceSection({
             2. Common Triggers ({caseData.causes.length})
           </button>
           <button
-            onClick={() => setActiveTab("symptoms")}
+            onClick={() => handleTabSwitch("symptoms")}
             className={`px-3.5 py-1.5 rounded-lg transition-all ${
               activeTab === "symptoms"
                 ? "bg-sky-500 text-slate-950 font-bold shadow-sm"
@@ -707,7 +734,7 @@ export default function PatientGuidanceSection({
             3. What You Feel ({caseData.symptoms.length})
           </button>
           <button
-            onClick={() => setActiveTab("tests")}
+            onClick={() => handleTabSwitch("tests")}
             className={`px-3.5 py-1.5 rounded-lg transition-all ${
               activeTab === "tests"
                 ? "bg-amber-400 text-slate-950 font-bold shadow-sm"
@@ -717,7 +744,7 @@ export default function PatientGuidanceSection({
             4. Real Tests & Treatments ({caseData.requiredTests.length + caseData.realTreatments.length})
           </button>
           <button
-            onClick={() => setActiveTab("actions")}
+            onClick={() => handleTabSwitch("actions")}
             className={`px-3.5 py-1.5 rounded-lg transition-all ${
               activeTab === "actions"
                 ? "bg-emerald-400 text-slate-950 font-bold shadow-sm"
@@ -809,6 +836,16 @@ export default function PatientGuidanceSection({
                   </strong>
                   {caseData.whyNeedsAttention}
                 </div>
+
+                <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+                  <button
+                    onClick={() => handleTabSwitch("causes")}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-sky-700 hover:text-sky-900 transition-colors"
+                  >
+                    <span>View Common Triggers ({caseData.causes.length})</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
 
               {/* Card 2: Recommended Specialist / Physician Follow-up */}
@@ -838,11 +875,20 @@ export default function PatientGuidanceSection({
                   </div>
                 </div>
 
-                <p className="text-[11px] text-slate-500 pt-1">
-                  {isOptimal
-                    ? "Share this summary with your primary care provider during your next routine annual health checkup."
-                    : "Share this summary and the exported report with your healthcare team."}
-                </p>
+                <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-[11px] text-slate-500">
+                    {isOptimal
+                      ? "Share this summary with your primary care provider during your next routine annual health checkup."
+                      : "Share this summary and the exported report with your healthcare team."}
+                  </p>
+                  <button
+                    onClick={() => handleTabSwitch("actions")}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 transition-all shadow-2xs"
+                  >
+                    <span>View Doctor Guidance & Questions</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -905,6 +951,28 @@ export default function PatientGuidanceSection({
                   );
                 })}
               </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-100">
+                <span className="text-[11px] text-slate-500 font-medium">
+                  {isOptimal ? "Explore clinical lifestyle and symptom details:" : "Explore triggers and what you might experience daily:"}
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleTabSwitch("causes")}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-sky-50 hover:text-sky-700 text-slate-700 border border-slate-200 transition-all"
+                  >
+                    <span>View Common Triggers ({caseData.causes.length})</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    onClick={() => handleTabSwitch("symptoms")}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-amber-50 hover:text-amber-800 text-slate-700 border border-slate-200 transition-all"
+                  >
+                    <span>View What You Feel ({caseData.symptoms.length})</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* CARD 4: REAL TESTS & REAL TREATMENTS OVERVIEW TEASER */}
@@ -931,7 +999,7 @@ export default function PatientGuidanceSection({
                   </p>
                 </div>
                 <button
-                  onClick={() => setActiveTab("tests")}
+                  onClick={() => handleTabSwitch("tests")}
                   className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-sm shrink-0 ${
                     isOptimal
                       ? "bg-emerald-400 hover:bg-emerald-300 text-slate-950"
@@ -1008,6 +1076,24 @@ export default function PatientGuidanceSection({
                 </div>
               ))}
             </div>
+
+            {/* Tab Navigation Footer */}
+            <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+              <button
+                onClick={() => handleTabSwitch("overview")}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back to Overview</span>
+              </button>
+              <button
+                onClick={() => handleTabSwitch("symptoms")}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-sky-500 hover:bg-sky-400 text-slate-950 shadow-sm transition-all"
+              >
+                <span>Next: What You Feel ({caseData.symptoms.length})</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
         )}
 
@@ -1053,6 +1139,24 @@ export default function PatientGuidanceSection({
                 </p>
               </div>
             )}
+
+            {/* Tab Navigation Footer */}
+            <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+              <button
+                onClick={() => handleTabSwitch("causes")}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back to Triggers</span>
+              </button>
+              <button
+                onClick={() => handleTabSwitch("tests")}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-sm transition-all"
+              >
+                <span>Next: Real Tests & Treatments ({caseData.requiredTests.length + caseData.realTreatments.length})</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
         )}
 
@@ -1179,6 +1283,24 @@ export default function PatientGuidanceSection({
                 })}
               </div>
             </div>
+
+            {/* Tab Navigation Footer */}
+            <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+              <button
+                onClick={() => handleTabSwitch("symptoms")}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back to Symptoms</span>
+              </button>
+              <button
+                onClick={() => handleTabSwitch("actions")}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-400 hover:bg-emerald-300 text-slate-950 shadow-sm transition-all"
+              >
+                <span>Next: Doctor Guidance & Questions</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
         )}
 
@@ -1249,6 +1371,24 @@ export default function PatientGuidanceSection({
                   {caseData.actionableGuidance.specialistToConsult}
                 </span>
               </div>
+            </div>
+
+            {/* Tab Navigation Footer */}
+            <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+              <button
+                onClick={() => handleTabSwitch("tests")}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back to Tests & Treatments</span>
+              </button>
+              <button
+                onClick={() => handleTabSwitch("overview")}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white shadow-sm transition-all"
+              >
+                <span>Return to Overview & Signals</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
         )}

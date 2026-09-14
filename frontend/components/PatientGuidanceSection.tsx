@@ -608,6 +608,23 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
   }
 };
 
+export function getCaseClinicalInfo(caseId: string = "", stageOrRisk: string = ""): CaseClinicalInfo {
+  const cLower = (caseId || "").toLowerCase();
+  const sLower = (stageOrRisk || "").toLowerCase();
+
+  if (CLINICAL_KNOWLEDGE_BASE[caseId]) {
+    return CLINICAL_KNOWLEDGE_BASE[caseId];
+  } else if (cLower.includes("relax") || cLower.includes("base") || sLower.includes("baseline") || sLower.includes("optimal")) {
+    return CLINICAL_KNOWLEDGE_BASE["default_relax_baseline"];
+  } else if (cLower.includes("anxiety") || sLower.includes("anxiety")) {
+    return CLINICAL_KNOWLEDGE_BASE["dasps_s01_high_anxiety"];
+  } else if (cLower.includes("student") || cLower.includes("stroop") || sLower.includes("conflict")) {
+    return CLINICAL_KNOWLEDGE_BASE["student_sub11_stroop_stress"];
+  } else {
+    return CLINICAL_KNOWLEDGE_BASE["sam40_sub01_math_stress"];
+  }
+}
+
 export default function PatientGuidanceSection({
   caseId,
   domain,
@@ -639,19 +656,7 @@ export default function PatientGuidanceSection({
     });
   };
 
-  // Retrieve case-specific info or route directly to appropriate Stress & Anxiety knowledge base
-  let caseData: CaseClinicalInfo;
-  if (CLINICAL_KNOWLEDGE_BASE[caseId]) {
-    caseData = CLINICAL_KNOWLEDGE_BASE[caseId];
-  } else if (caseId.includes("relax") || caseId.includes("base") || stageOrRisk.toLowerCase().includes("baseline")) {
-    caseData = CLINICAL_KNOWLEDGE_BASE["default_relax_baseline"];
-  } else if (caseId.includes("anxiety") || stageOrRisk.toLowerCase().includes("anxiety")) {
-    caseData = CLINICAL_KNOWLEDGE_BASE["dasps_s01_high_anxiety"];
-  } else if (caseId.includes("student") || caseId.includes("stroop") || stageOrRisk.toLowerCase().includes("conflict")) {
-    caseData = CLINICAL_KNOWLEDGE_BASE["student_sub11_stroop_stress"];
-  } else {
-    caseData = CLINICAL_KNOWLEDGE_BASE["sam40_sub01_math_stress"];
-  }
+  const caseData = getCaseClinicalInfo(caseId, stageOrRisk);
 
   const isOptimal =
     caseData.signalAnomaly.status === "optimal" ||

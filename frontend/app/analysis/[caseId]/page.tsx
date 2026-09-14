@@ -263,14 +263,14 @@ export default function CaseAnalysisPage() {
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-sm font-bold text-white tracking-tight">
-                  Playing Raw EEG Signal ({currentTime.toFixed(1)}s / {duration.toFixed(1)}s)
+                  Analyzing Raw EEG Signal ({currentTime.toFixed(1)}s / {duration.toFixed(1)}s)
                 </h3>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 border border-sky-800">
-                  {isPlaying ? "Simulating Real-Time Stream" : "Playback Paused"}
+                  {isPlaying ? "Live Stream Simulation" : "Playback Paused"}
                 </span>
               </div>
               <p className="text-xs text-zinc-400 mt-0.5">
-                Full CNN classification, stress biomarker explainability, patient guidance, and RAG precautions unlock once the signal plays completely.
+                Streaming real-time cortical rhythms. Detailed cognitive evaluation and clinical guidance unlock upon completion.
               </p>
             </div>
           </div>

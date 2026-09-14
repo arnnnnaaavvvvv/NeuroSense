@@ -33,6 +33,7 @@ interface SignalViewerProps {
   onSeek: (time: number) => void;
   playbackSpeed: number;
   onChangeSpeed: (speed: number) => void;
+  hideLeadExplanation?: boolean;
 }
 
 interface LeadPlainDetail {
@@ -196,6 +197,7 @@ export default function SignalViewer({
   onSeek,
   playbackSpeed,
   onChangeSpeed,
+  hideLeadExplanation = false,
 }: SignalViewerProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [selectedLead, setSelectedLead] = useState<string>("Fpz-Cz");
@@ -349,7 +351,7 @@ export default function SignalViewer({
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}.${ms.toString().padStart(3, "0")}`;
   };
 
-  const speeds = [0.5, 1.0, 2.0];
+  const speeds = [0.5, 1.0, 2.0, 4.0];
 
   return (
     <div className="space-y-4">
@@ -566,180 +568,184 @@ export default function SignalViewer({
       </div>
 
       {/* 3. ACTIVE SIGNAL CLEAR EXPLANATION CARD (Plain English for Non-Medical Users) */}
-      <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm text-slate-900 space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-200">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 font-mono font-bold text-xs">
-                Channel: {leadInfo.leadName}
-              </span>
-              <h4 className="text-base font-bold text-slate-900">
-                {leadInfo.friendlyName}
-              </h4>
-            </div>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Clear non-medical guide explaining what this specific sensor measures and what the waves mean
-            </p>
-          </div>
+      {!hideLeadExplanation && (
+        <>
+          <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm text-slate-900 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-200">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 font-mono font-bold text-xs">
+                    Channel: {leadInfo.leadName}
+                  </span>
+                  <h4 className="text-base font-bold text-slate-900">
+                    {leadInfo.friendlyName}
+                  </h4>
+                </div>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Clear non-medical guide explaining what this specific sensor measures and what the waves mean
+                </p>
+              </div>
 
-          <button
-            onClick={() => setShowAllLeadsDrawer(!showAllLeadsDrawer)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold border border-slate-300 transition-colors"
-          >
-            <span>{showAllLeadsDrawer ? "Hide All Channels" : "Compare All Channels"}</span>
-            {showAllLeadsDrawer ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-          </button>
-        </div>
-
-        {/* 4 Plain-English Breakdown Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* 1. Placement */}
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
-            <div className="flex items-center gap-2 text-sky-700 font-bold text-xs uppercase tracking-wider">
-              <MapPin className="w-4 h-4" />
-              <span>Where It Is Placed on You</span>
-            </div>
-            <p className="text-xs text-slate-700 leading-relaxed">
-              {leadInfo.placement}
-            </p>
-          </div>
-
-          {/* 2. What it measures */}
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
-            <div className="flex items-center gap-2 text-indigo-700 font-bold text-xs uppercase tracking-wider">
-              <Brain className="w-4 h-4" />
-              <span>What It Listens To in Your Body</span>
-            </div>
-            <p className="text-xs text-slate-700 leading-relaxed">
-              {leadInfo.whatItMeasures}
-            </p>
-          </div>
-
-          {/* 3. Wave meaning */}
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
-            <div className="flex items-center gap-2 text-amber-700 font-bold text-xs uppercase tracking-wider">
-              <TrendingUp className="w-4 h-4" />
-              <span>What the Waves Mean on the Graph</span>
-            </div>
-            <p className="text-xs text-slate-700 leading-relaxed">
-              {leadInfo.waveMeaning}
-            </p>
-          </div>
-
-          {/* 4. Clinical purpose */}
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
-            <div className="flex items-center gap-2 text-emerald-700 font-bold text-xs uppercase tracking-wider">
-              <Stethoscope className="w-4 h-4" />
-              <span>Why Your Doctor Tests This</span>
-            </div>
-            <p className="text-xs text-slate-700 leading-relaxed">
-              {leadInfo.clinicalPurpose}
-            </p>
-          </div>
-        </div>
-
-        {/* EXPANDABLE DRAWER: ALL CHANNELS IN THIS RECORDING */}
-        {showAllLeadsDrawer && (
-          <div className="pt-4 border-t border-slate-200 space-y-3 animate-in fade-in duration-200">
-            <div className="flex items-center justify-between">
-              <h5 className="font-bold text-xs uppercase tracking-wider text-slate-700">
-                All Available Channels in this Recording ({availableChannels.length})
-              </h5>
-              <span className="text-[11px] text-slate-500">
-                Click any channel to view its wave & explanation
-              </span>
+              <button
+                onClick={() => setShowAllLeadsDrawer(!showAllLeadsDrawer)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold border border-slate-300 transition-colors"
+              >
+                <span>{showAllLeadsDrawer ? "Hide All Channels" : "Compare All Channels"}</span>
+                {showAllLeadsDrawer ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+              </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {availableChannels.map((chKey) => {
-                const info = PLAIN_ENGLISH_LEADS[chKey] || {
-                  leadName: chKey,
-                  friendlyName: `Channel ${chKey}`,
-                  placement: "Scalp electrode position.",
-                  whatItMeasures: "Brain wave electrical activity.",
-                  waveMeaning: "Voltage oscillations over time.",
-                  clinicalPurpose: "Diagnostic evaluation."
-                };
-                const isSelected = selectedLead === chKey;
-
-                return (
-                  <button
-                    key={chKey}
-                    onClick={() => setSelectedLead(chKey)}
-                    className={`text-left p-3.5 rounded-xl border transition-all ${
-                      isSelected
-                        ? "bg-sky-50 border-sky-400 ring-2 ring-sky-200"
-                        : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between pb-1">
-                      <span className="font-mono font-bold text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-200">
-                        {info.leadName}
-                      </span>
-                      {isSelected && (
-                        <span className="text-[10px] font-bold text-sky-700 uppercase tracking-wider">
-                          Active Channel
-                        </span>
-                      )}
-                    </div>
-                    <div className="font-bold text-xs text-slate-900 mt-1">
-                      {info.friendlyName}
-                    </div>
-                    <p className="text-[11px] text-slate-600 mt-1 line-clamp-2">
-                      {info.whatItMeasures}
-                    </p>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* 4. Spectrogram & Waveform Guide (Collapsible Evaluator Helper) */}
-      <div className="bg-slate-900 text-white rounded-2xl border border-slate-800 overflow-hidden">
-        <button
-          onClick={() => setShowSpectrogramGuide(!showSpectrogramGuide)}
-          className="w-full px-5 py-3 flex items-center justify-between text-xs font-semibold text-slate-300 hover:bg-slate-800/80 transition-colors"
-        >
-          <div className="flex items-center gap-2 text-sky-400">
-            <HelpCircle className="w-4 h-4" />
-            <span>How the Oscilloscope Wave & Spectrogram Work Together (Non-Medical Visual Guide)</span>
-          </div>
-          {showSpectrogramGuide ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-        </button>
-
-        {showSpectrogramGuide && (
-          <div className="p-5 border-t border-slate-800 text-xs text-slate-300 space-y-4 leading-relaxed bg-slate-950/60">
+            {/* 4 Plain-English Breakdown Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
-                <span className="font-bold text-white text-sm block">
-                  1. The Oscilloscope Waveform (Top Left Graph)
-                </span>
-                <p className="text-slate-400 text-xs leading-relaxed">
-                  Think of this like an ocean wave height monitor. It graphs the tiny electrical voltages (in millionths of a volt, or µV) traveling across your scalp as brain cells communicate. When you hit <strong>Play</strong>, the white scanner moves across time, letting you see exactly when spikes, muscle twitches, or deep slow waves happened.
+              {/* 1. Placement */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+                <div className="flex items-center gap-2 text-sky-700 font-bold text-xs uppercase tracking-wider">
+                  <MapPin className="w-4 h-4" />
+                  <span>Where It Is Placed on You</span>
+                </div>
+                <p className="text-xs text-slate-700 leading-relaxed">
+                  {leadInfo.placement}
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
-                <span className="font-bold text-white text-sm block">
-                  2. The SST Spectrogram Heatmap (Top Right Box)
-                </span>
-                <p className="text-slate-400 text-xs leading-relaxed">
-                  Think of this like a musical equalizer. Instead of wave height, it separates your brainwaves into frequencies: deep slow bass notes at the bottom (Delta sleep waves) and fast treble notes at the top (Beta anxiety / mental effort waves). The bright glowing spots show which frequencies your brain is firing most powerfully.
+              {/* 2. What it measures */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+                <div className="flex items-center gap-2 text-indigo-700 font-bold text-xs uppercase tracking-wider">
+                  <Brain className="w-4 h-4" />
+                  <span>What It Listens To in Your Body</span>
+                </div>
+                <p className="text-xs text-slate-700 leading-relaxed">
+                  {leadInfo.whatItMeasures}
+                </p>
+              </div>
+
+              {/* 3. Wave meaning */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+                <div className="flex items-center gap-2 text-amber-700 font-bold text-xs uppercase tracking-wider">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>What the Waves Mean on the Graph</span>
+                </div>
+                <p className="text-xs text-slate-700 leading-relaxed">
+                  {leadInfo.waveMeaning}
+                </p>
+              </div>
+
+              {/* 4. Clinical purpose */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+                <div className="flex items-center gap-2 text-emerald-700 font-bold text-xs uppercase tracking-wider">
+                  <Stethoscope className="w-4 h-4" />
+                  <span>Why Your Doctor Tests This</span>
+                </div>
+                <p className="text-xs text-slate-700 leading-relaxed">
+                  {leadInfo.clinicalPurpose}
                 </p>
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-sky-950/40 border border-sky-500/30 text-xs text-sky-200 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-sky-400 shrink-0" />
-              <span>
-                <strong>Why both are needed:</strong> Doctors and our AI model examine both the physical wave shape and the frequency breakdown together to achieve 96.5%+ diagnostic reliability without guesswork.
-              </span>
-            </div>
+            {/* EXPANDABLE DRAWER: ALL CHANNELS IN THIS RECORDING */}
+            {showAllLeadsDrawer && (
+              <div className="pt-4 border-t border-slate-200 space-y-3 animate-in fade-in duration-200">
+                <div className="flex items-center justify-between">
+                  <h5 className="font-bold text-xs uppercase tracking-wider text-slate-700">
+                    All Channels in this Recording ({availableChannels.length} leads)
+                  </h5>
+                  <span className="text-[11px] text-slate-500 font-mono">
+                    Click any channel below to switch the real-time wave graph
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                  {availableChannels.map((chKey) => {
+                    const info = PLAIN_ENGLISH_LEADS[chKey] || {
+                      leadName: chKey,
+                      friendlyName: `Channel ${chKey}`,
+                      placement: "Standard electrode placement on head or body.",
+                      whatItMeasures: "Captures microvolt electrical variations reflecting neural or physiological oscillations.",
+                      waveMeaning: "Smooth waves indicate calm rhythmic states; spikes reflect activity or noise.",
+                      clinicalPurpose: "Evaluated by specialists to identify clinical patterns."
+                    };
+                    const isSelected = selectedLead === chKey;
+
+                    return (
+                      <button
+                        key={chKey}
+                        onClick={() => setSelectedLead(chKey)}
+                        className={`text-left p-3 rounded-xl border transition-all ${
+                          isSelected
+                            ? "bg-sky-50 border-sky-400 ring-2 ring-sky-300 shadow-xs"
+                            : "bg-slate-50 border-slate-200 hover:bg-slate-100 hover:border-slate-300"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-1">
+                          <span className={`font-mono font-bold text-xs ${isSelected ? "text-sky-800" : "text-slate-800"}`}>
+                            {info.leadName}
+                          </span>
+                          {isSelected && (
+                            <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-sky-200 text-sky-800">
+                              Active
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs font-medium text-slate-900 mt-1 line-clamp-1">
+                          {info.friendlyName}
+                        </p>
+                        <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-2 leading-snug">
+                          {info.whatItMeasures}
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+
+          {/* 4. Spectrogram & Waveform Guide (Collapsible Evaluator Helper) */}
+          <div className="bg-slate-900 text-white rounded-2xl border border-slate-800 overflow-hidden">
+            <button
+              onClick={() => setShowSpectrogramGuide(!showSpectrogramGuide)}
+              className="w-full px-5 py-3 flex items-center justify-between text-xs font-semibold text-slate-300 hover:bg-slate-800/80 transition-colors"
+            >
+              <div className="flex items-center gap-2 text-sky-400">
+                <HelpCircle className="w-4 h-4" />
+                <span>How the Oscilloscope Wave & Spectrogram Work Together (Non-Medical Visual Guide)</span>
+              </div>
+              {showSpectrogramGuide ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+
+            {showSpectrogramGuide && (
+              <div className="p-5 border-t border-slate-800 text-xs text-slate-300 space-y-4 leading-relaxed bg-slate-950/60">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                    <span className="font-bold text-white text-sm block">
+                      1. The Oscilloscope Waveform (Top Left Graph)
+                    </span>
+                    <p className="text-slate-400 text-xs leading-relaxed">
+                      Think of this like an ocean wave height monitor. It graphs the tiny electrical voltages (in millionths of a volt, or µV) traveling across your scalp as brain cells communicate. When you hit <strong>Play</strong>, the white scanner moves across time, letting you see exactly when spikes, muscle twitches, or deep slow waves happened.
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                    <span className="font-bold text-white text-sm block">
+                      2. The SST Spectrogram Heatmap (Top Right Box)
+                    </span>
+                    <p className="text-slate-400 text-xs leading-relaxed">
+                      Think of this like a musical equalizer. Instead of wave height, it separates your brainwaves into frequencies: deep slow bass notes at the bottom (Delta sleep waves) and fast treble notes at the top (Beta anxiety / mental effort waves). The bright glowing spots show which frequencies your brain is firing most powerfully.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-sky-950/40 border border-sky-500/30 text-xs text-sky-200 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-sky-400 shrink-0" />
+                  <span>
+                    <strong>Why both are needed:</strong> Doctors and our AI model examine both the physical wave shape and the frequency breakdown together to achieve 96.5%+ diagnostic reliability without guesswork.
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

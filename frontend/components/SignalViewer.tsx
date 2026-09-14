@@ -691,7 +691,7 @@ export default function SignalViewer({
             >
               <div className="flex items-center gap-2 text-sky-400">
                 <HelpCircle className="w-4 h-4" />
-                <span>How the Oscilloscope Wave & Spectrogram Work Together (Non-Medical Visual Guide)</span>
+                <span>How the Oscilloscope Wave & Spectrogram Work Together</span>
               </div>
               {showSpectrogramGuide ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>

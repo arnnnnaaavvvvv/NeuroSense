@@ -5,14 +5,13 @@ import {
   CheckCircle2, 
   Cpu, 
   Check, 
-  Moon, 
-  Sun, 
-  Wind, 
   Activity, 
   Brain, 
   HeartPulse,
   Info,
-  Sparkles
+  Sparkles,
+  Flame,
+  Zap
 } from "lucide-react";
 import { ClassificationSummary } from "../lib/types";
 
@@ -22,144 +21,103 @@ interface ResultCardProps {
 }
 
 export default function ResultCard({ classification, keyMarkers }: ResultCardProps) {
-  const { risk_stage, confidence, model_name, binary_class, domain, sleep_stage, sleep_metrics } = classification;
-
-  const isEarlyWarning = domain === "early_warning" || domain === "stress_anxiety";
-  const isSleep = domain === "sleep" || Boolean(sleep_stage) || !isEarlyWarning;
+  const { risk_stage, confidence, model_name, binary_class, domain, stress_metrics } = classification;
 
   // 1. Styling & Stage Classification Logic
   let badgeBg = "bg-emerald-950/60 border-emerald-500/40 text-emerald-300";
   let icon = <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />;
   let confidenceBarColor = "bg-emerald-500";
-  let stageTitle = "AASM Sleep Stage Classification";
+  let stageTitle = "Neural Stress & Cognitive State Classification";
   let stageLabel = risk_stage;
-  let sectionHeader = "Model Inference & AASM Sleep Stage Classification";
-  let headBadge = "Head: 5-Class AASM Sleep Staging";
-  let testAccuracy = "AASM Scoring Standard v2.6 (Sleep-EDF Benchmark)";
+  let sectionHeader = "Neural Network Inference & Early-Warning Stress Classification";
+  let headBadge = "Head: stress_anxiety_risk_head (Özdemir Conv2D Multi-Head)";
+  let testAccuracy = "Validation Accuracy: 98.42% (SAM-40 / Student / DASPS Cohorts)";
 
-  if (isEarlyWarning) {
-    sectionHeader = "Model Inference & Early-Warning Risk Classification";
-    headBadge = "Head: stress_anxiety_risk_head (PyTorch Multi-Head)";
-    testAccuracy = "Reported Test Acc: 98.42% (SAM-40 / Student / DASPS)";
+  const rLower = (risk_stage || "").toLowerCase();
+  const bLower = (binary_class || "").toLowerCase();
 
-    const rLower = (risk_stage || "").toLowerCase();
-    const bLower = (binary_class || "").toLowerCase();
-
-    if (rLower.includes("stress") || (bLower === "elevated_risk" && !rLower.includes("anxiety") && !rLower.includes("apnea"))) {
-      stageTitle = "Evaluated Cognitive Stress State";
-      badgeBg = "bg-amber-950/70 border-amber-500/50 text-amber-300 animate-pulse_slow";
-      icon = <Brain className="w-5 h-5 text-amber-400 shrink-0" />;
-      confidenceBarColor = "bg-amber-500";
-      stageLabel = "Elevated Stress Risk (Acute Cognitive Load)";
-    } else if (rLower.includes("anxiety")) {
-      stageTitle = "Evaluated State Anxiety State";
-      badgeBg = "bg-rose-950/70 border-rose-500/50 text-rose-300 animate-pulse_slow";
-      icon = <HeartPulse className="w-5 h-5 text-rose-400 shrink-0" />;
-      confidenceBarColor = "bg-rose-500";
-      stageLabel = "Elevated Anxiety Risk (Acute State Anxiety Paroxysm)";
-    } else if (rLower.includes("apnea")) {
-      stageTitle = "Evaluated Airway Stability State";
-      badgeBg = "bg-sky-950/70 border-sky-500/50 text-sky-300 animate-pulse_slow";
-      icon = <Activity className="w-5 h-5 text-sky-400 shrink-0" />;
-      confidenceBarColor = "bg-sky-500";
-      stageLabel = "Elevated Pre-Apnea Risk (90s Lookback Window)";
-    } else {
-      stageTitle = "Evaluated Baseline State";
-      badgeBg = "bg-emerald-950/60 border-emerald-500/40 text-emerald-300";
-      icon = <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />;
-      confidenceBarColor = "bg-emerald-500";
-      stageLabel = "Baseline Normal (Resting Recovery State)";
-    }
-  } else {
-    // Default: Sleep Staging
-    sectionHeader = "Model Inference & AASM Sleep Stage Classification";
-    headBadge = "Head: 5-Class AASM Sleep Staging";
-    testAccuracy = "AASM Scoring Standard v2.6 (Sleep-EDF Benchmark)";
-    stageTitle = "AASM Sleep Stage Classification";
-
-    const stUpper = (sleep_stage || binary_class || "").toUpperCase();
-    if (stUpper.includes("N3")) {
-      badgeBg = "bg-indigo-950/70 border-indigo-500/50 text-indigo-300";
-      icon = <Moon className="w-5 h-5 text-indigo-400 shrink-0" />;
-      confidenceBarColor = "bg-indigo-500";
-      stageLabel = "Stage N3 (Deep Slow-Wave Sleep)";
-    } else if (stUpper.includes("N2")) {
-      badgeBg = "bg-sky-950/60 border-sky-500/50 text-sky-300";
-      icon = <Activity className="w-5 h-5 text-sky-400 shrink-0" />;
-      confidenceBarColor = "bg-sky-500";
-      stageLabel = "Stage N2 (Stable Spindles / K-Complex)";
-    } else if (stUpper.includes("N1")) {
-      badgeBg = "bg-amber-950/60 border-amber-500/50 text-amber-300";
-      icon = <AlertCircle className="w-5 h-5 text-amber-400 shrink-0" />;
-      confidenceBarColor = "bg-amber-500";
-      stageLabel = "Stage N1 (Light Transitional Sleep)";
-    } else if (stUpper.includes("REM")) {
-      badgeBg = "bg-cyan-950/70 border-cyan-500/50 text-cyan-300";
-      icon = <Wind className="w-5 h-5 text-cyan-400 shrink-0" />;
-      confidenceBarColor = "bg-cyan-400";
-      stageLabel = "Stage REM (Rapid Eye Movement)";
-    } else {
-      badgeBg = "bg-rose-950/70 border-rose-500/50 text-rose-300";
-      icon = <Sun className="w-5 h-5 text-rose-400 shrink-0" />;
-      confidenceBarColor = "bg-rose-500";
-      stageLabel = "Stage Wake (Nocturnal Arousal / WASO)";
-    }
+  if (rLower.includes("stress") && !rLower.includes("conflict")) {
+    badgeBg = "bg-rose-950/60 border-rose-500/50 text-rose-300";
+    icon = <Flame className="w-5 h-5 text-rose-400 shrink-0" />;
+    confidenceBarColor = "bg-rose-500";
+    stageTitle = "Acute Cognitive Workload & Mental Stress";
+  } else if (rLower.includes("conflict") || rLower.includes("stroop")) {
+    badgeBg = "bg-amber-950/60 border-amber-500/50 text-amber-300";
+    icon = <Zap className="w-5 h-5 text-amber-400 shrink-0" />;
+    confidenceBarColor = "bg-amber-500";
+    stageTitle = "Cognitive Conflict & Working Memory Overload";
+  } else if (rLower.includes("anxiety")) {
+    badgeBg = "bg-purple-950/60 border-purple-500/50 text-purple-300";
+    icon = <HeartPulse className="w-5 h-5 text-purple-400 shrink-0" />;
+    confidenceBarColor = "bg-purple-500";
+    stageTitle = "Acute State Anxiety & Autonomic Arousal";
+  } else if (rLower.includes("baseline") || bLower === "baseline") {
+    badgeBg = "bg-emerald-950/60 border-emerald-500/40 text-emerald-300";
+    icon = <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />;
+    confidenceBarColor = "bg-emerald-500";
+    stageTitle = "Healthy Restorative Baseline";
   }
 
-  const confidencePercent = Math.round(confidence * 1000) / 10;
+  const confidencePercent = (confidence * 100).toFixed(1);
 
   return (
-    <div className="glass-panel rounded-xl p-5 border border-slate-800 space-y-5">
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+    <div className="bg-[#090d16] text-white rounded-2xl p-5 sm:p-6 border border-slate-800 space-y-5 shadow-xl">
+      {/* Header Bar with Module Head Metadata */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
         <div className="flex items-center gap-2">
-          <Cpu className="w-5 h-5 text-sky-400" />
-          <h3 className="font-semibold text-base text-white tracking-wide">
+          <Cpu className="w-4 h-4 text-cyan-400 shrink-0" />
+          <h3 className="font-bold text-sm tracking-wide text-white uppercase">
             {sectionHeader}
           </h3>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[11px] font-mono text-slate-300 bg-slate-900/90 px-2.5 py-1 rounded-lg border border-slate-700">
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-slate-900 text-sky-400 border border-slate-700">
             {headBadge}
-          </span>
-          <span className="text-[11px] font-mono text-sky-300 bg-sky-950/50 px-2.5 py-1 rounded-lg border border-sky-500/30">
-            Shared Backbone: Özdemir CNN (SST 128×128)
           </span>
         </div>
       </div>
 
-      {/* Main Prediction & Confidence Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
-        {/* Classification Stage Banner */}
-        <div className={`p-4 rounded-xl border flex items-center gap-3.5 ${badgeBg}`}>
-          {icon}
-          <div>
-            <div className="text-[10px] uppercase tracking-wider font-mono opacity-80">
-              {stageTitle}
-            </div>
-            <div className="text-base font-bold text-white mt-0.5">
-              {stageLabel}
+      {/* Main Classification & Confidence Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+        {/* Left: Identified Risk Stage & Model Information */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
+            <span>Evaluated State:</span>
+            <span className="text-slate-200 font-semibold">{stageTitle}</span>
+          </div>
+
+          <div className={`flex items-center gap-3 p-3.5 rounded-xl border ${badgeBg} shadow-sm`}>
+            {icon}
+            <div>
+              <div className="font-bold text-base sm:text-lg leading-tight tracking-tight">
+                {stageLabel}
+              </div>
+              <div className="text-[11px] opacity-80 mt-0.5">
+                Model: <span className="font-mono text-[10px]">{model_name}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Confidence Meter */}
-        <div className="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2 flex flex-col justify-between">
-          <div>
-            <div className="flex justify-between items-center text-xs mb-1.5">
-              <span className="text-slate-400 font-medium">Model Inference Confidence</span>
-              <span className="font-mono font-bold text-white">{confidencePercent}%</span>
-            </div>
-            <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all duration-500 ${confidenceBarColor}`}
-                style={{ width: `${confidencePercent}%` }}
-              ></div>
-            </div>
+        {/* Right: Confidence Score & Verification Benchmark */}
+        <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2.5">
+          <div className="flex justify-between items-center text-xs">
+            <span className="text-slate-400 font-mono">Posterior Confidence:</span>
+            <span className="font-mono font-bold text-white text-base">
+              {confidencePercent}%
+            </span>
           </div>
+
+          <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+            <div
+              className={`h-full ${confidenceBarColor} transition-all duration-700`}
+              style={{ width: `${confidencePercent}%` }}
+            />
+          </div>
+
           <div className="flex justify-between text-[10px] text-slate-400 font-mono pt-1 border-t border-slate-800/80">
             <span>
-              Target Class: <strong className="text-slate-200 uppercase">{sleep_stage || binary_class}</strong>
+              Class: <strong className="text-slate-200 uppercase">{binary_class}</strong>
             </span>
             <span className="text-slate-400">
               {testAccuracy}
@@ -168,20 +126,42 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
         </div>
       </div>
 
-      {/* Sleep Micro-Architecture Callout (if sleep case) */}
-      {isSleep && sleep_metrics && (
-        <div className="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2">
-            <span className="text-slate-400">Sleep Efficiency:</span>
-            <span className="font-mono font-bold text-white">{sleep_metrics.sleep_efficiency_percent}%</span>
+      {/* Autonomic Stress & Cognitive Workload Telemetry */}
+      {stress_metrics && (
+        <div className="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div className="space-y-0.5">
+            <span className="text-slate-400 block text-[10px] uppercase font-mono">Alpha Asymmetry (FAA):</span>
+            <span className={`font-mono font-bold text-sm ${stress_metrics.frontal_alpha_asymmetry < -0.2 ? "text-rose-400" : "text-emerald-400"}`}>
+              {stress_metrics.frontal_alpha_asymmetry > 0 ? `+${stress_metrics.frontal_alpha_asymmetry.toFixed(2)}` : stress_metrics.frontal_alpha_asymmetry.toFixed(2)}
+            </span>
+            <span className="text-[10px] text-slate-500 block">F4 vs F3 Lead Ratio</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-slate-400">WASO (Wake After Sleep Onset):</span>
-            <span className="font-mono font-bold text-white">{sleep_metrics.waso_minutes} min</span>
+          <div className="space-y-0.5">
+            <span className="text-slate-400 block text-[10px] uppercase font-mono">Beta / Alpha Ratio:</span>
+            <span className="font-mono font-bold text-amber-300 text-sm">
+              {stress_metrics.beta_alpha_ratio.toFixed(2)}
+            </span>
+            <span className="text-[10px] text-slate-500 block">Arousal vs Rest Power</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-slate-400">Sleep Apnea / Hypopnea Risk:</span>
-            <span className="font-mono font-bold text-sky-400">{sleep_metrics.apnea_hypopnea_risk || "Low"}</span>
+          <div className="space-y-0.5">
+            <span className="text-slate-400 block text-[10px] uppercase font-mono">Fmθ Cognitive Strain:</span>
+            <span className="font-mono font-bold text-sky-400 text-sm">
+              {stress_metrics.fm_theta_power_percent.toFixed(1)}%
+            </span>
+            <span className="text-[10px] text-slate-500 block">Midline Theta Power</span>
+          </div>
+          <div className="space-y-0.5">
+            <span className="text-slate-400 block text-[10px] uppercase font-mono">Autonomic Tone:</span>
+            <span className={`font-mono font-bold text-sm ${
+              stress_metrics.autonomic_tone.includes("Acute") 
+                ? "text-rose-400" 
+                : stress_metrics.autonomic_tone.includes("Sympathetic") 
+                ? "text-amber-400" 
+                : "text-emerald-400"
+            }`}>
+              {stress_metrics.autonomic_tone}
+            </span>
+            <span className="text-[10px] text-slate-500 block">Sympathetic / Vagal State</span>
           </div>
         </div>
       )}
@@ -214,28 +194,14 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
           <span>Clinical Interpretation & Brainwave Explainability</span>
         </div>
 
-        {isEarlyWarning ? (
-          <div className="text-xs text-slate-300 leading-relaxed space-y-2">
-            <p>
-              <strong>What the Neural Network Detected:</strong> The CNN evaluates the 128×128 Synchrosqueezing Transform (SST) spectral projection within the 0.5–50 Hz physiological bandwidth (at 100 Hz sampling rate). During acute cognitive stress (mental arithmetic or Stroop interference), the resting synchronized 8–12 Hz alpha rhythm undergoes <strong className="text-amber-300">Frontal Alpha Desynchronization (Alpha Blocking)</strong>, while fast 20–28 Hz beta waves surge across frontal electrodes (<span className="font-mono text-slate-200">F3, Fz, F4</span>).
-            </p>
-            <p className="text-slate-400">
-              <strong>Clinical Value for Early-Warning:</strong> Traditional assessments only diagnose anxiety after subjective panic or distress occurs. Real-time cortical EEG monitoring detects autonomic hyperarousal in milliseconds, enabling rapid grounding interventions before cognitive exhaustion or anxiety escalates.
-            </p>
-          </div>
-        ) : isSleep ? (
-          <div className="text-xs text-slate-300 leading-relaxed space-y-2">
-            <p>
-              <strong>Polysomnographic Macro-Architecture:</strong> Scored against American Academy of Sleep Medicine (AASM v2.6) standards. Evaluates synchronized slow-wave delta activity (0.5–2 Hz, &gt;75 µV) for restorative Stage N3, characteristic sleep spindles (12–14 Hz) and K-complexes for Stage N2, and low-amplitude mixed-frequency desynchrony for REM and Stage N1.
-            </p>
-          </div>
-        ) : (
-          <div className="text-xs text-slate-300 leading-relaxed space-y-2">
-            <p>
-              <strong>Epileptiform Electrophysiology:</strong> Grounded in the Özdemir & Kaya (2020) deep learning framework. Distinguishes stable inter-ictal background rhythms from high-amplitude sharp-and-wave discharges and localized pre-ictal hypersynchrony across frontotemporal and centroparietal montages.
-            </p>
-          </div>
-        )}
+        <div className="text-xs text-slate-300 leading-relaxed space-y-2">
+          <p>
+            <strong>What the Neural Network Detected:</strong> The CNN evaluates the 128×128 Synchrosqueezing Transform (SST) spectral projection within the 0.5–50 Hz physiological bandwidth (at 128 Hz calibrated sampling). During acute cognitive workload (speed arithmetic or Stroop interference), the resting synchronized 8–12 Hz alpha rhythm undergoes <strong className="text-amber-300">Frontal Alpha Desynchronization (Alpha Blocking)</strong>, while fast 20–28 Hz beta waves surge across frontal electrodes (<span className="font-mono text-slate-200">F3, Fz, F4</span>).
+          </p>
+          <p className="text-slate-400">
+            <strong>Clinical Value for Early-Warning:</strong> Traditional assessments only diagnose anxiety or burnout after subjective panic or exhaustion occurs. Real-time cortical EEG monitoring detects autonomic hyperarousal in milliseconds, enabling rapid grounding interventions before cognitive exhaustion or anxiety escalates.
+          </p>
+        </div>
       </div>
     </div>
   );

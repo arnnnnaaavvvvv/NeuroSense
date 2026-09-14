@@ -18,7 +18,8 @@ import {
   Info,
   Pill,
   ShieldAlert,
-  Zap
+  Zap,
+  Flame
 } from "lucide-react";
 
 interface PatientGuidanceSectionProps {
@@ -80,657 +81,15 @@ export interface CaseClinicalInfo {
 }
 
 export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
-  // 1. MIT-BIH Pre-Apnea
-  "mitbih_slp01_preapnea_01": {
-    conditionTitle: "Obstructive Sleep Apnea Warning (Pre-Apnea Airway Collapse)",
-    simpleSummary:
-      "This test captures the crucial moments right before throat muscles relax excessively and block airflow during sleep. The brain is repeatedly struggling to keep the airway open, disrupting restorative breathing.",
-    whatSignalMeans:
-      "The brain waves slow down abnormally while the heart rhythm becomes uneven. This shows the body is running low on oxygen and fighting against a blocked windpipe just seconds before a full breathing pause.",
-    whyNeedsAttention:
-      "Repeated nocturnal airway collapses trigger severe blood oxygen dips (SpO2 dropping below 90%) and nocturnal adrenaline spikes. Left untreated, sleep apnea significantly raises the risk of severe hypertension, cardiac arrhythmias (such as atrial fibrillation), heart disease, stroke, and life-threatening daytime motor vehicle accidents caused by involuntary micro-sleeps.",
-    signalAnomaly: {
-      status: "abnormal",
-      statusBadge: "Abnormal Airway & Waveform Strain",
-      abnormalLocation: "Pre-apnea baseline flattening (0.5–2 Hz suppression) with sudden high-amplitude respiratory struggle bursts & cyclic heart rate surges",
-      signalPathologyDescription: "The signal demonstrates microvolt amplitude suppression punctuated by chaotic low-frequency high-amplitude movement artifacts as the upper airway collapses, accompanied by sudden tachypnea and sympathetic cardiac surges.",
-      normalBaselineComparison: "Healthy restful sleep maintains steady, smooth sinusoidal oscillations and a rhythmic resting sinus rhythm with uninterrupted slow Delta waves."
-    },
-    thingsToPayAttentionTo: [
-      {
-        sign: "Waking up suddenly gasping, choking, or snorting with a racing pulse",
-        clinicalContext: "Direct indicator of complete airway obstruction where the brain jolts itself awake to prevent asphyxiation.",
-        urgency: "Immediate Medical Attention"
-      },
-      {
-        sign: "Severe daytime sleepiness or nodding off while driving or in meetings",
-        clinicalContext: "Signals critical nocturnal sleep debt and profound micro-sleep vulnerability.",
-        urgency: "Immediate Medical Attention"
-      },
-      {
-        sign: "Bed partner noticing silence for 10+ seconds followed by a violent snort",
-        clinicalContext: "Classic witnessed apnea pause confirming significant physical airway obstruction.",
-        urgency: "Clinical Follow-Up"
-      },
-      {
-        sign: "Dull morning front headaches and severe dry mouth / parched throat upon waking",
-        clinicalContext: "Direct consequence of overnight carbon dioxide retention, hypoxemia, and forced mouth breathing.",
-        urgency: "Clinical Follow-Up"
-      },
-      {
-        sign: "Stubborn morning blood pressure spikes resistant to standard medication",
-        clinicalContext: "Driven by overnight adrenaline surges triggered by repeated suffocation reflexes.",
-        urgency: "Clinical Follow-Up"
-      }
-    ],
-    realTreatments: [
-      {
-        treatmentName: "Automatic Positive Airway Pressure (APAP / CPAP Therapy)",
-        category: "First-Line Medical Therapy",
-        howItWorks: "Gently delivers continuous, filtered room air through a nasal or full-face mask, acting as an invisible pneumatic splint that keeps the airway continuously patent throughout the night.",
-        evidenceBase: "AASM Clinical Practice Guideline — Gold Standard (eliminates 95%+ of apneic events)"
-      },
-      {
-        treatmentName: "Custom Mandibular Advancement Oral Appliance (MAD)",
-        category: "Clinical Device / Appliance",
-        howItWorks: "Custom-fitted by an accredited dental sleep specialist; advances the lower jaw and tongue base forward by 3–6 mm to enlarge the pharyngeal space and prevent airway collapse.",
-        evidenceBase: "AASM & AADSM Practice Guideline for Mild-to-Moderate OSA and CPAP-intolerant patients"
-      },
-      {
-        treatmentName: "Positional Sleep Therapy & Side-Sleeping Apparatus",
-        category: "Behavioral & Neuro-Regulation",
-        howItWorks: "Uses smart vibrotactile feedback or contoured ergonomic bolsters to stop supine (back) sleeping where gravity pulls the tongue into the airway.",
-        evidenceBase: "AASM Recommended Adjunctive Therapy (reduces positional AHI by >50%)"
-      },
-      {
-        treatmentName: "ENT Airway Evaluation & Hypoglossal Nerve Stimulation (Inspire)",
-        category: "Medical Specialist Care",
-        howItWorks: "Specialist surgical review for deviated septum, tonsillar hypertrophy, or minimally invasive implanted neuro-stimulation that gently moves the tongue forward during inhalation.",
-        evidenceBase: "FDA-Approved Surgical Alternative for moderate-to-severe OSA"
-      }
-    ],
-    causes: [
-      {
-        title: "Throat & Tongue Muscle Relaxation",
-        description: "During deep relaxation at night, the muscles at the back of the throat collapse backward, partially blocking the windpipe."
-      },
-      {
-        title: "Sleeping Flat on the Back",
-        description: "Gravity pulls the soft palate and tongue downward, making it much harder for air to flow smoothly into the lungs."
-      },
-      {
-        title: "Nasal or Airway Narrowing",
-        description: "Enlarged tonsils, a deviated nasal septum, or a naturally narrower neck airway can restrict night-time airflow."
-      },
-      {
-        title: "Evening Alcohol or Sedative Intake",
-        description: "Substances that relax the central nervous system make airway muscles unusually loose and unresponsive."
-      }
-    ],
-    symptoms: [
-      {
-        title: "Loud Snoring & Choking Sounds",
-        description: "Frequent loud snoring punctuated by sudden gasps, snorts, or brief pauses in breathing witnessed by a partner."
-      },
-      {
-        title: "Waking Up Feeling Exhausted",
-        description: "Feeling heavy, groggy, or completely unrefreshed in the morning despite being in bed for 7–8 hours."
-      },
-      {
-        title: "Morning Headaches & Dry Mouth",
-        description: "Waking up with a parched throat from mouth breathing, along with a dull front-headache caused by low overnight oxygen."
-      },
-      {
-        title: "Daytime Sleepiness & Brain Fog",
-        description: "Struggling to stay awake while driving, sitting at work, or reading, accompanied by short-term memory lapses."
-      }
-    ],
-    requiredTests: [
-      {
-        testName: "Full Overnight In-Lab Polysomnography (Level 1 Sleep Study)",
-        plainEnglishName: "Overnight Hospital Sleep Test",
-        whyNeeded: "Monitors brainwaves, continuous blood oxygen (SpO2), chest wall breathing effort, and heart rhythm all night to calculate your exact Apnea-Hypopnea Index (AHI score).",
-        urgency: "Priority"
-      },
-      {
-        testName: "Home Sleep Apnea Test (HSAT - Level 3)",
-        plainEnglishName: "Take-Home Sleep Device",
-        whyNeeded: "A simple kit worn at home with a finger clip and small nasal tube to check oxygen dips and snoring pauses in your own bed.",
-        urgency: "Recommended"
-      },
-      {
-        testName: "ENT Flexible Nasopharyngoscopy",
-        plainEnglishName: "Airway & Throat Camera Exam",
-        whyNeeded: "An Ear, Nose, and Throat specialist gently looks down the nasal passages to see if enlarged tonsils, nasal polyps, or a narrow palate are physically blocking air.",
-        urgency: "Recommended"
-      },
-      {
-        testName: "24-Hour Ambulatory ECG (Holter Monitor)",
-        plainEnglishName: "24-Hour Heart Rhythm Sticker",
-        whyNeeded: "Sleep apnea frequently triggers irregular heartbeats (arrhythmias) or dangerous nighttime blood pressure spikes that require cardiac protection.",
-        urgency: "Routine"
-      }
-    ],
-    actionableGuidance: {
-      immediateSteps: [
-        "Sleep strictly on your side using a supportive contoured pillow to keep gravity from pulling your tongue into your throat.",
-        "Avoid alcohol, heavy meals, and sleeping pills for at least 4 hours before bedtime.",
-        "Use a saline nasal rinse or nasal strip before bed to reduce nasal breathing resistance.",
-        "Consult a sleep physician about CPAP (Continuous Positive Airway Pressure) therapy or a customized dental mouthguard."
-      ],
-      doctorQuestions: [
-        "What is my Apnea-Hypopnea Index (how many times per hour am I stopping breathing)?",
-        "Did my oxygen levels drop below 90% during the night?",
-        "Am I a good candidate for a gentle CPAP machine or an oral dental advancement device?",
-        "Should my heart and blood pressure be monitored during sleep?"
-      ],
-      specialistToConsult: "Board-Certified Sleep Medicine Specialist / Somnologist & Pulmonologist"
-    }
-  },
-
-  // 2. Sleep Fragmentation / Wake after Sleep Onset (ST7022J0)
-  "sleep_telemetry_st7022j0": {
-    conditionTitle: "Sleep Fragmentation & Frequent Nighttime Awakenings (WASO)",
-    simpleSummary:
-      "This test shows that while the patient is in bed, their brain keeps snapping back into an alert, awake state throughout the night. Sleep is broken up into shallow fragments instead of flowing smoothly through restorative cycles.",
-    whatSignalMeans:
-      "Instead of smooth, calm brain waves, the EEG shows sudden sharp bursts of rapid 'Alpha' waves (which normally only appear when you are awake with your eyes open). Muscle tone also stays tense.",
-    whyNeedsAttention:
-      "Frequent nocturnal micro-awakenings prevent the brain from completing full 90-minute sleep cycles, dramatically cutting deep Stage N3 physical repair and REM dream integration. Chronic sleep fragmentation causes systemic neuroinflammation, elevated resting cortisol, impaired glucose metabolism, memory loss, and severe emotional exhaustion.",
-    signalAnomaly: {
-      status: "abnormal",
-      statusBadge: "Abnormal Cortical Arousals & Alpha Intrusion",
-      abnormalLocation: "Recurrent rapid Alpha (8–12 Hz) & Beta (13–30 Hz) rhythm intrusions fracturing slow Delta oscillations",
-      signalPathologyDescription: "Instead of sustained, synchronized slow waves (<2 Hz), the recording demonstrates repeated 3 to 15-second cortical micro-arousals accompanied by heightened submental EMG muscle tone and erratic autonomic heart rate surges.",
-      normalBaselineComparison: "Healthy slow-wave sleep consists of continuous high-voltage (>75 µV) synchronized Delta waves and profound submental EMG muscle relaxation."
-    },
-    thingsToPayAttentionTo: [
-      {
-        sign: "Waking up between 2 AM and 4 AM with catastrophic racing thoughts or physical restlessness",
-        clinicalContext: "Indicates elevated nocturnal cortisol and sympathetic nervous system hyper-arousal.",
-        urgency: "Clinical Follow-Up"
-      },
-      {
-        sign: "Uncomfortable creeping, crawling, or tingling urges to move legs when resting in bed",
-        clinicalContext: "Hallmark sign of Restless Legs Syndrome (RLS), frequently triggered by low brain iron/ferritin stores.",
-        urgency: "Clinical Follow-Up"
-      },
-      {
-        sign: "Relying on escalating doses of alcohol, sedatives, or over-the-counter sleep aids",
-        clinicalContext: "Sedatives suppress natural sleep architecture and cause rapid tolerance and rebound awakenings.",
-        urgency: "Immediate Medical Attention"
-      },
-      {
-        sign: "Persistent brain fog, irritability, and afternoon caffeine cravings",
-        clinicalContext: "Direct daytime consequence of lacking restorative deep sleep cycles.",
-        urgency: "Monitor Daily"
-      }
-    ],
-    realTreatments: [
-      {
-        treatmentName: "Cognitive Behavioral Therapy for Insomnia (CBT-I)",
-        category: "Behavioral & Neuro-Regulation",
-        howItWorks: "Structured multicomponent protocol combining sleep restriction therapy, stimulus control, and sleep scheduling to recondition the brain that bed equals rapid, consolidated sleep.",
-        evidenceBase: "American College of Physicians (ACP) First-Line Guideline — Proven superior to medication"
-      },
-      {
-        treatmentName: "Dual Orexin Receptor Antagonists (DORAs: Daridorexant / Suvorexant)",
-        category: "First-Line Medical Therapy",
-        howItWorks: "Physician-prescribed medications that selectively silence the brain's hyperactive wakefulness neurotransmitter (orexin) without creating chemical dependence or morning grogginess.",
-        evidenceBase: "FDA-Approved & AASM Clinical Guidelines for sleep maintenance insomnia"
-      },
-      {
-        treatmentName: "Circadian Phototherapy & Morning Light Entrainment",
-        category: "Behavioral & Neuro-Regulation",
-        howItWorks: "10,000 lux broad-spectrum light exposure within 30 minutes of waking to anchor the circadian suprachiasmatic nucleus and optimize nighttime melatonin timing.",
-        evidenceBase: "AASM Recommended Chronobiological Therapy"
-      },
-      {
-        treatmentName: "Serum Ferritin & Iron Optimization Protocol",
-        category: "Medical Specialist Care",
-        howItWorks: "Targeted therapeutic iron supplementation under physician guidance to bring ferritin levels above 75 ng/mL, eliminating neurological restless leg micro-awakenings.",
-        evidenceBase: "International Restless Legs Syndrome Study Group (IRLSSG) Consensus"
-      }
-    ],
-    causes: [
-      {
-        title: "High Stress & Nervous System Overdrive",
-        description: "High levels of cortisol (the stress hormone) keep the brain's internal 'alarm system' on high alert, waking you at minor noises."
-      },
-      {
-        title: "Restless Legs or Periodic Limb Movements",
-        description: "Involuntary muscle twitches, leg restlessness, or cramps that pull the brain out of deep sleep."
-      },
-      {
-        title: "Late Caffeine or Evening Screen Exposure",
-        description: "Blue light from phones/TVs delays melatonin release, while caffeine stays in the bloodstream for 6 to 8 hours."
-      },
-      {
-        title: "Environmental Disruptions",
-        description: "Bedroom temperature that is too warm, noise, partner movements, or frequent bathroom trips (nocturia)."
-      }
-    ],
-    symptoms: [
-      {
-        title: "Waking Up Repeatedly at Night",
-        description: "Opening your eyes at 2 AM or 3 AM and tossing and turning for 20 to 60 minutes unable to fall back asleep."
-      },
-      {
-        title: "Light, Restless 'Half-Asleep' Sensation",
-        description: "Feeling like your brain never fully shut down, hearing every creak and movement in the house."
-      },
-      {
-        title: "Daytime Fatigue & Mood Irritability",
-        description: "Feeling emotionally drained, short-tempered, and craving sugary foods or extra coffee to get through the afternoon."
-      },
-      {
-        title: "Difficulty Focusing & Sluggish Reaction Times",
-        description: "Brain fog, trouble retaining new information, and feeling mentally slower during conversations."
-      }
-    ],
-    requiredTests: [
-      {
-        testName: "Comprehensive In-Lab Polysomnography with Leg EMG",
-        plainEnglishName: "Complete Sleep & Movement Study",
-        whyNeeded: "Measures exact awakenings, brief micro-arousals (lasting only 3–5 seconds), and involuntary leg muscle twitches.",
-        urgency: "Priority"
-      },
-      {
-        testName: "Serum Ferritin & Iron Panel",
-        plainEnglishName: "Blood Iron & Ferritin Check",
-        whyNeeded: "Low iron stores in the brain are the primary hidden cause of restless leg movements and midnight awakenings.",
-        urgency: "Recommended"
-      },
-      {
-        testName: "Thyroid Stimulating Hormone (TSH & Free T4)",
-        plainEnglishName: "Thyroid Gland Function Blood Test",
-        whyNeeded: "An overactive thyroid (hyperthyroidism) speeds up metabolism and causes heart palpitations and insomnia.",
-        urgency: "Routine"
-      },
-      {
-        testName: "14-Day Wrist Actigraphy Sleep Tracking",
-        plainEnglishName: "Medical Sleep Watch Monitoring",
-        whyNeeded: "Tracks your true sleep-wake schedule across two full weeks to diagnose circadian rhythm misalignment.",
-        urgency: "Recommended"
-      }
-    ],
-    actionableGuidance: {
-      immediateSteps: [
-        "Follow the '20-Minute Rule': If awake in bed for more than 20 minutes, get out of bed, sit in dim light, and read a paper book until sleepy.",
-        "Keep the bedroom cool (65°F to 68°F / 18°C to 20°C) and completely pitch-black using blackout curtains.",
-        "Stop all caffeine intake after 12:00 PM noon and shut off screens 60 minutes before bed.",
-        "Keep your morning wake-up time identical seven days a week, even on weekends."
-      ],
-      doctorQuestions: [
-        "Are my awakenings caused by breathing pauses, leg movements, or nervous system arousals?",
-        "Could my ferritin, thyroid, or cortisol levels be disrupting my sleep?",
-        "Would Cognitive Behavioral Therapy for Insomnia (CBT-I) be more effective for me than sleeping pills?"
-      ],
-      specialistToConsult: "Sleep Neurologist & Behavioral Sleep Medicine Psychologist (CBT-I Specialist)"
-    }
-  },
-
-  // 3. Stage N3 Deep Sleep (SC4102E0)
-  "sleep_cassette_sc4102e0": {
-    conditionTitle: "Restorative Deep Slow-Wave Sleep (Stage N3)",
-    simpleSummary:
-      "This test shows optimal, healthy deep sleep. During this phase, the body repairs muscles, strengthens the immune system, flushes toxins out of the brain, and builds long-term memory.",
-    whatSignalMeans:
-      "The recording displays huge, gentle, synchronized rolling waves called 'Delta waves'. The brain's electrical activity is working in harmony at a calm, low frequency (0.5 to 2 cycles per second).",
-    whyNeedsAttention:
-      "Stage N3 is the primary physical restoration window where Human Growth Hormone (HGH) is released and the brain's glymphatic system washes away metabolic waste (including beta-amyloid). Sustaining healthy slow-wave sleep is essential to prevent cognitive decline, support athletic recovery, and maintain a robust immune defense.",
-    signalAnomaly: {
-      status: "optimal",
-      statusBadge: "Optimal Synchronized Delta Wave Architecture",
-      abnormalLocation: "No pathology detected — Pristine 0.5–2.0 Hz Delta slow-wave synchrony (>75 µV)",
-      signalPathologyDescription: "High-voltage, highly synchronized slow Delta waves dominate across frontal and central brain leads with complete physical stillness, representing ideal restorative deep sleep.",
-      normalBaselineComparison: "Matches gold-standard American Academy of Sleep Medicine (AASM) criteria for Stage N3 slow-wave sleep."
-    },
-    thingsToPayAttentionTo: [
-      {
-        sign: "Heavy grogginess or disorientation for 15–30 minutes if woken abruptly",
-        clinicalContext: "Normal 'sleep inertia' caused by waking directly out of deep Delta slow waves; resolves with hydration and morning light.",
-        urgency: "Monitor Daily"
-      },
-      {
-        sign: "Inadvertent sleepwalking, confusion, or night terrors (parasomnias)",
-        clinicalContext: "Partial arousals out of deep slow-wave sleep; requires clinical evaluation if movements become unsafe.",
-        urgency: "Clinical Follow-Up"
-      },
-      {
-        sign: "Sudden drop in daytime stamina despite long total hours in bed",
-        clinicalContext: "May signal reduction in slow-wave percentage due to alcohol, stress, or age.",
-        urgency: "Monitor Daily"
-      }
-    ],
-    realTreatments: [
-      {
-        treatmentName: "Sleep Architecture Preservation Protocol",
-        category: "Behavioral & Neuro-Regulation",
-        howItWorks: "Maintaining a strict consistent sleep-wake schedule and avoiding evening alcohol (which suppresses delta wave generation by >40%).",
-        evidenceBase: "AASM Standard Sleep Hygiene & Recovery Guidelines"
-      },
-      {
-        treatmentName: "Thermal Regulation & Bedroom Cooling",
-        category: "Clinical Device / Appliance",
-        howItWorks: "Keeping sleep room temperature between 65°F–68°F (18°C–20°C) to support the natural 1°C core body temperature drop required for deep slow-wave generation.",
-        evidenceBase: "Clinical Chronobiology & Thermoregulation Standards"
-      },
-      {
-        treatmentName: "Adenosine Building Daytime Exercise",
-        category: "Behavioral & Neuro-Regulation",
-        howItWorks: "30–45 minutes of moderate aerobic or resistance training completed at least 3 hours before bed to maximize daytime adenosine breakdown and slow-wave depth.",
-        evidenceBase: "Sports Medicine & Sleep Quality Consensus"
-      }
-    ],
-    causes: [
-      {
-        title: "Normal Healthy Sleep Cycle Architecture",
-        description: "Occurs naturally in the first half of the night when physical recovery demand is highest."
-      },
-      {
-        title: "Physical Exercise & Energy Expenditure",
-        description: "Active days with good physical exertion increase the brain's adenosine levels, driving deeper slow-wave sleep."
-      },
-      {
-        title: "Consistent Bedtime Habits",
-        description: "Going to bed at the same time allows your internal body clock to cleanly enter deep restorative stages."
-      },
-      {
-        title: "Quiet, Dark Sleeping Environment",
-        description: "An undisturbed setting keeps the brain from being startled into lighter sleep stages."
-      }
-    ],
-    symptoms: [
-      {
-        title: "Deep Physical Stillness",
-        description: "The body is completely still with very steady, slow breathing and lowered heart rate."
-      },
-      {
-        title: "Hard to Wake Up From",
-        description: "If an alarm goes off during this stage, you feel briefly disoriented or 'sleep drunk' (sleep inertia) for a few minutes."
-      },
-      {
-        title: "Waking Refreshed in the Morning",
-        description: "When this stage completes properly, you wake up feeling physically restored and energetic."
-      },
-      {
-        title: "Strong Immune & Muscle Recovery",
-        description: "Your body is actively releasing human growth hormone (HGH) to heal daily tissue wear."
-      }
-    ],
-    requiredTests: [
-      {
-        testName: "Routine Sleep Hygiene & Wellness Assessment",
-        plainEnglishName: "Lifestyle Sleep Wellness Check",
-        whyNeeded: "Confirms that you are getting adequate percentages (typically 15–25% of the night) of deep slow-wave sleep.",
-        urgency: "Routine"
-      },
-      {
-        testName: "Basic Annual Metabolic Blood Panel",
-        plainEnglishName: "Annual General Health Blood Screen",
-        whyNeeded: "Maintains optimal electrolyte, vitamin D, and kidney balance to preserve natural restorative sleep cycles.",
-        urgency: "Routine"
-      }
-    ],
-    actionableGuidance: {
-      immediateSteps: [
-        "Continue maintaining your regular sleep and wake schedule.",
-        "Engage in 30 minutes of moderate physical activity during the day (avoid heavy workouts 2 hours before bed).",
-        "Ensure your bedroom stays dark, cool, and peaceful to protect these deep sleep windows."
-      ],
-      doctorQuestions: [
-        "Am I spending an appropriate percentage of my night in deep slow-wave sleep for my age group?",
-        "Are there any signs of sleep arousals interrupting my deep sleep cycles?"
-      ],
-      specialistToConsult: "General Physician / Primary Care Doctor"
-    }
-  },
-
-  // 4. Stage N2 Light/Stable Sleep (SC4002E0)
-  "sleep_cassette_sc4002e0": {
-    conditionTitle: "Stable Baseline NREM Sleep (Stage N2)",
-    simpleSummary:
-      "This test captures Stage N2 sleep, which makes up about 50% of a healthy adult's night. The brain uses this stage to protect sleep from outside noises and organize new memories from the day.",
-    whatSignalMeans:
-      "The signal shows two healthy signature patterns: 'Sleep Spindles' (quick, rhythmic 12–14 Hz ripples) and 'K-Complexes' (tall, sharp hill-and-valley waves). These act like a natural sound muffler for your brain.",
-    whyNeedsAttention:
-      "While Stage N2 is an important transitional stage, spending excessive portions of the night stuck in light sleep without deepening into Stage N3 slow-wave sleep or REM results in chronic unrefreshing sleep syndrome, daytime fatigue, cognitive sluggishness, and increased vulnerability to waking from trivial sounds.",
-    signalAnomaly: {
-      status: "caution",
-      statusBadge: "Borderline / Light Sleep Stage N2",
-      abnormalLocation: "Sub-optimal sleep spindle density (11–16 Hz) and prominent theta background (4–7 Hz)",
-      signalPathologyDescription: "The signal reflects transitional Stage N2 sleep with K-complexes and sleep spindles. If prolonged without transition to Stage N3 deep sleep, it indicates shallow sleep fragility susceptible to acoustic awakening.",
-      normalBaselineComparison: "Healthy sleep transitions smoothly every 90 minutes from Stage N2 into deep Stage N3 slow-wave repair and REM dreaming."
-    },
-    thingsToPayAttentionTo: [
-      {
-        sign: "Waking up easily from minor room sounds, pet movements, or distant traffic",
-        clinicalContext: "Indicates fragile sensory gating and low sleep spindle density.",
-        urgency: "Monitor Daily"
-      },
-      {
-        sign: "Feeling like you were 'half-awake' dreaming or resting all night",
-        clinicalContext: "Common symptom of alpha-delta intrusion during light Stage N2 sleep.",
-        urgency: "Clinical Follow-Up"
-      },
-      {
-        sign: "Mid-afternoon energy dips requiring caffeine or sugary snacks to stay functional",
-        clinicalContext: "Reflects lack of progression into deep restorative sleep stages.",
-        urgency: "Monitor Daily"
-      }
-    ],
-    realTreatments: [
-      {
-        treatmentName: "Acoustic Sound Masking & White/Pink Noise Conditioning",
-        category: "Clinical Device / Appliance",
-        howItWorks: "Generates constant, broad-frequency soundscapes to raise the auditory baseline, preventing sudden environmental noises from triggering cortical arousals during spindle phases.",
-        evidenceBase: "AASM Behavioral Environmental Guidelines"
-      },
-      {
-        treatmentName: "Adenosine Sleep-Drive Optimization",
-        category: "Behavioral & Neuro-Regulation",
-        howItWorks: "Eliminates afternoon naps longer than 20 minutes and enforces regular morning wake times to deepen homeostatic drive from Stage N2 into Stage N3.",
-        evidenceBase: "Behavioral Sleep Medicine Best Practices"
-      },
-      {
-        treatmentName: "Clinical Medication Audit with Prescribing Physician",
-        category: "Medical Specialist Care",
-        howItWorks: "Review of prescription medications (e.g. beta-blockers, stimulating SSRIs, decongestants) that may suppress sleep spindles or inhibit deep sleep progression.",
-        evidenceBase: "Clinical Pharmacotherapy Review Protocol"
-      }
-    ],
-    causes: [
-      {
-        title: "Core Adult Sleep Architecture",
-        description: "The normal bridge between light initial sleep and deep slow-wave or dream sleep."
-      },
-      {
-        title: "Memory Consolidation Mechanisms",
-        description: "The thalamus and cortex are actively filing away facts, motor skills, and daily learnings."
-      },
-      {
-        title: "Healthy Sensory Gating",
-        description: "Your brain actively suppresses minor household noises so you don't wake up unnecessarily."
-      },
-      {
-        title: "Relaxed Muscle & Cardiovascular Tone",
-        description: "Heart rate and blood pressure drop gently into a healthy resting rhythm."
-      }
-    ],
-    symptoms: [
-      {
-        title: "Calm, Steady Breathing",
-        description: "Breathing becomes slow and rhythmic as consciousness transitions away from the external room."
-      },
-      {
-        title: "Decreased Body Temperature",
-        description: "Your core temperature drops by 1–2 degrees Fahrenheit to support metabolic conservation."
-      },
-      {
-        title: "Easy to Wake Up Feeling Alert",
-        description: "If woken during Stage N2, you typically feel reasonably alert without heavy disorientation."
-      },
-      {
-        title: "No Awareness of Minor Background Sounds",
-        description: "Whispering or quiet distant traffic doesn't wake you thanks to sleep spindles."
-      }
-    ],
-    requiredTests: [
-      {
-        testName: "Standard Overnight Polysomnogram Evaluation",
-        plainEnglishName: "Standard Sleep Architecture Check",
-        whyNeeded: "Confirms normal density of sleep spindles and K-complexes, which indicate a resilient nervous system.",
-        urgency: "Routine"
-      }
-    ],
-    actionableGuidance: {
-      immediateSteps: [
-        "Aim for 7 to 8.5 hours total sleep opportunity each night to allow complete cycles.",
-        "Keep bedroom temperatures around 66°F (19°C) to help your body drop into Stage N2 smoothly.",
-        "Avoid alcohol before sleep, as it damages spindle generation and fragments the second half of the night."
-      ],
-      doctorQuestions: [
-        "Is my Stage N2 duration balanced with my deep and REM sleep stages?",
-        "Are there any signs of sudden micro-awakenings during my lighter sleep stages?"
-      ],
-      specialistToConsult: "Primary Care Physician or Sleep Specialist"
-    }
-  },
-
-  // 5. Stage REM (ST7121J0)
-  "sleep_telemetry_st7121j0": {
-    conditionTitle: "Active Dream Sleep (Stage REM - Rapid Eye Movement)",
-    simpleSummary:
-      "This test captures Stage REM, the phase where vivid dreaming happens. Your brain is as electrically active as when you are awake, but your voluntary muscles are completely relaxed (temporarily paralyzed) so you do not physically act out your dreams.",
-    whatSignalMeans:
-      "The brain waves look fast and irregular with characteristic 'sawtooth' patterns. The eye sensor (EOG) detects rapid side-to-side darting movements, while the chin sensor (EMG) shows near-zero muscle tension.",
-    whyNeedsAttention:
-      "REM sleep is essential for emotional memory consolidation, threat de-escalation, mood stability, and neuroplasticity. Crucially, your brain must maintain total skeletal muscle paralysis (atonia). If atonia fails, individuals can physically act out dreams, causing severe trauma, falls, or injury to themselves and their bed partner.",
-    signalAnomaly: {
-      status: "caution",
-      statusBadge: "REM Dream State / Muscle Atonia Telemetry",
-      abnormalLocation: "Desynchronized low-voltage saw-tooth EEG waves with muscle atonia fluctuations",
-      signalPathologyDescription: "Fast, desynchronized cortical EEG signals with characteristic saw-tooth waves alongside transient twitches. If chin EMG registers persistent muscle tone or movement spikes, it flags potential REM motor disinhibition.",
-      normalBaselineComparison: "Normal REM exhibits high cortical EEG activity, bursts of rapid eye movements (EOG), and complete muscle paralysis (atonia) on EMG."
-    },
-    thingsToPayAttentionTo: [
-      {
-        sign: "Kicking, punching, flailing, or leaping out of bed during vivid dreams",
-        clinicalContext: "Critical red flag for REM Sleep Behavior Disorder (RBD), requiring immediate neurological workup.",
-        urgency: "Immediate Medical Attention"
-      },
-      {
-        sign: "Waking up fully conscious but completely unable to move or speak for 30–60 seconds",
-        clinicalContext: "Sleep paralysis — harmless but distressing intrusion of REM atonia into wakefulness.",
-        urgency: "Clinical Follow-Up"
-      },
-      {
-        sign: "Frequent terrifying nightmares or waking up in cold sweat with rapid breathing",
-        clinicalContext: "Indicates autonomic stress overload interfering with REM emotional processing.",
-        urgency: "Clinical Follow-Up"
-      }
-    ],
-    realTreatments: [
-      {
-        treatmentName: "Video-Polysomnography with Full-Limb Electromyography",
-        category: "First-Line Medical Therapy",
-        howItWorks: "Hospital-grade sleep recording with synchronized video and limb sensors to definitively verify whether muscle paralysis is intact.",
-        evidenceBase: "AASM Clinical Diagnostic Standard for REM Disorders"
-      },
-      {
-        treatmentName: "Neurologist-Prescribed Pharmacotherapy (High-Dose Melatonin / Clonazepam)",
-        category: "Medical Specialist Care",
-        howItWorks: "High-dose pharmaceutical melatonin (3–12 mg) or low-dose clonazepam prescribed specifically by a neurologist to restore brainstem motor inhibition.",
-        evidenceBase: "AASM Practice Guideline for REM Sleep Behavior Disorder"
-      },
-      {
-        treatmentName: "Imagery Rehearsal Therapy (IRT) for Nightmare Disorder",
-        category: "Behavioral & Neuro-Regulation",
-        howItWorks: "Evidence-based cognitive protocol where recurring nightmares are scripted into new, peaceful outcomes and rehearsed mentally during daytime relaxation.",
-        evidenceBase: "APA & AASM Standard Treatment for Chronic Nightmares"
-      },
-      {
-        treatmentName: "Bedroom Physical Safety Modifications",
-        category: "Clinical Device / Appliance",
-        howItWorks: "Removing bedside furniture with sharp corners, padding bedside flooring, and installing soft bed rails to prevent sleep-related injury.",
-        evidenceBase: "Clinical Neurological Safety Protocol"
-      }
-    ],
-    causes: [
-      {
-        title: "Normal Circadian REM Cycling",
-        description: "Occurs roughly every 90 minutes throughout the night, becoming longer and richer in the early morning hours."
-      },
-      {
-        title: "Emotional Processing & Creative Problem-Solving",
-        description: "The amygdala and visual brain areas process emotions, reduce stress reactivity, and connect creative ideas."
-      },
-      {
-        title: "Brainstem Muscle Inhibition (Atonia)",
-        description: "Specialized neurons in the pons switch off spinal motor signals, safely immobilizing your arms and legs."
-      },
-      {
-        title: "Acetylcholine Neurotransmitter Surges",
-        description: "Chemical surges stimulate vivid visual scenery inside your sleeping brain."
-      }
-    ],
-    symptoms: [
-      {
-        title: "Vivid Dreams & Storylines",
-        description: "Experiencing detailed, story-like dreams that feel real while you are in them."
-      },
-      {
-        title: "Rapid Fluttering Eye Movements",
-        description: "Eyes darting back and forth behind closed eyelids as you 'look' at dream imagery."
-      },
-      {
-        title: "Temporary Heavy Body Immobility",
-        description: "Feeling completely limp and unable to move immediately upon drifting into or out of dreaming."
-      },
-      {
-        title: "Fluctuating Heart & Breathing Rate",
-        description: "Breathing and pulse speed up or slow down in tandem with the emotional intensity of your dream."
-      }
-    ],
-    symptoms_alert: "If a patient physically kicks, punches, shouts, or leaps out of bed during dreams, this may indicate REM Sleep Behavior Disorder (RBD), which requires immediate neurological evaluation.",
-    requiredTests: [
-      {
-        testName: "Video-Polysomnography with Synchronized Chin & Limb EMG",
-        plainEnglishName: "Video Sleep & Muscle Tone Study",
-        whyNeeded: "Essential if you thrash or yell in sleep; verifies whether your muscle-paralysis switch is working safely.",
-        urgency: "Recommended"
-      },
-      {
-        testName: "Multiple Sleep Latency Test (MSLT)",
-        plainEnglishName: "Daytime Nap Test (Narcolepsy Screen)",
-        whyNeeded: "Measures whether you fall directly into REM sleep during brief daytime naps, which checks for narcolepsy.",
-        urgency: "Routine"
-      }
-    ],
-    actionableGuidance: {
-      immediateSteps: [
-        "Do not cut your sleep short by waking up at 4 AM or 5 AM; the final two hours of sleep contain over 60% of your daily REM sleep.",
-        "Ensure your sleeping area is free of sharp objects or tripping hazards if you ever experience vivid dream movements.",
-        "Limit alcohol before bed, as alcohol completely suppresses REM sleep and causes vivid rebound nightmares when it wears off."
-      ],
-      doctorQuestions: [
-        "Is my REM sleep muscle paralysis intact, or do my chin and limbs show unusual movement?",
-        "Am I spending the expected 20–25% of my night in REM dream sleep?"
-      ],
-      specialistToConsult: "Sleep Neurologist"
-    }
-  },
-
-  // 6. Acute Mental Arithmetic Stress (SAM-40)
+  // 1. Acute Mental Arithmetic Stress (SAM-40)
   "sam40_sub01_math_stress": {
     conditionTitle: "Acute Mental Arithmetic & High Cognitive Workload Stress",
     simpleSummary:
-      "This test shows the brain under immediate mental strain from difficult, timed math calculations. The brain's working memory is pushed to its limit, triggering a temporary surge in mental tension and fast electrical rhythms.",
+      "This test captures the brain under immediate mental strain during timed, difficult speed arithmetic. Working memory is pushed to its absolute limit, triggering an acute surge in cortical beta tension and sympathetic arousal.",
     whatSignalMeans:
-      "Calm, relaxing 10 Hz 'Alpha' waves disappear (a process called alpha-blocking) and are replaced by fast, buzzing 20–26 Hz 'Beta' waves across the left frontal forehead (F3 sensor), showing high mental effort.",
+      "Calm, relaxing 10 Hz 'Alpha' waves disappear (a process called alpha-blocking) and are replaced by fast, buzzing 20–26 Hz 'Beta' waves across the left frontal forehead (F3 sensor), showing intense cognitive effort.",
     whyNeedsAttention:
-      "Prolonged frontal hyper-metabolic Beta bursts indicate acute sympathetic nervous system overdrive ('fight-or-flight' lock). Sustained overload exhausts adrenal reserves, causes blood pressure surges, triggers gastrointestinal distress, and leads to cognitive burnout and impaired executive decision-making.",
+      "Prolonged frontal hyper-metabolic Beta bursts indicate acute sympathetic nervous system overdrive ('fight-or-flight' lock). Sustained cognitive overload over-activates adrenal output, causes blood pressure surges, exhausts working memory reserves, and triggers chronic tension headaches and burnout.",
     signalAnomaly: {
       status: "abnormal",
       statusBadge: "Abnormal Frontal Beta Surge & Sympathetic Overdrive",
@@ -789,11 +148,11 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
     causes: [
       {
         title: "Intense Mental Calculation & Time Pressure",
-        description: "Pushing working memory to rapidly calculate numbers while being timed."
+        description: "Pushing working memory to rapidly calculate numbers while being timed under performance scrutiny."
       },
       {
         title: "Performance Pressure & Test Anxiety",
-        description: "Fear of making a mistake triggers the body's sympathetic 'fight-or-flight' adrenaline response."
+        description: "Fear of making an error triggers the body's sympathetic 'fight-or-flight' adrenaline response."
       },
       {
         title: "Frontal Cortex Energy Overdrive",
@@ -801,7 +160,7 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
       },
       {
         title: "Mental Fatigue & Multitasking",
-        description: "Trying to manage multiple tasks simultaneously without taking mental pauses."
+        description: "Trying to manage multiple high-cognitive tasks simultaneously without taking mental pauses."
       }
     ],
     symptoms: [
@@ -826,25 +185,25 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
       {
         testName: "Standardized Cognitive Stress Assessment & Working Memory Evaluation",
         plainEnglishName: "Cognitive Load & Focus Evaluation",
-        whyNeeded: "Evaluates your executive focus, memory fatigue threshold, and mental burnout indicators.",
+        whyNeeded: "Evaluates executive focus, memory fatigue threshold, and mental burnout indicators.",
         urgency: "Routine"
       },
       {
         testName: "Salivary Cortisol & Alpha-Amylase Stress Panel",
         plainEnglishName: "Saliva Stress Hormone Test",
-        whyNeeded: "Measures whether your daily stress hormones peak and recover properly throughout a demanding workday.",
+        whyNeeded: "Measures whether your daily stress hormones peak and recover properly throughout a demanding day.",
         urgency: "Recommended"
       },
       {
         testName: "Ambulatory Blood Pressure & Heart Rate Variability (HRV) Screen",
         plainEnglishName: "24-Hour Heart & Blood Pressure Tracking",
-        whyNeeded: "Checks whether mental work spikes your blood pressure or suppresses healthy heart rhythm flexibility.",
+        whyNeeded: "Checks whether mental work spikes blood pressure or suppresses healthy heart rhythm flexibility.",
         urgency: "Routine"
       }
     ],
     actionableGuidance: {
       immediateSteps: [
-        "Practice the '20-20-20 Rule' and the Pomodoro method: take a 5-minute break every 25 minutes of deep focus.",
+        "Practice the '20-20-20 Rule' and Pomodoro method: take a 5-minute break every 25 minutes of deep focus.",
         "Use 'Box Breathing' (inhale 4 seconds, hold 4 seconds, exhale 4 seconds, hold 4 seconds) to immediately calm rapid brainwaves.",
         "Step away from your desk, stretch your neck and shoulders, and drink a large glass of water to relieve forehead tension."
       ],
@@ -856,11 +215,11 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
     }
   },
 
-  // 7. Student Stroop Cognitive Conflict Stress
+  // 2. Student Stroop Cognitive Conflict Stress
   "student_sub11_stroop_stress": {
     conditionTitle: "Cognitive Conflict & High Mental Interference Overload",
     simpleSummary:
-      "This test reflects mental conflict (tested via the Stroop color-word test, where the word 'BLUE' is written in red ink). The brain has to actively fight off its automatic impulse to read the word, creating intense mental friction.",
+      "This test reflects mental conflict (tested via the Stroop color-word interference task). The brain has to actively fight off its automatic impulse to read words, creating intense friction in executive decision circuits.",
     whatSignalMeans:
       "The midline forehead sensor (Fz) detects strong 'Frontal Midline Theta' waves along with high-frequency Beta spikes. This confirms the brain's error-detection and conflict-resolution network is working overtime.",
     whyNeedsAttention:
@@ -960,7 +319,7 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
       {
         testName: "Computerized Neuropsychological Attention Battery (e.g., Continuous Performance Test)",
         plainEnglishName: "Computerized Focus & Attention Test",
-        whyNeeded: "Measures your sustained attention, reaction speed, and susceptibility to distraction or impulse errors.",
+        whyNeeded: "Measures sustained attention, reaction speed, and susceptibility to distraction or impulse errors.",
         urgency: "Routine"
       },
       {
@@ -990,13 +349,13 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
     }
   },
 
-  // 8. DASPS High State Anxiety Paroxysm
+  // 3. DASPS High State Anxiety Paroxysm
   "dasps_s01_high_anxiety": {
     conditionTitle: "Acute Emotional Anxiety Spike (State Anxiety Paroxysm)",
     simpleSummary:
-      "This test captures a sudden spike of acute psychological anxiety or panic. The emotional centers of the brain (the limbic system) have temporarily hijacked the conscious thinking areas, triggering a fight-or-flight emergency alert.",
+      "This test captures a sudden spike of acute psychological anxiety or panic. The emotional centers of the brain (the limbic amygdala) have temporarily hijacked the conscious thinking areas, triggering an emergency fight-or-flight alert.",
     whatSignalMeans:
-      "The left and right forehead sensors (Fp1 & Fp2) show an intense imbalance, with jagged high-frequency waves and rapid eye flutters. The brain is scanning frantically for perceived threats.",
+      "The left and right forehead sensors (Fp1 & Fp2) show an intense asymmetry, with jagged high-frequency waves and rapid eye flutters. The brain is scanning frantically for perceived threats while vagal calming signals drop.",
     whyNeedsAttention:
       "Right-frontal cortical hyperactivity combined with vagal parasympathetic withdrawal leaves the autonomic nervous system defenseless against panic attacks, chronic tachycardia, hyperventilation, gastrointestinal inflammation, and crippling agoraphobic avoidance.",
     signalAnomaly: {
@@ -1132,7 +491,7 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
     }
   },
 
-  // 9. Relaxed Baseline (SAM-40 / DASPS Baseline)
+  // 4. Relaxed Baseline (SAM-40 / DASPS Baseline)
   "default_relax_baseline": {
     conditionTitle: "Resting Relaxation Baseline (Healthy Synchronized Rhythm)",
     simpleSummary:
@@ -1252,26 +611,18 @@ export default function PatientGuidanceSection({
   const [activeTab, setActiveTab] = useState<"overview" | "causes" | "symptoms" | "tests" | "actions">("overview");
   const [showDoctorQuestions, setShowDoctorQuestions] = useState(false);
 
-  // Retrieve case-specific info or fallback to domain/relaxation baseline
+  // Retrieve case-specific info or route directly to appropriate Stress & Anxiety knowledge base
   let caseData: CaseClinicalInfo;
   if (CLINICAL_KNOWLEDGE_BASE[caseId]) {
     caseData = CLINICAL_KNOWLEDGE_BASE[caseId];
   } else if (caseId.includes("relax") || caseId.includes("base") || stageOrRisk.toLowerCase().includes("baseline")) {
     caseData = CLINICAL_KNOWLEDGE_BASE["default_relax_baseline"];
-  } else if (caseId.includes("apnea")) {
-    caseData = CLINICAL_KNOWLEDGE_BASE["mitbih_slp01_preapnea_01"];
-  } else if (caseId.includes("anxiety")) {
+  } else if (caseId.includes("anxiety") || stageOrRisk.toLowerCase().includes("anxiety")) {
     caseData = CLINICAL_KNOWLEDGE_BASE["dasps_s01_high_anxiety"];
-  } else if (caseId.includes("stress")) {
-    caseData = CLINICAL_KNOWLEDGE_BASE["sam40_sub01_math_stress"];
-  } else if (caseId.includes("telemetry") || stageOrRisk.toLowerCase().includes("wake")) {
-    caseData = CLINICAL_KNOWLEDGE_BASE["sleep_telemetry_st7022j0"];
-  } else if (stageOrRisk.toLowerCase().includes("n3")) {
-    caseData = CLINICAL_KNOWLEDGE_BASE["sleep_cassette_sc4102e0"];
-  } else if (stageOrRisk.toLowerCase().includes("rem")) {
-    caseData = CLINICAL_KNOWLEDGE_BASE["sleep_telemetry_st7121j0"];
+  } else if (caseId.includes("student") || caseId.includes("stroop") || stageOrRisk.toLowerCase().includes("conflict")) {
+    caseData = CLINICAL_KNOWLEDGE_BASE["student_sub11_stroop_stress"];
   } else {
-    caseData = CLINICAL_KNOWLEDGE_BASE["sleep_cassette_sc4002e0"];
+    caseData = CLINICAL_KNOWLEDGE_BASE["sam40_sub01_math_stress"];
   }
 
   return (
@@ -1281,8 +632,8 @@ export default function PatientGuidanceSection({
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-1 max-w-2xl">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wider uppercase bg-sky-500/20 text-sky-300 border border-sky-500/30">
-                Patient & Clinical Telemetry Guide
+              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wider uppercase bg-rose-500/20 text-rose-300 border border-rose-500/30 font-mono">
+                Stress & Anxiety Telemetry Guide
               </span>
               <span className="text-xs text-slate-400 font-mono">
                 Case: {patientAnonId || caseId}
@@ -1329,7 +680,7 @@ export default function PatientGuidanceSection({
                 : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
             }`}
           >
-            2. Common Causes ({caseData.causes.length})
+            2. Common Triggers ({caseData.causes.length})
           </button>
           <button
             onClick={() => setActiveTab("symptoms")}
@@ -1339,7 +690,7 @@ export default function PatientGuidanceSection({
                 : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
             }`}
           >
-            3. What You Might Feel ({caseData.symptoms.length})
+            3. What You Feel ({caseData.symptoms.length})
           </button>
           <button
             onClick={() => setActiveTab("tests")}
@@ -1515,7 +866,7 @@ export default function PatientGuidanceSection({
                     {caseData.requiredTests.length} Confirmatory Clinical Tests & {caseData.realTreatments.length} Evidence-Based Therapies
                   </h4>
                   <p className="text-xs text-slate-300 pt-0.5">
-                    Clinically validated diagnostic evaluations and physician-directed treatments matching this waveform pattern.
+                    Clinically validated diagnostic evaluations and physician-directed treatments matching this stress/anxiety pattern.
                   </p>
                 </div>
                 <button
@@ -1565,10 +916,10 @@ export default function PatientGuidanceSection({
           <div className="space-y-4">
             <div className="pb-1">
               <h3 className="text-base font-bold text-slate-900">
-                Why Does This Happen? (Possible Causes Explained Simply)
+                Why Does This Happen? (Possible Triggers Explained Simply)
               </h3>
               <p className="text-xs text-slate-500">
-                Medical conditions rarely have a single cause. Here are the most common physical, anatomical, and lifestyle triggers:
+                Cognitive overload and anxiety rarely have a single trigger. Here are the most common neurological, psychological, and autonomic factors:
               </p>
             </div>
 
@@ -1603,7 +954,7 @@ export default function PatientGuidanceSection({
                 What a Person Might Feel (Daily Life Symptoms)
               </h3>
               <p className="text-xs text-slate-500">
-                These are the physical, emotional, and cognitive signs that often accompany this physiological pattern:
+                These are the physical, emotional, and cognitive signs that often accompany this physiological stress pattern:
               </p>
             </div>
 

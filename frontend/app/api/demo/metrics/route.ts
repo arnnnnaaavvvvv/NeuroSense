@@ -3,17 +3,6 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const metrics = [
     {
-      dataset_name: "PhysioNet Sleep-EDF Expanded",
-      domain: "Sleep Staging",
-      format: "PSG Multi-Channel EDF (30s Epochs)",
-      sampling_rate: "100 Hz",
-      input_representation: "128x128 SST (Fpz-Cz & Pz-Oz Leads)",
-      eval_latency_ms: 18.2,
-      reported_accuracy: "89.40% (5-Class)",
-      clinical_guideline: "AASM Scoring Manual v2.6 / v3.0",
-      pitch_role: "Sleep Architecture Macro-Analysis"
-    },
-    {
       dataset_name: "SAM-40 Stress Dataset (Figshare)",
       domain: "Cognitive Stress",
       format: "32-Channel Scalp EEG",
@@ -25,11 +14,22 @@ export async function GET() {
       pitch_role: "Acute Mental Arithmetic Stress Detection"
     },
     {
+      dataset_name: "Student Stroop Conflict Cohort (PhysioNet)",
+      domain: "Cognitive Conflict",
+      format: "Pre-Exam Frontal EEG",
+      sampling_rate: "250 Hz",
+      input_representation: "128x128 SST (Lead F3-F4)",
+      eval_latency_ms: 16.1,
+      reported_accuracy: "96.80%",
+      clinical_guideline: "APA Academic Stress & Mental Fatigue Guidelines",
+      pitch_role: "Executive Conflict & Fmθ Synchronization Monitoring"
+    },
+    {
       dataset_name: "DASPS Database (PhysioNet)",
       domain: "State Anxiety",
       format: "Multi-Lead Continuous EEG",
       sampling_rate: "200 Hz",
-      input_representation: "128x128 SST (Frontal FP1/FP2)",
+      input_representation: "128x128 SST (Frontal AF3-AF4)",
       eval_latency_ms: 15.8,
       reported_accuracy: "97.60%",
       clinical_guideline: "NICE Clinical Guideline CG113",

@@ -1,89 +1,21 @@
 {
   "cases": [
     {
-      "id": "sleep_cassette_sc4002e0",
-      "patient_anon_id": "sc4002",
-      "age_years": 33,
-      "gender": "Female",
-      "eeg_sampling_rate_hz": 100,
-      "total_segments": 1,
-      "title": "Stable Restorative Sleep (Stage N2)",
-      "description": "Healthy adult sleep characterized by natural brainwave bursts (sleep spindles and K-complexes) that protect the brain from waking up and help lock in memory.",
-      "domain": "sleep",
-      "dataset_source": "sleep-edf",
-      "montage_channel": "Fpz-Cz & Pz-Oz PSG",
-      "predicted_class": "n2",
-      "risk_stage": "Stage N2 (Stable NREM Sleep)",
-      "sleep_stage": "N2",
-      "highlights": ["Sleep Spindles & K-Complexes", "Memory Consolidation", "Normal Sleep Structure"]
-    },
-    {
-      "id": "sleep_cassette_sc4102e0",
-      "patient_anon_id": "sc4102",
-      "age_years": 28,
-      "gender": "Male",
-      "eeg_sampling_rate_hz": 100,
-      "total_segments": 1,
-      "title": "Deep Slow-Wave Sleep (Stage N3)",
-      "description": "The deepest, most physically restorative sleep stage marked by synchronized delta waves, responsible for muscle repair, immune rebuilding, and brain detoxification.",
-      "domain": "sleep",
-      "dataset_source": "sleep-edf",
-      "montage_channel": "Fpz-Cz & Pz-Oz PSG",
-      "predicted_class": "n3",
-      "risk_stage": "Stage N3 (Deep Slow-Wave Sleep)",
-      "sleep_stage": "N3",
-      "highlights": ["High-Voltage Delta Waves", "Cellular & Tissue Repair", "Deep Recovery Sleep"]
-    },
-    {
-      "id": "sleep_telemetry_st7022j0",
-      "patient_anon_id": "st7022",
-      "age_years": 51,
-      "gender": "Male",
-      "eeg_sampling_rate_hz": 100,
-      "total_segments": 1,
-      "title": "Fragmented Sleep & Night Arousals (WASO)",
-      "description": "Frequent night awakenings and restless light sleep after initial sleep onset, showing persistent wakefulness brain patterns that disrupt restful sleep cycles.",
-      "domain": "sleep",
-      "dataset_source": "sleep-edf",
-      "montage_channel": "Fpz-Cz & Pz-Oz PSG",
-      "predicted_class": "wake",
-      "risk_stage": "Wake / WASO (Fragmented Sleep Profile)",
-      "sleep_stage": "Wake",
-      "highlights": ["Nighttime Wakings", "Alpha Arousal Intrusions", "High Sleep Fragmentation"]
-    },
-    {
-      "id": "sleep_telemetry_st7121j0",
-      "patient_anon_id": "st7121",
-      "age_years": 47,
-      "gender": "Female",
-      "eeg_sampling_rate_hz": 100,
-      "total_segments": 1,
-      "title": "Active Dream State (Stage REM)",
-      "description": "Vivid dreaming sleep featuring rapid eye movements, low-voltage active brain signals, and complete muscle relaxation to process daily emotions and ideas.",
-      "domain": "sleep",
-      "dataset_source": "sleep-edf",
-      "montage_channel": "Fpz-Cz & Pz-Oz PSG",
-      "predicted_class": "rem",
-      "risk_stage": "Stage REM (Rapid Eye Movement)",
-      "sleep_stage": "REM",
-      "highlights": ["Rapid Eye Movements", "Dream Processing", "Healthy Muscle Atonia"]
-    },
-    {
       "id": "sam40_sub01_math_stress",
       "patient_anon_id": "sam40_sub01",
       "age_years": 22,
       "gender": "Male",
       "eeg_sampling_rate_hz": 128,
       "total_segments": 1,
-      "title": "Acute Cognitive Stress (Mental Math)",
-      "description": "Sharp increase in mental tension recorded during speed arithmetic, displaying sudden frontal brainwave suppression and fast beta stress bursts.",
+      "title": "Acute Cognitive Stress (Mental Arithmetic)",
+      "description": "Sharp surge in mental tension recorded during timed speed arithmetic, displaying sudden prefrontal alpha suppression and fast beta stress bursts.",
       "domain": "early_warning",
       "dataset_source": "sam40",
       "montage_channel": "F3",
       "predicted_class": "elevated_risk",
-      "risk_stage": "Elevated Stress Risk",
+      "risk_stage": "Elevated Cognitive Stress",
       "sleep_stage": null,
-      "highlights": ["Frontal Alpha Suppression", "22-26 Hz Beta Bursts", "High Cognitive Load"]
+      "highlights": ["Frontal Alpha Suppression", "22-26 Hz Beta Bursts", "High Cognitive Workload"]
     },
     {
       "id": "sam40_sub01_relax_baseline",
@@ -110,12 +42,12 @@
       "eeg_sampling_rate_hz": 128,
       "total_segments": 1,
       "title": "Cognitive Conflict & Exam Stress",
-      "description": "Mental strain and friction triggered during timed decision-making tests, capturing strong frontal-central neural indicators of student workload stress.",
+      "description": "Mental strain and cognitive friction triggered during timed Stroop conflict tests, capturing strong frontal-central neural indicators of student workload stress.",
       "domain": "early_warning",
       "dataset_source": "student_stress",
       "montage_channel": "Fz",
       "predicted_class": "elevated_risk",
-      "risk_stage": "Elevated Stress Risk",
+      "risk_stage": "Elevated Cognitive Conflict",
       "sleep_stage": null,
       "highlights": ["Prefrontal Conflict Index", "High Frontal Beta Power", "Exam Stress Biomarkers"]
     },
@@ -126,15 +58,15 @@
       "gender": "Female",
       "eeg_sampling_rate_hz": 128,
       "total_segments": 1,
-      "title": "Acute State Anxiety & Emotional Arousal",
-      "description": "Heightened emotional tension and nervous arousal during psychological stimulation, showing rapid desynchronized prefrontal brainwave patterns.",
+      "title": "Acute State Anxiety & Emotional Paroxysm",
+      "description": "Heightened emotional tension and nervous arousal during psychological stimulation, showing rapid desynchronized prefrontal brainwave patterns and vagal withdrawal.",
       "domain": "early_warning",
       "dataset_source": "dasps",
       "montage_channel": "Fp1",
       "predicted_class": "elevated_risk",
-      "risk_stage": "Elevated Anxiety Risk",
+      "risk_stage": "Elevated State Anxiety",
       "sleep_stage": null,
-      "highlights": ["Prefrontal Desynchronization", "Heightened Emotional Arousal", "State Anxiety Signs"]
+      "highlights": ["Prefrontal Desynchronization", "Heightened Emotional Arousal", "State Anxiety Paroxysm"]
     },
     {
       "id": "dasps_s01_relax_baseline",
@@ -152,172 +84,9 @@
       "risk_stage": "Baseline (Low Risk)",
       "sleep_stage": null,
       "highlights": ["Balanced Resting Waves", "Absence of Panic Spikes", "Calm Emotional State"]
-    },
-    {
-      "id": "mitbih_slp01_preapnea_01",
-      "patient_anon_id": "mitbih_slp01",
-      "age_years": 44,
-      "gender": "Male",
-      "eeg_sampling_rate_hz": 250,
-      "total_segments": 1,
-      "title": "Pre-Apnea Early Warning Window",
-      "description": "Early warning brainwave and breathing indicators captured 90 seconds prior to airway obstruction, detecting subtle oxygen and autonomic changes before collapse.",
-      "domain": "early_warning",
-      "dataset_source": "slpdb",
-      "montage_channel": "F3",
-      "predicted_class": "elevated_risk",
-      "risk_stage": "Elevated Pre-Apnea Risk",
-      "sleep_stage": null,
-      "highlights": ["90-Second Warning Window", "Autonomic Rhythm Shift", "Pre-Collapse Detection"]
     }
   ],
   "predictions": {
-    "sleep_cassette_sc4002e0": {
-      "case_id": "sleep_cassette_sc4002e0",
-      "segment_id": 42,
-      "start_time_seconds": 1260,
-      "end_time_seconds": 1290,
-      "sst_image_path": "/static/processed/sleep_cassette_sc4002e0_sst_128.png",
-      "raw_signal_path": "/static/processed/sleep_cassette_sc4002e0_raw.json",
-      "predicted_class": "n2",
-      "risk_stage": "Stage N2 (Stable NREM Sleep)",
-      "confidence": 0.965,
-      "model_name": "Özdemir CNN Multi-Head (m32.h5 Shared Backbone)",
-      "key_markers": [
-        "Sleep Spindles (12-14 Hz, >0.5s)",
-        "Distinct Biphasic K-Complexes (>0.5s)",
-        "Low Mixed-Frequency Background",
-        "Stable Rest Architecture"
-      ],
-      "domain": "sleep",
-      "sleep_stage": "N2",
-      "sleep_metrics": {
-        "sleep_efficiency_percent": 88.5,
-        "waso_minutes": 22,
-        "tst_hours": 7.1,
-        "n3_slow_wave_percent": 21.4,
-        "rem_percent": 23,
-        "apnea_hypopnea_risk": "Low (AHI < 5.0)"
-      },
-      "secondary_metrics": {
-        "stage_probabilities": {
-          "N3": 0.1791,
-          "N2": 0.182,
-          "Wake": 0.2751,
-          "N1": 0.185,
-          "REM": 0.1788
-        }
-      }
-    },
-    "sleep_cassette_sc4102e0": {
-      "case_id": "sleep_cassette_sc4102e0",
-      "segment_id": 18,
-      "start_time_seconds": 540,
-      "end_time_seconds": 570,
-      "sst_image_path": "/static/processed/sleep_cassette_sc4102e0_sst_128.png",
-      "raw_signal_path": "/static/processed/sleep_cassette_sc4102e0_raw.json",
-      "predicted_class": "n3",
-      "risk_stage": "Stage N3 (Deep Slow-Wave Sleep)",
-      "confidence": 0.965,
-      "model_name": "Özdemir CNN Multi-Head (m32.h5 Shared Backbone)",
-      "key_markers": [
-        "High-Amplitude Delta Waves (>75 uV, 0.5-2 Hz)",
-        "Deep Slow-Wave Synchronization (>20% epoch)",
-        "Markedly Reduced Autonomic Arousals"
-      ],
-      "domain": "sleep",
-      "sleep_stage": "N3",
-      "sleep_metrics": {
-        "sleep_efficiency_percent": 92,
-        "waso_minutes": 15,
-        "tst_hours": 7.6,
-        "n3_slow_wave_percent": 32.5,
-        "rem_percent": 21,
-        "apnea_hypopnea_risk": "Low (AHI < 3.5)"
-      },
-      "secondary_metrics": {
-        "stage_probabilities": {
-          "N3": 0.757,
-          "N2": 0.046,
-          "Wake": 0.0367,
-          "N1": 0.0993,
-          "REM": 0.061
-        }
-      }
-    },
-    "sleep_telemetry_st7022j0": {
-      "case_id": "sleep_telemetry_st7022j0",
-      "segment_id": 85,
-      "start_time_seconds": 2550,
-      "end_time_seconds": 2580,
-      "sst_image_path": "/static/processed/sleep_telemetry_st7022j0_sst_128.png",
-      "raw_signal_path": "/static/processed/sleep_telemetry_st7022j0_raw.json",
-      "predicted_class": "wake",
-      "risk_stage": "Wake / WASO (Fragmented Sleep Profile)",
-      "confidence": 0.965,
-      "model_name": "Özdemir CNN Multi-Head (m32.h5 Shared Backbone)",
-      "key_markers": [
-        "Alpha Rhythm (8-12 Hz) Prominent in Pz-Oz",
-        "High Submental Muscle Tone",
-        "Voluntary Saccadic EOG Deflections"
-      ],
-      "domain": "sleep",
-      "sleep_stage": "Wake",
-      "sleep_metrics": {
-        "sleep_efficiency_percent": 68.2,
-        "waso_minutes": 84,
-        "tst_hours": 4.8,
-        "n3_slow_wave_percent": 7.5,
-        "rem_percent": 11.2,
-        "apnea_hypopnea_risk": "Moderate (AHI 14.2)"
-      },
-      "secondary_metrics": {
-        "stage_probabilities": {
-          "N3": 0.1134,
-          "N2": 0.442,
-          "Wake": 0.1916,
-          "N1": 0.1141,
-          "REM": 0.1389
-        }
-      }
-    },
-    "sleep_telemetry_st7121j0": {
-      "case_id": "sleep_telemetry_st7121j0",
-      "segment_id": 64,
-      "start_time_seconds": 1920,
-      "end_time_seconds": 1950,
-      "sst_image_path": "/static/processed/sleep_telemetry_st7121j0_sst_128.png",
-      "raw_signal_path": "/static/processed/sleep_telemetry_st7121j0_raw.json",
-      "predicted_class": "rem",
-      "risk_stage": "Stage REM (Rapid Eye Movement)",
-      "confidence": 0.965,
-      "model_name": "Özdemir CNN Multi-Head (m32.h5 Shared Backbone)",
-      "key_markers": [
-        "Phasic Rapid Eye Movements (EOG conjugate bursts)",
-        "Submental Muscular Atonia (flat EMG)",
-        "Desynchronized Low-Voltage EEG",
-        "Pre-REM Sawtooth Waves"
-      ],
-      "domain": "sleep",
-      "sleep_stage": "REM",
-      "sleep_metrics": {
-        "sleep_efficiency_percent": 81.4,
-        "waso_minutes": 38,
-        "tst_hours": 6.3,
-        "n3_slow_wave_percent": 16,
-        "rem_percent": 24.5,
-        "apnea_hypopnea_risk": "Mild (AHI 8.1)"
-      },
-      "secondary_metrics": {
-        "stage_probabilities": {
-          "N3": 0.1055,
-          "N2": 0.1725,
-          "Wake": 0.497,
-          "N1": 0.1067,
-          "REM": 0.1184
-        }
-      }
-    },
     "sam40_sub01_math_stress": {
       "case_id": "sam40_sub01_math_stress",
       "segment_id": 1,
@@ -326,14 +95,22 @@
       "sst_image_path": "/static/processed/sam40_sub01_math_stress_sst_128.png",
       "raw_signal_path": "/static/processed/sam40_sub01_math_stress_raw.json",
       "predicted_class": "elevated_risk",
-      "risk_stage": "Elevated Stress Risk",
-      "confidence": 0.9912,
+      "risk_stage": "Elevated Cognitive Stress",
+      "confidence": 0.991,
       "model_name": "Özdemir Conv2D Backbone + stress_anxiety_risk_head (PyTorch)",
       "key_markers": [
         "Frontal Alpha Desynchronization (Alpha Blocking)",
-        "Elevated 20-30 Hz High Beta Cognitive Load Power",
-        "Frontal Midline Theta (Fmθ) Workload Surge"
-      ]
+        "20-26 Hz Fast Beta Stress Bursts (F3 Lead)",
+        "Sympathetic Adrenergic Shift (HRV Suppression)"
+      ],
+      "stress_metrics": {
+        "frontal_alpha_asymmetry": -0.32,
+        "beta_alpha_ratio": 2.14,
+        "fm_theta_power_percent": 38.5,
+        "autonomic_tone": "Sympathetic Arousal",
+        "stress_index_percent": 86.4,
+        "anxiety_paroxysm_risk": "Elevated"
+      }
     },
     "sam40_sub01_relax_baseline": {
       "case_id": "sam40_sub01_relax_baseline",
@@ -344,13 +121,21 @@
       "raw_signal_path": "/static/processed/sam40_sub01_relax_baseline_raw.json",
       "predicted_class": "baseline",
       "risk_stage": "Baseline (Low Risk)",
-      "confidence": 0.9845,
+      "confidence": 0.985,
       "model_name": "Özdemir Conv2D Backbone + stress_anxiety_risk_head (PyTorch)",
       "key_markers": [
         "Prominent Synchronized 10 Hz Posterior Alpha",
         "Low Beta Agitation Ratio (<0.15)",
         "Resting Parasympathetic Autonomic Stability"
-      ]
+      ],
+      "stress_metrics": {
+        "frontal_alpha_asymmetry": 0.04,
+        "beta_alpha_ratio": 0.12,
+        "fm_theta_power_percent": 14.2,
+        "autonomic_tone": "Parasympathetic Dominant",
+        "stress_index_percent": 12.0,
+        "anxiety_paroxysm_risk": "Low"
+      }
     },
     "student_sub11_stroop_stress": {
       "case_id": "student_sub11_stroop_stress",
@@ -360,14 +145,22 @@
       "sst_image_path": "/static/processed/student_sub11_stroop_stress_sst_128.png",
       "raw_signal_path": "/static/processed/student_sub11_stroop_stress_raw.json",
       "predicted_class": "elevated_risk",
-      "risk_stage": "Elevated Stress Risk",
+      "risk_stage": "Elevated Cognitive Conflict",
       "confidence": 0.988,
       "model_name": "Özdemir Conv2D Backbone + stress_anxiety_risk_head (PyTorch)",
       "key_markers": [
         "Frontal Midline Theta (Fmθ) Cognitive Strain",
         "Suppression of 8-12 Hz Alpha Dominance",
         "24-28 Hz Fast Beta Activation During Task Interference"
-      ]
+      ],
+      "stress_metrics": {
+        "frontal_alpha_asymmetry": -0.28,
+        "beta_alpha_ratio": 1.95,
+        "fm_theta_power_percent": 44.1,
+        "autonomic_tone": "Sympathetic Arousal",
+        "stress_index_percent": 82.7,
+        "anxiety_paroxysm_risk": "Elevated"
+      }
     },
     "dasps_s01_high_anxiety": {
       "case_id": "dasps_s01_high_anxiety",
@@ -377,14 +170,22 @@
       "sst_image_path": "/static/processed/dasps_s01_high_anxiety_sst_128.png",
       "raw_signal_path": "/static/processed/dasps_s01_high_anxiety_raw.json",
       "predicted_class": "elevated_risk",
-      "risk_stage": "Elevated Anxiety Risk",
+      "risk_stage": "Elevated State Anxiety",
       "confidence": 0.9935,
       "model_name": "Özdemir Conv2D Backbone + stress_anxiety_risk_head (PyTorch)",
       "key_markers": [
         "Prefrontal Alpha Asymmetry & Desynchronization",
         "Acute Emotional Arousal Spectral Shifts (18-28 Hz)",
         "Transient Autonomic Hyper-Arousal Transients"
-      ]
+      ],
+      "stress_metrics": {
+        "frontal_alpha_asymmetry": -0.48,
+        "beta_alpha_ratio": 2.68,
+        "fm_theta_power_percent": 29.8,
+        "autonomic_tone": "Acute Hyperarousal",
+        "stress_index_percent": 94.2,
+        "anxiety_paroxysm_risk": "High"
+      }
     },
     "dasps_s01_relax_baseline": {
       "case_id": "dasps_s01_relax_baseline",
@@ -401,92 +202,23 @@
         "Balanced Frontal Inter-Hemispheric Coherence",
         "Absence of Anxious Beta Hyperarousal",
         "Restorative Resting Baseline Rhythm"
-      ]
-    },
-    "mitbih_slp01_preapnea_01": {
-      "case_id": "mitbih_slp01_preapnea_01",
-      "segment_id": 1,
-      "start_time_seconds": 0,
-      "end_time_seconds": 10,
-      "sst_image_path": "/static/processed/mitbih_slp01_preapnea_01_sst_128.png",
-      "raw_signal_path": "/static/processed/mitbih_slp01_preapnea_01_raw.json",
-      "predicted_class": "elevated_risk",
-      "risk_stage": "Elevated Pre-Apnea Risk",
-      "confidence": 0.972,
-      "model_name": "Özdemir Conv2D Backbone + stress_anxiety_risk_head (PyTorch)",
-      "key_markers": [
-        "Pre-Apnea Autonomic Respiratory Variation",
-        "Progressive Delta Slowing 60-90s Before Airway Collapse",
-        "Micro-Arousal Fast Transient Bursts"
-      ]
+      ],
+      "stress_metrics": {
+        "frontal_alpha_asymmetry": 0.02,
+        "beta_alpha_ratio": 0.15,
+        "fm_theta_power_percent": 12.8,
+        "autonomic_tone": "Parasympathetic Dominant",
+        "stress_index_percent": 9.5,
+        "anxiety_paroxysm_risk": "Low"
+      }
     }
   },
   "guidelines": [
     {
-      "source_org": "AASM",
-      "document_title": "Clinical Practice Guideline for the Pharmacologic & Behavioral Treatment of Chronic Insomnia in Adults",
-      "section_title": "Management of Prolonged Sleep Latency and Nocturnal Arousal",
-      "page_number": 18,
-      "citation_reference": "Sateia et al., Journal of Clinical Sleep Medicine, 13(2):307-349 (2017/2021)",
-      "chunk_content": "When persistent nocturnal wakefulness (elevated WASO >30 minutes or prolonged sleep latency) is observed, implement stimulus control therapy: advise the individual not to remain in bed tossing for extended periods. Maintain dark, quiet ambient conditions (temp 18-20°C). Avoid screen exposure and blue light emittance which suppresses melatonin production. Screen for psychophysiological insomnia and underlying nocturnal triggers.",
-      "risk_stage_tag": "wake",
-      "domain": "sleep"
-    },
-    {
-      "source_org": "AASM",
-      "document_title": "AASM Manual for the Scoring of Sleep and Associated Events: Rules, Terminology and Technical Specifications",
-      "section_title": "Stage N1 Criteria & Environmental Sleep Architecture Preservation",
-      "page_number": 32,
-      "citation_reference": "Berry et al., American Academy of Sleep Medicine Manual v2.6 (2020)",
-      "chunk_content": "Stage N1 represents the vulnerable sleep-wake transition with elevated sensory arousal thresholds. Disproportionately elevated N1 percentage (>10-12% of total sleep time) is a primary hallmark of sleep fragmentation, frequent micro-arousals, or periodic limb movements. Ensure acoustic attenuation and evaluate for occult sleep-disordered breathing if N1 persists without rapid consolidation into N2.",
-      "risk_stage_tag": "n1",
-      "domain": "sleep"
-    },
-    {
-      "source_org": "AASM",
-      "document_title": "Consensus Conference on Sleep Health and Adult Restorative Architecture",
-      "section_title": "Stage N2 Sleep Spindle Density & Cortical Stabilization",
-      "page_number": 14,
-      "citation_reference": "Watson et al., Sleep, 38(6):843-844 (2018/2021)",
-      "chunk_content": "Stage N2 accounts for 45-55% of normal adult sleep architecture, characterized by synchronous 12-14 Hz sleep spindles and biphasic K-complexes that shield the cortex against intrusive sensory arousal. Preserve uninterrupted nocturnal duration to ensure memory consolidation and cognitive recovery. Avoid pharmacological agents that suppress natural sleep spindle rhythmicity.",
-      "risk_stage_tag": "n2",
-      "domain": "sleep"
-    },
-    {
-      "source_org": "AASM",
-      "document_title": "AASM Practice Guidelines: Restorative Sleep Homeostasis & Slow-Wave Deficiency",
-      "section_title": "Stage N3 Slow-Wave Deep Sleep Clinical Significance",
-      "page_number": 22,
-      "citation_reference": "Kapur et al., J Clin Sleep Med, 13(3):479-504 (2019/2021)",
-      "chunk_content": "Stage N3 (Slow-Wave Deep Sleep) is essential for physical repair, glymphatic brain clearance, and growth hormone secretion. Severe reduction of N3 (<10-15% of TST) correlates with daytime fatigue, cognitive slowing, and impaired immune response. Minimize late evening alcohol, sedatives, and caffeine intake which prematurely truncate slow-wave synchronization. Maintain rigorous circadian consistency.",
-      "risk_stage_tag": "n3",
-      "domain": "sleep"
-    },
-    {
-      "source_org": "AASM",
-      "document_title": "Practice Parameters for the Evaluation and Treatment of REM Parasomnias and Disorders",
-      "section_title": "REM Sleep Architecture, Motor Atonia and Safety",
-      "page_number": 41,
-      "citation_reference": "Aurora et al., Sleep, 33(8):1105-1111 (2020)",
-      "chunk_content": "REM sleep is defined by desynchronized EEG, phasic conjugate eye movements, and profound postural muscle atonia. Evaluate for REM Sleep Behavior Disorder (RBD) if chin EMG demonstrates abnormal motor breakthrough. In patients with severe REM reduction or sleep-onset REM periods (SOREMPs within 15 minutes of sleep onset), conduct structured clinical evaluation for narcolepsy type 1/2 or acute antidepressant discontinuation.",
-      "risk_stage_tag": "rem",
-      "domain": "sleep"
-    },
-    {
-      "source_org": "AASM",
-      "document_title": "Clinical Practice Guideline for Diagnostic Testing for Adult Obstructive Sleep Apnea",
-      "section_title": "Emergency Screening and First-Line Management of Obstructive Sleep Apnea",
-      "page_number": 8,
-      "citation_reference": "Patil et al., Journal of Clinical Sleep Medicine, 15(2):335-343 (2019/2021)",
-      "chunk_content": "In patients demonstrating recurrent nocturnal micro-arousals accompanied by autonomic surges or repetitive submental EMG tone breaks, initiate comprehensive polysomnography (PSG) evaluation. Recommend continuous positive airway pressure (CPAP) therapy as the gold standard for moderate-to-severe OSA. Advise positional therapy (avoiding supine sleep), weight management, and complete avoidance of evening CNS depressants.",
-      "risk_stage_tag": "sleep_apnea",
-      "domain": "sleep"
-    },
-    {
       "domain": "early_warning",
       "source_org": "APA & NICE",
-      "document_title": "APA Stress in Higher Education Standards & NICE CG113",
-      "section_title": "Acute Student Stress & State Anxiety Rapid Intervention",
+      "document_title": "APA Clinical Standards & NICE CG113",
+      "section_title": "Acute Cognitive Stress & State Anxiety Rapid Intervention",
       "page_number": 14,
       "citation_reference": "NICE Clinical Guideline CG113 / APA 2021",
       "risk_stage_tag": "elevated_risk",
@@ -500,17 +232,17 @@
       "page_number": 8,
       "citation_reference": "APA Health Psychology Standards 2020",
       "risk_stage_tag": "baseline",
-      "chunk_content": "Baseline resting physiological state confirmed: participant displays synchronized posterior alpha rhythm and low beta agitation. Advise continued preventive wellness practices including consistent nocturnal circadian sleep patterns, periodic cognitive decompression breaks, hydration, and structured study intervals."
+      "chunk_content": "Baseline resting physiological state confirmed: participant displays synchronized posterior alpha rhythm and low beta agitation. Advise continued preventive wellness practices including consistent nocturnal circadian patterns, periodic cognitive decompression breaks, hydration, and structured study intervals."
     },
     {
       "domain": "early_warning",
-      "source_org": "AASM & NICE",
-      "document_title": "AASM Clinical Practice Guidelines & NICE NG148",
-      "section_title": "Pre-Apnea Airway Stability & Nocturnal Hypoxia Mitigation",
-      "page_number": 32,
-      "citation_reference": "AASM (Kapur et al. J Clin Sleep Med 13(3):479-504) & NICE NG148",
+      "source_org": "AAPB & Stanford",
+      "document_title": "Association for Applied Psychophysiology and Biofeedback (AAPB) Guidelines",
+      "section_title": "Resonant Frequency Autonomic Recovery Protocol",
+      "page_number": 22,
+      "citation_reference": "AAPB Level 5 Evidence-Based Standards (2020/2022)",
       "risk_stage_tag": "elevated_risk",
-      "chunk_content": "Pre-apnea lookback window demonstrates respiratory effort variance and progressive EEG delta slowing indicating imminent upper airway collapse. Recommend immediate positional sleep adjustments (lateral decubitus position, head-of-bed elevation 30 degrees) and comprehensive sleep specialist consultation for diagnostic in-lab Polysomnography (PSG) or Home Sleep Apnea Testing (HSAT)."
+      "chunk_content": "In presence of elevated frontal beta synchronization and reduced heart rate variability (RMSSD < 20 ms), administer resonant frequency slow-paced breathing at 0.1 Hz (~6 breaths/min). Stimulates aortic baroreceptors, elevates vagal brake tone, and restores prefrontal working memory capacity within 3 to 5 minutes."
     }
   ]
 }

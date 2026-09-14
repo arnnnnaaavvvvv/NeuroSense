@@ -7,26 +7,20 @@ export async function GET(
 ) {
   const stage = decodeURIComponent(params.stage).toLowerCase();
   const { searchParams } = new URL(request.url);
-  const domain = searchParams.get("domain")?.toLowerCase() || 
-    (["stress", "anxiety", "apnea"].some(s => stage.includes(s)) ? "early_warning" : "sleep");
+  const domain = searchParams.get("domain")?.toLowerCase() || "stress_anxiety";
 
   // Find matching guideline
-  let matching = benchmarkData.guidelines.filter((g) => (g.domain || "sleep").toLowerCase() === domain);
+  let matching = benchmarkData.guidelines.filter((g) => (g.domain || "stress_anxiety").toLowerCase() === domain);
+  if (matching.length === 0) {
+    matching = benchmarkData.guidelines;
+  }
 
   let targetGuideline = matching.find((g) => {
     const tag = (g.risk_stage_tag || "").toLowerCase();
-    if (domain === "sleep") {
-      if (stage.includes("n3")) return tag.includes("n3") || tag.includes("deep");
-      if (stage.includes("n2")) return tag.includes("n2") || tag.includes("sleep_apnea");
-      if (stage.includes("n1")) return tag.includes("n1") || tag.includes("light");
-      if (stage.includes("rem")) return tag.includes("rem") || tag.includes("sleep_apnea");
-      if (stage.includes("wake")) return tag.includes("wake") || tag.includes("insomnia");
-    } else {
-      if (stage.includes("apnea")) return tag.includes("elevated_risk") && (g.section_title?.toLowerCase().includes("apnea") || false);
-      if (stage.includes("elevated") || stage.includes("stress") || stage.includes("anxiety")) return tag.includes("elevated_risk") && !g.section_title?.toLowerCase().includes("apnea");
-      return tag.includes("base") || tag.includes("low");
+    if (stage.includes("elevated") || stage.includes("stress") || stage.includes("anxiety") || stage.includes("math") || stage.includes("stroop")) {
+      return tag.includes("elevated_risk") || tag.includes("stress") || tag.includes("anxiety");
     }
-    return false;
+    return tag.includes("base") || tag.includes("low") || tag.includes("relax");
   }) || matching[0];
 
   const citations = matching
@@ -46,7 +40,7 @@ export async function GET(
     source_citation: `${targetGuideline?.source_org} (${targetGuideline?.citation_reference})`,
     citations: citations.length > 0 ? citations : [
       {
-        source_org: targetGuideline?.source_org || "AASM",
+        source_org: targetGuideline?.source_org || "APA",
         document_title: targetGuideline?.document_title || "Clinical Guidelines",
         section_title: targetGuideline?.section_title || "Practice Recommendations",
         page_number: targetGuideline?.page_number || 1,

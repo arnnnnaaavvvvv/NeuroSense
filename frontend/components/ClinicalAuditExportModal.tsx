@@ -89,7 +89,7 @@ export default function ClinicalAuditExportModal({ caseId, isOpen, onClose }: Ex
               </div>
               <div>
                 <span className="text-slate-500 text-[10px] block">DOMAIN / BENCHMARK</span>
-                <span className="font-mono text-sky-300 font-bold uppercase">{data.domain || "sleep"} &bull; {data.dataset_source || "sleep-edf"}</span>
+                <span className="font-mono text-sky-300 font-bold uppercase">{data.domain || "stress_anxiety"} &bull; {data.dataset_source || "SAM-40 / DASPS"}</span>
               </div>
               <div>
                 <span className="text-slate-500 text-[10px] block">PATIENT & SAMPLING</span>
@@ -101,23 +101,28 @@ export default function ClinicalAuditExportModal({ caseId, isOpen, onClose }: Ex
               </div>
             </div>
 
-            {data.sleep_metrics && (
-              <div className="bg-indigo-950/30 p-3 rounded-lg border border-indigo-500/30 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
+            {data.stress_metrics && (
+              <div className="bg-amber-950/20 p-3.5 rounded-lg border border-amber-500/30 grid grid-cols-2 sm:grid-cols-4 gap-3 text-[11px]">
                 <div>
-                  <span className="text-slate-400 block">Sleep Efficiency:</span>
-                  <span className="font-mono font-bold text-white">{data.sleep_metrics.sleep_efficiency_percent}%</span>
+                  <span className="text-slate-400 block">Alpha Asymmetry (FAA):</span>
+                  <span className="font-mono font-bold text-white">
+                    {data.stress_metrics.frontal_alpha_asymmetry > 0 ? "+" : ""}
+                    {data.stress_metrics.frontal_alpha_asymmetry.toFixed(2)}
+                  </span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block">WASO:</span>
-                  <span className="font-mono font-bold text-white">{data.sleep_metrics.waso_minutes} min</span>
+                  <span className="text-slate-400 block">Beta/Alpha Ratio:</span>
+                  <span className="font-mono font-bold text-white">{data.stress_metrics.beta_alpha_ratio.toFixed(2)}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block">Slow-Wave (N3):</span>
-                  <span className="font-mono font-bold text-indigo-300">{data.sleep_metrics.n3_slow_wave_percent || 21.4}%</span>
+                  <span className="text-slate-400 block">Fmθ Cognitive Strain:</span>
+                  <span className="font-mono font-bold text-amber-300">{data.stress_metrics.fm_theta_power_percent.toFixed(1)}%</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block">Apnea Risk:</span>
-                  <span className="font-mono font-bold text-sky-400">{data.sleep_metrics.apnea_hypopnea_risk || "Low"}</span>
+                  <span className="text-slate-400 block">Anxiety Paroxysm Risk:</span>
+                  <span className={`font-mono font-bold ${data.stress_metrics.anxiety_paroxysm_risk.toLowerCase().includes("high") ? "text-rose-400" : "text-emerald-400"}`}>
+                    {data.stress_metrics.anxiety_paroxysm_risk}
+                  </span>
                 </div>
               </div>
             )}

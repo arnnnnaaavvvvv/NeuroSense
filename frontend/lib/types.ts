@@ -27,6 +27,15 @@ export interface SignalAssets {
   raw_waveform_url: string;
 }
 
+export interface StressMetrics {
+  frontal_alpha_asymmetry: number;
+  beta_alpha_ratio: number;
+  fm_theta_power_percent: number;
+  autonomic_tone: "Parasympathetic Dominant" | "Sympathetic Arousal" | "Acute Hyperarousal";
+  stress_index_percent: number;
+  anxiety_paroxysm_risk: "Low" | "Moderate" | "Elevated" | "High";
+}
+
 export interface SleepMetrics {
   sleep_efficiency_percent: number;
   waso_minutes: number;
@@ -46,6 +55,7 @@ export interface ClassificationSummary {
   domain?: string;
   sleep_stage?: string | null;
   sleep_metrics?: SleepMetrics | null;
+  stress_metrics?: StressMetrics | null;
 }
 
 export interface AnalysisResponse {
@@ -95,6 +105,7 @@ export interface RawWaveformData {
   dataset_source?: string;
   hypnogram?: string[];
   sleep_metrics?: SleepMetrics;
+  stress_metrics?: StressMetrics;
 }
 
 export interface ClinicalAuditExportResponse {
@@ -108,6 +119,7 @@ export interface ClinicalAuditExportResponse {
   montage_channel?: string | null;
   sleep_stage?: string | null;
   sleep_metrics?: SleepMetrics | null;
+  stress_metrics?: StressMetrics | null;
   sampling_rate_hz: number;
   duration_seconds: number;
   time_window_start: number;

@@ -25,7 +25,7 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <span className="font-bold text-lg text-zinc-950 tracking-tight font-display">NeuroSense</span>
               </div>
-              <p className="text-[11px] text-zinc-500">Sleep Staging &bull; Stress & Anxiety EEG Intelligence</p>
+              <p className="text-[11px] text-zinc-500">Cognitive Stress &bull; State Anxiety EEG Intelligence</p>
             </div>
           </Link>
 

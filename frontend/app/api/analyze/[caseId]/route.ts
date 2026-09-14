@@ -24,9 +24,9 @@ export async function GET(
     segment_id: pred.segment_id || 1,
     patient_anon_id: caseItem.patient_anon_id,
     description: caseItem.description,
-    domain: caseItem.domain || "sleep",
-    dataset_source: caseItem.dataset_source || "sleep-edf",
-    montage_channel: caseItem.montage_channel || "Fpz-Cz",
+    domain: caseItem.domain || "stress_anxiety",
+    dataset_source: caseItem.dataset_source || "sam40",
+    montage_channel: caseItem.montage_channel || "Fp1-Fp2",
     time_window: {
       start_seconds: pred.start_time_seconds || 0.0,
       end_seconds: pred.end_time_seconds || 10.0,
@@ -40,13 +40,17 @@ export async function GET(
       binary_class: pred.predicted_class,
       risk_stage: pred.risk_stage,
       confidence: pred.confidence,
-      model_name: pred.model_name || "Özdemir CNN Multi-Head (m32.h5 Shared Backbone)",
-      provenance: caseItem.domain === "early_warning"
-        ? `${caseItem.dataset_source?.toUpperCase()} Physiological Stress/Anxiety Cohort`
-        : "PhysioNet Sleep-EDF Expanded / AASM 5-Class Staging",
+      model_name: pred.model_name || "Özdemir CNN Multi-Head (128x128 SST)",
+      provenance: `${caseItem.dataset_source?.toUpperCase()} Stress & Anxiety EEG Benchmark Cohort`,
       domain: caseItem.domain,
-      sleep_stage: pred.sleep_stage,
-      sleep_metrics: pred.sleep_metrics
+      stress_metrics: pred.stress_metrics || {
+        frontal_alpha_asymmetry: -0.22,
+        beta_alpha_ratio: 1.65,
+        fm_theta_power_percent: 24.5,
+        autonomic_tone: "Sympathetic Dominance",
+        stress_index_percent: 78.4,
+        anxiety_paroxysm_risk: "Elevated"
+      }
     },
     key_markers: pred.key_markers || [],
     cached: true

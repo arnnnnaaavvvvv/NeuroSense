@@ -214,16 +214,10 @@ export default function SignalViewer({
     }
   }, [waveformData, selectedLead, availableChannels]);
 
-  const isEarlyWarning = domain === "early_warning" || domain === "stress_anxiety";
-  const isSleep = domain === "sleep";
+  const isEarlyWarning = domain === "early_warning" || domain === "stress_anxiety" || true;
 
   // Oscilloscope Title
-  let oscilloscopeTitle = "Medical Waveform Graph (Live Oscilloscope)";
-  if (isEarlyWarning) {
-    oscilloscopeTitle = "Brainwave Oscilloscope (Stress, Anxiety & Pre-Apnea)";
-  } else if (isSleep) {
-    oscilloscopeTitle = "Sleep Polysomnography Graph (Sleep Staging Waves)";
-  }
+  const oscilloscopeTitle = "Brainwave Oscilloscope (Cognitive Stress & State Anxiety Telemetry)";
 
   // Draw Waveform on Canvas
   useEffect(() => {
@@ -256,25 +250,14 @@ export default function SignalViewer({
     ctx.stroke();
 
     // Trace color scheme
-    let traceColor = "#38bdf8"; // Sky
+    let traceColor = "#10b981"; // Emerald baseline
     const rLower = riskStage.toLowerCase();
-    if (isEarlyWarning) {
-      if (rLower.includes("stress")) {
-        traceColor = "#f59e0b"; // Amber for stress
-      } else if (rLower.includes("anxiety")) {
-        traceColor = "#f43f5e"; // Rose for anxiety
-      } else if (rLower.includes("apnea")) {
-        traceColor = "#38bdf8"; // Sky for pre-apnea
-      } else {
-        traceColor = "#10b981"; // Emerald for baseline
-      }
-    } else if (isSleep) {
-      if (rLower.includes("n3")) traceColor = "#818cf8"; // Indigo for deep sleep
-      else if (rLower.includes("rem")) traceColor = "#22d3ee"; // Cyan for REM
-      else if (rLower.includes("wake")) traceColor = "#f43f5e"; // Rose for wakefulness
-      else traceColor = "#38bdf8"; // Sky for N2
+    if (rLower.includes("stress") || rLower.includes("overload") || rLower.includes("math")) {
+      traceColor = "#f59e0b"; // Amber for cognitive stress
+    } else if (rLower.includes("anxiety") || rLower.includes("panic") || rLower.includes("conflict") || rLower.includes("stroop")) {
+      traceColor = "#f43f5e"; // Rose for anxiety / conflict
     } else {
-      traceColor = "#10b981";
+      traceColor = "#10b981"; // Emerald for baseline
     }
 
     const maxVal = Math.max(...samples.map((v) => Math.abs(v)), 30.0);
@@ -328,7 +311,7 @@ export default function SignalViewer({
       ctx.arc(playheadX, currentY, 4, 0, 2 * Math.PI);
       ctx.fill();
     }
-  }, [waveformData, selectedLead, currentTime, duration, riskStage, isEarlyWarning, isSleep]);
+  }, [waveformData, selectedLead, currentTime, duration, riskStage, isEarlyWarning]);
 
   const cleanSstUrl = sstImageUrl.startsWith("http") || sstImageUrl.startsWith("/")
     ? sstImageUrl
@@ -730,7 +713,7 @@ export default function SignalViewer({
                       2. The SST Spectrogram Heatmap (Top Right Box)
                     </span>
                     <p className="text-slate-400 text-xs leading-relaxed">
-                      Think of this like a musical equalizer. Instead of wave height, it separates your brainwaves into frequencies up to the 50 Hz Nyquist ceiling (calibrated for 100 Hz recordings): deep slow bass notes at the bottom (Delta sleep waves) and fast treble notes near the top (Beta & Gamma waves up to 50 Hz). The bright glowing spots show which frequencies your brain is firing most powerfully.
+                      Think of this like a musical equalizer. Instead of wave height, it separates your brainwaves into frequencies up to the 50 Hz Nyquist ceiling (calibrated for 100 Hz recordings): deep slow bass notes at the bottom (Delta & Theta relaxation waves) and fast treble notes near the top (Beta & Gamma stress rhythms up to 50 Hz). The bright glowing spots show which frequencies your brain is firing most powerfully.
                     </p>
                   </div>
                 </div>

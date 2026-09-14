@@ -11,7 +11,6 @@ import SignalViewer from "../../../components/SignalViewer";
 import ResultCard from "../../../components/ResultCard";
 import PrecautionPanel from "../../../components/PrecautionPanel";
 import ClinicalAuditExportModal from "../../../components/ClinicalAuditExportModal";
-import HypnogramTimeline from "../../../components/HypnogramTimeline";
 import PatientGuidanceSection from "../../../components/PatientGuidanceSection";
 
 export default function CaseAnalysisPage() {
@@ -272,7 +271,7 @@ export default function CaseAnalysisPage() {
                 </span>
               </div>
               <p className="text-xs text-zinc-400 mt-0.5">
-                Full CNN classification, hypnogram, patient guidance, and RAG precautions unlock once the signal plays completely.
+                Full CNN classification, stress biomarker explainability, patient guidance, and RAG precautions unlock once the signal plays completely.
               </p>
             </div>
           </div>
@@ -310,7 +309,7 @@ export default function CaseAnalysisPage() {
                 Signal Playback Complete ({duration.toFixed(1)}s Epoch Analyzed)
               </h4>
               <p className="text-[11px] text-emerald-300/80">
-                Diagnostic hypnogram, CNN classification telemetry, patient guidance, and RAG precautions unlocked below.
+                CNN stress classification telemetry, electrographic biomarkers, patient guidance, and RAG precautions unlocked below.
               </p>
             </div>
           </div>
@@ -330,15 +329,7 @@ export default function CaseAnalysisPage() {
       {/* REST OF THE DETAILS (Revealed ONLY after the signal plays completely) */}
       {isSignalCompleted && (
         <div ref={resultsRef} className="space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-700">
-          {/* 2. Polysomnography Sleep Hypnogram (for Sleep Cases) */}
-          {(analysis.domain === "sleep" || waveformData?.hypnogram) && (
-            <HypnogramTimeline
-              hypnogram={waveformData?.hypnogram}
-              sleepMetrics={analysis.classification.sleep_metrics}
-            />
-          )}
-
-          {/* 3. Pretrained CNN Classification & Key Signal Markers Card */}
+          {/* Pretrained CNN Classification & Key Signal Markers Card */}
           <ResultCard
             classification={analysis.classification}
             keyMarkers={analysis.key_markers}

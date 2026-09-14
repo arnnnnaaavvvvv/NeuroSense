@@ -28,8 +28,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NeuroSense | Multi-Disorder Clinical EEG Intelligence Platform",
-  description: "Clinical intelligence platform for EEG time-frequency feature extraction, AASM sleep staging, and student stress/anxiety early-warning using a shared 128×128 SST representation and multi-head CNN.",
+  title: "NeuroSense | Stress & State Anxiety Clinical EEG Intelligence Platform",
+  description: "Clinical intelligence platform for EEG time-frequency feature extraction, acute cognitive overload, and state anxiety paroxysm detection using 128×128 SST representation and CNN architecture.",
   icons: {
     icon: [
       { url: "/icon.png", sizes: "192x192", type: "image/png" },

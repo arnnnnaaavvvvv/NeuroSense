@@ -108,15 +108,12 @@ export default function CaseAnalysisPage() {
     };
   }, [isPlaying, playbackSpeed, duration]);
 
-  // Smooth scroll down to unlocked details upon completing signal
+  // Ensure the page is always cleanly aligned at the very top (never opening scrolled down)
   useEffect(() => {
-    if (isSignalCompleted && resultsRef.current) {
-      const timer = setTimeout(() => {
-        resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 150);
-      return () => clearTimeout(timer);
-    }
-  }, [isSignalCompleted]);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [caseId, loadingAnalysis]);
 
   const handleTogglePlay = () => {
     if (currentTime >= duration) {

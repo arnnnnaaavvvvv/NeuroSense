@@ -32,6 +32,12 @@ export default function LandingPage() {
   // Initialize global scroll reveal observer
   useScrollRevealInit();
 
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
+
   return (
     <div className="space-y-24 sm:space-y-32 font-outfit">
       {/* =========================================================================

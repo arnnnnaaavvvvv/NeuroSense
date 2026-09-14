@@ -36,8 +36,12 @@ export default function BenchmarkDashboardPage() {
   const [stageFilter, setStageFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Initialize scroll reveal observer
-  useScrollRevealInit();
+  // Ensure dashboard is always cleanly top-aligned
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -383,6 +387,7 @@ export default function BenchmarkDashboardPage() {
               <ScrollReveal key={c.id} animation="fade-up" delay={i * 50}>
                 <Link
                   href={`/analysis/${c.id}`}
+                  scroll={true}
                   className="bg-gradient-to-b from-zinc-900/95 via-zinc-950 to-zinc-950 text-white rounded-2xl p-6 border border-zinc-800/90 hover:border-zinc-700 shadow-xl hover:shadow-2xl hover:shadow-black/60 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group cursor-pointer h-full relative overflow-hidden font-outfit"
                 >
                   {/* Subtle top ambient glowing rim */}

@@ -34,6 +34,7 @@ interface SignalViewerProps {
   playbackSpeed: number;
   onChangeSpeed: (speed: number) => void;
   hideLeadExplanation?: boolean;
+  onChannelChange?: (lead: string) => void;
 }
 
 interface LeadPlainDetail {
@@ -198,11 +199,21 @@ export default function SignalViewer({
   playbackSpeed,
   onChangeSpeed,
   hideLeadExplanation = false,
+  onChannelChange,
 }: SignalViewerProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [selectedLead, setSelectedLead] = useState<string>("Fpz-Cz");
   const [showAllLeadsDrawer, setShowAllLeadsDrawer] = useState(false);
   const [showSpectrogramGuide, setShowSpectrogramGuide] = useState(false);
+
+  const handleSelectLead = (lead: string) => {
+    setSelectedLead(lead);
+    if (onChannelChange) {
+      onChannelChange(lead);
+    } else {
+      onSeek(0);
+    }
+  };
 
   const availableChannels = waveformData?.channels
     ? Object.keys(waveformData.channels)
@@ -363,7 +374,7 @@ export default function SignalViewer({
               {availableChannels.map((lead) => (
                 <button
                   key={lead}
-                  onClick={() => setSelectedLead(lead)}
+                  onClick={() => handleSelectLead(lead)}
                   className={`px-2.5 py-1 rounded-lg font-mono text-xs transition-all ${
                     selectedLead === lead
                       ? "bg-sky-500 text-slate-950 font-bold shadow-sm"
@@ -652,7 +663,7 @@ export default function SignalViewer({
                     return (
                       <button
                         key={chKey}
-                        onClick={() => setSelectedLead(chKey)}
+                        onClick={() => handleSelectLead(chKey)}
                         className={`text-left p-3 rounded-xl border transition-all ${
                           isSelected
                             ? "bg-sky-50 border-sky-400 ring-2 ring-sky-300 shadow-xs"

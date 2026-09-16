@@ -136,6 +136,11 @@ export default function CaseAnalysisPage() {
 
   const handleChangeSpeed = (speed: number) => setPlaybackSpeed(speed);
 
+  const handleChannelChange = (_lead: string) => {
+    setCurrentTime(0.0);
+    setIsPlaying(true);
+  };
+
   const handleFastForwardComplete = () => {
     setIsPlaying(false);
     setCurrentTime(duration);
@@ -240,6 +245,7 @@ export default function CaseAnalysisPage() {
         playbackSpeed={playbackSpeed}
         onChangeSpeed={handleChangeSpeed}
         hideLeadExplanation={!isSignalCompleted}
+        onChannelChange={handleChannelChange}
       />
 
       {/* Real-Time Signal Stream & Progressive Reveal Banner */}

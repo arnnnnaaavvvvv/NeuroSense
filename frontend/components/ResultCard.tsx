@@ -34,6 +34,8 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
   let badgeLabel = "Elevated Stress Detected";
   let icon = <Flame className="w-5 h-5 text-rose-400 shrink-0" />;
   let confidenceBarColor = "bg-rose-500";
+  let confidenceTextColor = "text-rose-400";
+  let agreementTextColor = "text-rose-400";
   let stageTitle = "Acute Cognitive Workload & Mental Stress";
   let simpleDescription =
     "EEG signals show active cortical strain with reduced resting alpha waves and increased fast-wave beta tension, characteristic of high mental effort.";
@@ -43,22 +45,28 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
     badgeLabel = "Healthy Baseline Verified";
     icon = <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />;
     confidenceBarColor = "bg-emerald-500";
+    confidenceTextColor = "text-emerald-400";
+    agreementTextColor = "text-emerald-400";
     stageTitle = "Optimal Restorative Neurological Baseline";
     simpleDescription =
       "EEG signals demonstrate synchronized, calm resting alpha waves (8–12 Hz) across all monitored channels. Autonomic nervous system tone indicates optimal rest and mental recovery.";
   } else if (rLower.includes("conflict") || rLower.includes("stroop")) {
-    badgeBg = "bg-amber-950/60 border-amber-500/50 text-amber-300";
+    badgeBg = "bg-rose-950/60 border-rose-500/50 text-rose-300";
     badgeLabel = "Cognitive Conflict Detected";
-    icon = <Zap className="w-5 h-5 text-amber-400 shrink-0" />;
-    confidenceBarColor = "bg-amber-500";
+    icon = <Zap className="w-5 h-5 text-rose-400 shrink-0" />;
+    confidenceBarColor = "bg-rose-500";
+    confidenceTextColor = "text-rose-400";
+    agreementTextColor = "text-rose-400";
     stageTitle = "Cognitive Conflict & Working Memory Overload";
     simpleDescription =
       "EEG sensors detected high mental interference and friction in executive decision circuits, reflecting rapid cognitive processing and working memory strain.";
   } else if (rLower.includes("anxiety")) {
-    badgeBg = "bg-purple-950/60 border-purple-500/50 text-purple-300";
+    badgeBg = "bg-rose-950/60 border-rose-500/50 text-rose-300";
     badgeLabel = "State Anxiety Detected";
-    icon = <HeartPulse className="w-5 h-5 text-purple-400 shrink-0" />;
-    confidenceBarColor = "bg-purple-500";
+    icon = <HeartPulse className="w-5 h-5 text-rose-400 shrink-0" />;
+    confidenceBarColor = "bg-rose-500";
+    confidenceTextColor = "text-rose-400";
+    agreementTextColor = "text-rose-400";
     stageTitle = "Acute State Anxiety & Autonomic Hyperarousal";
     simpleDescription =
       "EEG analysis captured fast-frequency neural activity paired with sympathetic autonomic activation, characteristic of situational stress and acute anxiety.";
@@ -105,7 +113,7 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
         <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2.5">
           <div className="flex justify-between items-center text-xs">
             <span className="text-slate-400 font-medium">Model Classification Confidence:</span>
-            <span className="font-mono font-bold text-emerald-400 text-base">
+            <span className={`font-mono font-bold text-base ${confidenceTextColor}`}>
               {confidencePercent}%
             </span>
           </div>
@@ -119,7 +127,7 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
 
           <div className="flex justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-800/80">
             <span>Validation: <strong className="text-slate-200">Clinical EEG Cohorts</strong></span>
-            <span className="text-emerald-400 font-medium">High Statistical Agreement</span>
+            <span className={`font-medium ${agreementTextColor}`}>High Statistical Agreement</span>
           </div>
         </div>
       </div>

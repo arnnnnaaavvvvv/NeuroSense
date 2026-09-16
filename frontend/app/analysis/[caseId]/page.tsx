@@ -29,14 +29,14 @@ export default function CaseAnalysisPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0.0);
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
-  const [isSignalCompleted, setIsSignalCompleted] = useState(true);
+  const [isSignalCompleted, setIsSignalCompleted] = useState(false);
   const duration = analysis?.time_window.duration_seconds || 10.0;
 
   const animationFrameRef = useRef<number | null>(null);
   const lastTickTimeRef = useRef<number | null>(null);
   const resultsRef = useRef<HTMLDivElement | null>(null);
 
-  // 1. Fetch Case Analysis & Waveform (manual playback by user)
+  // 1. Fetch Case Analysis & Waveform, then auto-play signal stream
   useEffect(() => {
     if (!caseId) return;
 
@@ -51,6 +51,8 @@ export default function CaseAnalysisPage() {
         if (analysisData.signal_assets.raw_waveform_url) {
           const waveData = await fetchWaveformData(analysisData.signal_assets.raw_waveform_url);
           setWaveformData(waveData);
+          // Auto-start signal stream when inspect opens
+          setIsPlaying(true);
         }
 
         setLoadingPrecautions(true);

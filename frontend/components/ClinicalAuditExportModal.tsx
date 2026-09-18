@@ -17,7 +17,8 @@ import {
 } from "lucide-react";
 import { fetchClinicalAuditExport } from "../lib/api";
 import { ClinicalAuditExportResponse } from "../lib/types";
-import { getCaseClinicalInfo, CaseClinicalInfo } from "./PatientGuidanceSection";
+import { getCaseClinicalInfo, CaseClinicalInfo } from "../lib/clinical-guidelines-data";
+import { getErrorMessage } from "../lib/errors";
 
 interface ExportModalProps {
   caseId: string;
@@ -39,8 +40,8 @@ export default function ClinicalAuditExportModal({ caseId, isOpen, onClose }: Ex
         setError(null);
         const exportData = await fetchClinicalAuditExport(caseId);
         setData(exportData);
-      } catch (err: any) {
-        setError(err.message || "Failed to generate export report.");
+      } catch (err: unknown) {
+        setError(getErrorMessage(err, "Failed to generate export report."));
       } finally {
         setLoading(false);
       }

@@ -22,7 +22,8 @@ import {
 } from "lucide-react";
 
 import { fetchCases } from "../../lib/api";
-import { CaseItem } from "../../lib/types";
+import { CaseItem, CategoryFilter } from "../../lib/types";
+import { getErrorMessage } from "../../lib/errors";
 import ScrollReveal from "../../components/ScrollReveal";
 
 function DashboardContent() {
@@ -32,7 +33,7 @@ function DashboardContent() {
   const [error, setError] = useState<string | null>(null);
 
   // Stress & Anxiety Category Filter State
-  const [categoryFilter, setCategoryFilter] = useState<"all" | "stress" | "conflict" | "anxiety" | "baseline">("all");
+  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -53,8 +54,8 @@ function DashboardContent() {
         const stressOnly = data.filter((c) => c.domain !== "sleep");
         setCases(stressOnly);
         setError(null);
-      } catch (err: any) {
-        console.error("Failed to load benchmark cases:", err);
+      } catch (err: unknown) {
+        console.error("Failed to load benchmark cases:", getErrorMessage(err));
         setError("Unable to connect to telemetry service. Please ensure the backend is reachable.");
       } finally {
         setLoading(false);
@@ -156,19 +157,21 @@ function DashboardContent() {
       <ScrollReveal animation="fade-up">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-200 pb-4">
           <div className="flex flex-wrap items-center gap-2">
-            {[
-              { id: "all", label: "All Stress & Anxiety Cases", icon: Brain, count: cases.length },
-              { id: "stress", label: "Acute Cognitive Stress (SAM-40)", icon: Flame, count: cases.filter(c => (c.dataset_source || "").includes("sam40") && !(c.risk_stage || "").toLowerCase().includes("baseline")).length },
-              { id: "conflict", label: "Cognitive Conflict (Stroop)", icon: Zap, count: cases.filter(c => (c.dataset_source || "").includes("student")).length },
-              { id: "anxiety", label: "State Anxiety & Panic (DASPS)", icon: HeartPulse, count: cases.filter(c => (c.dataset_source || "").includes("dasps") && !(c.risk_stage || "").toLowerCase().includes("baseline")).length },
-              { id: "baseline", label: "Restorative Baselines", icon: CheckCircle2, count: cases.filter(c => (c.risk_stage || "").toLowerCase().includes("baseline")).length },
-            ].map((tab) => {
+            {(
+              [
+                { id: "all", label: "All Stress & Anxiety Cases", icon: Brain, count: cases.length },
+                { id: "stress", label: "Acute Cognitive Stress (SAM-40)", icon: Flame, count: cases.filter(c => (c.dataset_source || "").includes("sam40") && !(c.risk_stage || "").toLowerCase().includes("baseline")).length },
+                { id: "conflict", label: "Cognitive Conflict (Stroop)", icon: Zap, count: cases.filter(c => (c.dataset_source || "").includes("student")).length },
+                { id: "anxiety", label: "State Anxiety & Panic (DASPS)", icon: HeartPulse, count: cases.filter(c => (c.dataset_source || "").includes("dasps") && !(c.risk_stage || "").toLowerCase().includes("baseline")).length },
+                { id: "baseline", label: "Restorative Baselines", icon: CheckCircle2, count: cases.filter(c => (c.risk_stage || "").toLowerCase().includes("baseline")).length },
+              ] as const satisfies ReadonlyArray<{ id: CategoryFilter; label: string; icon: React.ElementType; count: number }>
+            ).map((tab) => {
               const Icon = tab.icon;
               const isActive = categoryFilter === tab.id;
               return (
                 <button
                   key={tab.id}
-                  onClick={() => setCategoryFilter(tab.id as any)}
+                  onClick={() => setCategoryFilter(tab.id)}
                   className={`px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 ${
                     isActive
                       ? "bg-black text-white shadow-sm"

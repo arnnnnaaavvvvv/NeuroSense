@@ -12,7 +12,8 @@ export async function GET(
     return NextResponse.json({ detail: `Case '${caseId}' not found` }, { status: 404 });
   }
 
-  const pred = (benchmarkData.predictions as any)[caseId];
+  const predictions = benchmarkData.predictions as Record<string, typeof benchmarkData.predictions[keyof typeof benchmarkData.predictions]>;
+  const pred = predictions[caseId];
   const domain = caseItem.domain || "stress_anxiety";
 
   // Find matching guideline

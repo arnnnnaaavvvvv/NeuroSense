@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, AlertCircle, FileDown, Activity, Sparkles, Rotat
 
 import { fetchAnalysis, fetchPrecautions, fetchWaveformData } from "../../../lib/api";
 import { AnalysisResponse, PrecautionResponse, RawWaveformData } from "../../../lib/types";
+import { getErrorMessage } from "../../../lib/errors";
 import SignalViewer from "../../../components/SignalViewer";
 import ResultCard from "../../../components/ResultCard";
 import ClinicalAuditExportModal from "../../../components/ClinicalAuditExportModal";
@@ -59,9 +60,10 @@ export default function CaseAnalysisPage() {
         const stageTarget = analysisData.classification.sleep_stage || analysisData.classification.binary_class || "baseline";
         const precData = await fetchPrecautions(stageTarget, analysisData.domain);
         setPrecautions(precData);
-      } catch (err: any) {
-        console.error("Failed to load analysis page:", err);
-        setError(err.message || "Failed to load case analysis.");
+      } catch (err: unknown) {
+        const msg = getErrorMessage(err, "Failed to load case analysis.");
+        console.error("Failed to load analysis page:", msg);
+        setError(msg);
       } finally {
         setLoadingAnalysis(false);
         setLoadingPrecautions(false);

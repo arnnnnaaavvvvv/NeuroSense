@@ -28,6 +28,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://neurosense-orcin.vercel.app"),
   title: "NeuroSense | Stress & State Anxiety Clinical EEG Intelligence Platform",
   description: "Clinical intelligence platform for EEG time-frequency feature extraction, acute cognitive overload, and state anxiety paroxysm detection using 128×128 SST representation and CNN architecture.",
   icons: {

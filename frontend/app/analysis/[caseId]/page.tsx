@@ -211,8 +211,8 @@ export default function CaseAnalysisPage() {
               <span>Export Clinical Summary</span>
             </button>
           ) : (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-sky-50 text-sky-800 border border-sky-200 text-xs font-mono">
-              <span className="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-mono">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               <span>Signal Stream Active</span>
             </div>
           )}
@@ -222,7 +222,7 @@ export default function CaseAnalysisPage() {
       {/* Clinical Context Callout */}
       {analysis.description && (
         <div className="bg-zinc-950 text-white p-4 rounded-2xl border border-zinc-800 text-xs text-zinc-300 leading-relaxed shadow-xs flex items-start gap-3">
-          <Activity className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+          <Activity className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
           <div>
             <strong className="text-white font-semibold">Clinical Dataset Context: </strong>
             <span>{analysis.description}</span>
@@ -252,12 +252,12 @@ export default function CaseAnalysisPage() {
       {!isSignalCompleted && (
         <div className="bg-gradient-to-r from-zinc-950 via-slate-900 to-zinc-950 text-white rounded-2xl p-5 border border-zinc-800 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
-            <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-400 shrink-0">
+            <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 shrink-0">
               <Activity className="w-5 h-5 animate-pulse" />
               {isPlaying && (
                 <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                 </span>
               )}
             </div>
@@ -266,7 +266,7 @@ export default function CaseAnalysisPage() {
                 <h3 className="text-sm font-bold text-white tracking-tight">
                   Analyzing Raw EEG Signal ({currentTime.toFixed(1)}s / {duration.toFixed(1)}s)
                 </h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 border border-sky-800">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800">
                   {isPlaying ? "Live Stream Simulation" : "Playback Paused"}
                 </span>
               </div>
@@ -280,7 +280,7 @@ export default function CaseAnalysisPage() {
             <div className="flex items-center gap-2">
               <div className="w-28 sm:w-36 bg-zinc-800 rounded-full h-2 overflow-hidden border border-zinc-700">
                 <div
-                  className="bg-gradient-to-r from-sky-500 to-indigo-500 h-full rounded-full transition-all duration-150"
+                  className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-150"
                   style={{ width: `${Math.min(100, (currentTime / duration) * 100)}%` }}
                 />
               </div>

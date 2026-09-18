@@ -260,25 +260,17 @@ export default function SignalViewer({
     ctx.lineTo(width, height / 2);
     ctx.stroke();
 
-    // Trace color scheme
-    let traceColor = "#10b981"; // Emerald baseline
-    const rLower = riskStage.toLowerCase();
-    if (rLower.includes("stress") || rLower.includes("overload") || rLower.includes("math")) {
-      traceColor = "#f59e0b"; // Amber for cognitive stress
-    } else if (rLower.includes("anxiety") || rLower.includes("panic") || rLower.includes("conflict") || rLower.includes("stroop")) {
-      traceColor = "#f43f5e"; // Rose for anxiety / conflict
-    } else {
-      traceColor = "#10b981"; // Emerald for baseline
-    }
+    // Unified Signal Color across all cards and cases (Emerald Green)
+    const traceColor = "#10b981";
 
     const maxVal = Math.max(...samples.map((v) => Math.abs(v)), 30.0);
     const scaleY = (height / 2.6) / maxVal;
     const stepX = width / (totalSamples - 1);
 
-    const currentProgress = duration > 0 ? currentTime / duration : 0;
+    const currentProgress = duration > 0 ? Math.min(1, Math.max(0, currentTime / duration)) : 0;
     const currentSampleIdx = Math.floor(currentProgress * totalSamples);
 
-    // 1. Dim Background Wave Trace
+    // 1. Dim Background Wave Trace (Unplayed signal ahead)
     ctx.strokeStyle = "rgba(100, 116, 139, 0.35)";
     ctx.lineWidth = 1.3;
     ctx.beginPath();
@@ -290,8 +282,11 @@ export default function SignalViewer({
     }
     ctx.stroke();
 
-    // 2. Active Played Trace
+    // 2. Active Played Trace (Unified Emerald Signal with subtle glow)
     if (currentSampleIdx > 0) {
+      ctx.save();
+      ctx.shadowColor = "rgba(16, 185, 129, 0.5)";
+      ctx.shadowBlur = 5;
       ctx.strokeStyle = traceColor;
       ctx.lineWidth = 2.0;
       ctx.beginPath();
@@ -302,11 +297,12 @@ export default function SignalViewer({
         else ctx.lineTo(x, y);
       }
       ctx.stroke();
+      ctx.restore();
     }
 
-    // 3. Scanning Playhead Cursor
+    // 3. Scanning Playhead Cursor (Unified Emerald/White)
     const playheadX = currentProgress * width;
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.strokeStyle = "rgba(16, 185, 129, 0.9)";
     ctx.lineWidth = 1.5;
     ctx.setLineDash([3, 3]);
     ctx.beginPath();
@@ -317,12 +313,19 @@ export default function SignalViewer({
 
     if (currentSampleIdx < totalSamples) {
       const currentY = height / 2 - samples[currentSampleIdx] * scaleY;
+      ctx.save();
+      ctx.shadowColor = "rgba(16, 185, 129, 0.8)";
+      ctx.shadowBlur = 8;
       ctx.fillStyle = "#ffffff";
       ctx.beginPath();
       ctx.arc(playheadX, currentY, 4, 0, 2 * Math.PI);
       ctx.fill();
+      ctx.strokeStyle = traceColor;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.restore();
     }
-  }, [waveformData, selectedLead, currentTime, duration, riskStage, isEarlyWarning]);
+  }, [waveformData, selectedLead, currentTime, duration]);
 
   const cleanSstUrl = sstImageUrl.startsWith("http") || sstImageUrl.startsWith("/")
     ? sstImageUrl
@@ -346,16 +349,70 @@ export default function SignalViewer({
   };
 
   const speeds = [0.5, 1.0, 2.0, 4.0];
+  const progressRatio = duration > 0 ? Math.min(1, Math.max(0, currentTime / duration)) : 0;
+  const progressPercent = progressRatio * 100;
+
+  // Spectrogram Canvas Colormap Processor (matches Oscilloscope Emerald Theme)
+  const sstCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  useEffect(() => {
+    const canvas = sstCanvasRef.current;
+    if (!canvas || !cleanSstUrl) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = cleanSstUrl;
+
+    img.onload = () => {
+      canvas.width = 128;
+      canvas.height = 128;
+      ctx.drawImage(img, 0, 0, 128, 128);
+
+      try {
+        const imgData = ctx.getImageData(0, 0, 128, 128);
+        const data = imgData.data;
+
+        // Apply authentic Emerald-Teal colormap to SST frequencies:
+        // Maps grayscale energy L in [0, 1] to luminous emerald gradient matching the oscilloscope
+        for (let i = 0; i < data.length; i += 4) {
+          const l = data[i] / 255.0; // grayscale brightness
+          if (l < 0.05) {
+            // Dark base background
+            data[i] = 5;
+            data[i + 1] = 8;
+            data[i + 2] = 17;
+          } else if (l < 0.55) {
+            // Mid-range energy: Deep emerald to vibrant green (#10b981)
+            const t = (l - 0.05) / 0.5;
+            data[i] = Math.round(5 + (16 - 5) * t);
+            data[i + 1] = Math.round(8 + (185 - 8) * t);
+            data[i + 2] = Math.round(17 + (129 - 17) * t);
+          } else {
+            // High energy peaks: Brilliant emerald (#10b981) to luminous mint (#a7f3d0)
+            const t = (l - 0.55) / 0.45;
+            data[i] = Math.round(16 + (167 - 16) * t);
+            data[i + 1] = Math.round(185 + (243 - 185) * t);
+            data[i + 2] = Math.round(129 + (208 - 129) * t);
+          }
+        }
+        ctx.putImageData(imgData, 0, 0);
+      } catch (e) {
+        // Fallback to direct image if cross-origin or canvas read error occurs
+      }
+    };
+  }, [cleanSstUrl]);
 
   return (
     <div className="space-y-4">
-      {/* 1. Oscilloscope & Spectrogram Grid */}
+      {/* 1. Oscilloscope & Spectrogram Grid (Synchronized at Same Time in Matching Colors) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Main Waveform Box (8 cols) */}
         <div className="lg:col-span-8 bg-slate-950 text-white rounded-2xl p-4 sm:p-5 border border-slate-800 shadow-sm flex flex-col justify-between">
           <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80 mb-2">
             <div className="flex items-center gap-2">
-              <Activity className="w-5 h-5 text-sky-400" />
+              <Activity className="w-5 h-5 text-emerald-400" />
               <div>
                 <h3 className="font-bold text-sm text-white tracking-wide">
                   {oscilloscopeTitle}
@@ -377,7 +434,7 @@ export default function SignalViewer({
                   onClick={() => handleSelectLead(lead)}
                   className={`px-2.5 py-1 rounded-lg font-mono text-xs transition-all ${
                     selectedLead === lead
-                      ? "bg-sky-500 text-slate-950 font-bold shadow-sm"
+                      ? "bg-emerald-500 text-slate-950 font-bold shadow-sm shadow-emerald-500/25"
                       : "text-slate-400 hover:text-slate-200 hover:bg-slate-800"
                   }`}
                   title={`View ${lead}`}
@@ -398,7 +455,7 @@ export default function SignalViewer({
             />
 
             <div className="absolute top-2.5 left-3 text-[11px] font-mono text-slate-300 pointer-events-none bg-slate-950/70 px-2 py-0.5 rounded border border-slate-800">
-              Active Lead: <strong className="text-sky-300">{selectedLead}</strong> &bull; +100 µV
+              Active Lead: <strong className="text-emerald-300">{selectedLead}</strong> &bull; +100 µV
             </div>
             <div className="absolute bottom-2.5 left-3 text-[10px] font-mono text-slate-400 pointer-events-none bg-slate-950/70 px-1.5 py-0.5 rounded">
               -100 µV
@@ -411,7 +468,7 @@ export default function SignalViewer({
           {/* ACTIVE LEAD HEADER CALLOUT */}
           <div className="mt-3 p-2.5 bg-slate-900/90 rounded-xl border border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs">
             <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-mono font-bold text-xs border border-sky-500/30">
+              <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold text-xs border border-emerald-500/30">
                 {leadInfo.leadName}
               </span>
               <span className="font-semibold text-slate-200">
@@ -428,7 +485,7 @@ export default function SignalViewer({
         <div className="lg:col-span-4 bg-slate-950 text-white rounded-2xl p-4 sm:p-5 border border-slate-800 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-2">
             <div className="flex items-center gap-2">
-              <Layers className="w-5 h-5 text-cyan-400" />
+              <Layers className="w-5 h-5 text-emerald-400" />
               <div>
                 <h3 className="font-bold text-sm text-white tracking-wide">
                   Frequency Energy Heatmap
@@ -438,31 +495,35 @@ export default function SignalViewer({
                 </p>
               </div>
             </div>
-            <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-slate-800 text-cyan-300 border border-slate-700">
+            <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30">
               AI Input
             </span>
           </div>
 
           <div className="relative flex flex-col items-center justify-center bg-[#050811] rounded-xl p-3 border border-slate-800">
             <div className="relative w-48 h-48 rounded-lg border border-slate-700 overflow-hidden bg-black shadow-inner">
-              {cleanSstUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={cleanSstUrl}
-                  alt="Synchrosqueezing Transform 128x128 representation"
-                  className="w-full h-full object-cover filter contrast-125"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-xs text-slate-500">
-                  Loading Spectrogram...
-                </div>
-              )}
-
-              {/* Time Cursor Sweep on Spectrogram */}
-              <div
-                className="absolute top-0 bottom-0 w-0.5 bg-white pointer-events-none shadow-[0_0_8px_white]"
-                style={{ left: `${(currentTime / duration) * 100}%` }}
+              {/* Dynamic Colormapped Spectrogram Canvas */}
+              <canvas
+                ref={sstCanvasRef}
+                width={128}
+                height={128}
+                className="w-full h-full object-cover block filter contrast-125"
               />
+
+              {/* Unplayed Spectrogram Overlay (Runs at exact same time as Oscilloscope) */}
+              <div
+                className="absolute top-0 bottom-0 right-0 bg-[#050811]/85 backdrop-blur-[0.5px] pointer-events-none transition-none"
+                style={{ left: `${progressPercent}%` }}
+              />
+
+              {/* Synchronized Scanning Sweep Cursor on Spectrogram */}
+              <div
+                className="absolute top-0 bottom-0 w-[2px] bg-emerald-400 pointer-events-none shadow-[0_0_10px_#10b981,0_0_20px_#10b981] z-10 -translate-x-1/2 transition-none"
+                style={{ left: `${progressPercent}%` }}
+              >
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-emerald-300 shadow-[0_0_8px_#10b981]" />
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-emerald-300 shadow-[0_0_8px_#10b981]" />
+              </div>
             </div>
 
             <div className="w-full flex justify-between text-[10px] font-mono text-slate-400 mt-2 px-2">
@@ -473,7 +534,7 @@ export default function SignalViewer({
           </div>
 
           <div className="mt-3 p-2 bg-slate-900/60 rounded-xl border border-slate-800/80 text-[11px] text-slate-400 text-center">
-            Bright white spots = Strongest brain energy frequencies (0.5–50 Hz at 100 Hz sampling)
+            Bright emerald spots = Strongest brain energy frequencies (0.5–50 Hz at 100 Hz sampling)
           </div>
         </div>
       </div>
@@ -488,7 +549,7 @@ export default function SignalViewer({
               className={`flex items-center justify-center w-11 h-11 rounded-xl font-bold transition-all shadow-md ${
                 isPlaying
                   ? "bg-amber-500 hover:bg-amber-400 text-slate-950"
-                  : "bg-sky-500 hover:bg-sky-400 text-slate-950"
+                  : "bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-emerald-500/20"
               }`}
               title={isPlaying ? "Pause Playback" : "Play Signal Live"}
             >
@@ -532,7 +593,7 @@ export default function SignalViewer({
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 font-mono text-xs bg-slate-900 text-white px-3.5 py-2 rounded-xl shadow-xs">
               <span className={`w-2 h-2 rounded-full ${isPlaying ? "bg-emerald-400 animate-pulse" : "bg-slate-500"}`}></span>
-              <span className="text-sky-300 font-bold">{formatTime(currentTime)}</span>
+              <span className="text-emerald-400 font-bold">{formatTime(currentTime)}</span>
               <span className="text-slate-500">/</span>
               <span className="text-slate-400">{formatTime(duration)}</span>
             </div>
@@ -548,7 +609,7 @@ export default function SignalViewer({
             step={0.05}
             value={currentTime}
             onChange={(e) => onSeek(parseFloat(e.target.value))}
-            className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-sky-500 focus:outline-none"
+            className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-500 focus:outline-none"
           />
         </div>
 
@@ -666,16 +727,16 @@ export default function SignalViewer({
                         onClick={() => handleSelectLead(chKey)}
                         className={`text-left p-3 rounded-xl border transition-all ${
                           isSelected
-                            ? "bg-sky-50 border-sky-400 ring-2 ring-sky-300 shadow-xs"
+                            ? "bg-emerald-50 border-emerald-400 ring-2 ring-emerald-300 shadow-xs"
                             : "bg-slate-50 border-slate-200 hover:bg-slate-100 hover:border-slate-300"
                         }`}
                       >
                         <div className="flex items-center justify-between gap-1">
-                          <span className={`font-mono font-bold text-xs ${isSelected ? "text-sky-800" : "text-slate-800"}`}>
+                          <span className={`font-mono font-bold text-xs ${isSelected ? "text-emerald-800" : "text-slate-800"}`}>
                             {info.leadName}
                           </span>
                           {isSelected && (
-                            <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-sky-200 text-sky-800">
+                            <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-800">
                               Active
                             </span>
                           )}

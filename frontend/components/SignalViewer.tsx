@@ -203,35 +203,16 @@ export default function SignalViewer({
 }: SignalViewerProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [selectedLead, setSelectedLead] = useState<string>("Fpz-Cz");
-  const [channelTimes, setChannelTimes] = useState<Record<string, number>>({});
   const [showAllLeadsDrawer, setShowAllLeadsDrawer] = useState(false);
   const [showSpectrogramGuide, setShowSpectrogramGuide] = useState(false);
-
-  // Synchronize active channel's independent playback time
-  useEffect(() => {
-    setChannelTimes((prev) => ({
-      ...prev,
-      [selectedLead]: currentTime
-    }));
-  }, [currentTime, selectedLead]);
 
   const handleSelectLead = (lead: string) => {
     if (lead === selectedLead) return;
 
-    // 1. Preserve current lead's timestamp
-    setChannelTimes((prev) => ({
-      ...prev,
-      [selectedLead]: currentTime
-    }));
-
-    // 2. Switch to requested lead
+    // Switch to requested channel seamlessly without restarting from the beginning
     setSelectedLead(lead);
 
-    // 3. Retrieve independent timestamp for this channel (defaults to 0.0s if first opened)
-    const targetTime = channelTimes[lead] ?? 0.0;
-    onSeek(targetTime);
-
-    // 4. Auto-run signal independently as someone opens the card
+    // Continue playback smoothly if paused
     if (!isPlaying) {
       onTogglePlay();
     }
@@ -456,7 +437,6 @@ export default function SignalViewer({
               </span>
               {availableChannels.map((lead) => {
                 const isSelected = selectedLead === lead;
-                const hasProgress = (channelTimes[lead] ?? 0) > 0.05;
                 return (
                   <button
                     key={lead}
@@ -466,13 +446,10 @@ export default function SignalViewer({
                         ? "bg-emerald-500 text-slate-950 font-bold shadow-sm shadow-emerald-500/25"
                         : "text-slate-400 hover:text-slate-200 hover:bg-slate-800"
                     }`}
-                    title={`Open and run ${lead} signal independently`}
+                    title={`Switch to ${lead} channel (continuous playback at current time)`}
                   >
                     {isSelected && isPlaying && (
                       <span className="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse" />
-                    )}
-                    {!isSelected && hasProgress && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80" />
                     )}
                     <span>{lead}</span>
                   </button>
@@ -750,9 +727,7 @@ export default function SignalViewer({
                       clinicalPurpose: "Evaluated by specialists to identify clinical patterns."
                     };
                     const isSelected = selectedLead === chKey;
-
-                    const chTime = channelTimes[chKey] ?? (isSelected ? currentTime : 0.0);
-                    const chPct = duration > 0 ? Math.min(100, (chTime / duration) * 100) : 0;
+                    const chPct = progressPercent;
 
                     return (
                       <button
@@ -763,7 +738,7 @@ export default function SignalViewer({
                             ? "bg-emerald-50 border-emerald-400 ring-2 ring-emerald-300 shadow-xs"
                             : "bg-slate-50 border-slate-200 hover:bg-slate-100 hover:border-slate-300"
                         }`}
-                        title={`Open and run ${info.leadName} signal independently`}
+                        title={`Switch to ${info.leadName} (continuous playback at current time)`}
                       >
                         <div className="flex items-center justify-between gap-1">
                           <span className={`font-mono font-bold text-xs ${isSelected ? "text-emerald-800" : "text-slate-800"}`}>
@@ -772,18 +747,18 @@ export default function SignalViewer({
                           {isSelected ? (
                             <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-800 flex items-center gap-1">
                               <span className="w-1.5 h-1.5 rounded-full bg-emerald-700 animate-pulse" />
-                              Running Live
+                              Active Trace
                             </span>
                           ) : (
                             <span className="text-[10px] font-mono text-slate-500">
-                              {chTime.toFixed(1)}s / {duration.toFixed(1)}s
+                              {currentTime.toFixed(1)}s / {duration.toFixed(1)}s
                             </span>
                           )}
                         </div>
                         <p className="text-xs font-medium text-slate-900 mt-1 line-clamp-1">
                           {info.friendlyName}
                         </p>
-                        {/* Independent Progress Bar */}
+                        {/* Synchronized Session Progress Bar */}
                         <div className="mt-2 w-full bg-slate-200 rounded-full h-1 overflow-hidden">
                           <div
                             className="bg-emerald-500 h-full rounded-full transition-all duration-100"

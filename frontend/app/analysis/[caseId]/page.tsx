@@ -137,7 +137,6 @@ export default function CaseAnalysisPage() {
   const handleChangeSpeed = (speed: number) => setPlaybackSpeed(speed);
 
   const handleChannelChange = (_lead: string) => {
-    setCurrentTime(0.0);
     setIsPlaying(true);
   };
 

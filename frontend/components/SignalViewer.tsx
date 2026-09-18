@@ -203,15 +203,41 @@ export default function SignalViewer({
 }: SignalViewerProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [selectedLead, setSelectedLead] = useState<string>("Fpz-Cz");
+  const [channelTimes, setChannelTimes] = useState<Record<string, number>>({});
   const [showAllLeadsDrawer, setShowAllLeadsDrawer] = useState(false);
   const [showSpectrogramGuide, setShowSpectrogramGuide] = useState(false);
 
+  // Synchronize active channel's independent playback time
+  useEffect(() => {
+    setChannelTimes((prev) => ({
+      ...prev,
+      [selectedLead]: currentTime
+    }));
+  }, [currentTime, selectedLead]);
+
   const handleSelectLead = (lead: string) => {
+    if (lead === selectedLead) return;
+
+    // 1. Preserve current lead's timestamp
+    setChannelTimes((prev) => ({
+      ...prev,
+      [selectedLead]: currentTime
+    }));
+
+    // 2. Switch to requested lead
     setSelectedLead(lead);
+
+    // 3. Retrieve independent timestamp for this channel (defaults to 0.0s if first opened)
+    const targetTime = channelTimes[lead] ?? 0.0;
+    onSeek(targetTime);
+
+    // 4. Auto-run signal independently as someone opens the card
+    if (!isPlaying) {
+      onTogglePlay();
+    }
+
     if (onChannelChange) {
       onChannelChange(lead);
-    } else {
-      onSeek(0);
     }
   };
 
@@ -423,25 +449,35 @@ export default function SignalViewer({
               </div>
             </div>
 
-            {/* Selectable Lead Pills */}
+            {/* Selectable Lead Pills with Live Running Indicator */}
             <div className="flex items-center flex-wrap gap-1 bg-slate-900 rounded-xl p-1 border border-slate-800 text-xs">
               <span className="text-[10px] font-mono text-slate-400 px-2 uppercase font-semibold">
                 Channel:
               </span>
-              {availableChannels.map((lead) => (
-                <button
-                  key={lead}
-                  onClick={() => handleSelectLead(lead)}
-                  className={`px-2.5 py-1 rounded-lg font-mono text-xs transition-all ${
-                    selectedLead === lead
-                      ? "bg-emerald-500 text-slate-950 font-bold shadow-sm shadow-emerald-500/25"
-                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-800"
-                  }`}
-                  title={`View ${lead}`}
-                >
-                  {lead}
-                </button>
-              ))}
+              {availableChannels.map((lead) => {
+                const isSelected = selectedLead === lead;
+                const hasProgress = (channelTimes[lead] ?? 0) > 0.05;
+                return (
+                  <button
+                    key={lead}
+                    onClick={() => handleSelectLead(lead)}
+                    className={`px-2.5 py-1 rounded-lg font-mono text-xs transition-all flex items-center gap-1.5 ${
+                      isSelected
+                        ? "bg-emerald-500 text-slate-950 font-bold shadow-sm shadow-emerald-500/25"
+                        : "text-slate-400 hover:text-slate-200 hover:bg-slate-800"
+                    }`}
+                    title={`Open and run ${lead} signal independently`}
+                  >
+                    {isSelected && isPlaying && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse" />
+                    )}
+                    {!isSelected && hasProgress && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80" />
+                    )}
+                    <span>{lead}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -508,12 +544,6 @@ export default function SignalViewer({
                 width={128}
                 height={128}
                 className="w-full h-full object-cover block filter contrast-125"
-              />
-
-              {/* Unplayed Spectrogram Overlay (Runs at exact same time as Oscilloscope) */}
-              <div
-                className="absolute top-0 bottom-0 right-0 bg-[#050811]/85 backdrop-blur-[0.5px] pointer-events-none transition-none"
-                style={{ left: `${progressPercent}%` }}
               />
 
               {/* Synchronized Scanning Sweep Cursor on Spectrogram */}
@@ -721,6 +751,9 @@ export default function SignalViewer({
                     };
                     const isSelected = selectedLead === chKey;
 
+                    const chTime = channelTimes[chKey] ?? (isSelected ? currentTime : 0.0);
+                    const chPct = duration > 0 ? Math.min(100, (chTime / duration) * 100) : 0;
+
                     return (
                       <button
                         key={chKey}
@@ -730,21 +763,34 @@ export default function SignalViewer({
                             ? "bg-emerald-50 border-emerald-400 ring-2 ring-emerald-300 shadow-xs"
                             : "bg-slate-50 border-slate-200 hover:bg-slate-100 hover:border-slate-300"
                         }`}
+                        title={`Open and run ${info.leadName} signal independently`}
                       >
                         <div className="flex items-center justify-between gap-1">
                           <span className={`font-mono font-bold text-xs ${isSelected ? "text-emerald-800" : "text-slate-800"}`}>
                             {info.leadName}
                           </span>
-                          {isSelected && (
-                            <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-800">
-                              Active
+                          {isSelected ? (
+                            <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-800 flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-700 animate-pulse" />
+                              Running Live
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-mono text-slate-500">
+                              {chTime.toFixed(1)}s / {duration.toFixed(1)}s
                             </span>
                           )}
                         </div>
                         <p className="text-xs font-medium text-slate-900 mt-1 line-clamp-1">
                           {info.friendlyName}
                         </p>
-                        <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-2 leading-snug">
+                        {/* Independent Progress Bar */}
+                        <div className="mt-2 w-full bg-slate-200 rounded-full h-1 overflow-hidden">
+                          <div
+                            className="bg-emerald-500 h-full rounded-full transition-all duration-100"
+                            style={{ width: `${chPct}%` }}
+                          />
+                        </div>
+                        <p className="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-snug">
                           {info.whatItMeasures}
                         </p>
                       </button>

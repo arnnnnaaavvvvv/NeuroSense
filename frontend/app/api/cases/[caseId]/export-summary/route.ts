@@ -50,9 +50,9 @@ export async function GET(
       frontal_alpha_asymmetry: -0.22,
       beta_alpha_ratio: 1.65,
       fm_theta_power_percent: 24.5,
-      autonomic_tone: "Sympathetic Dominance",
       stress_index_percent: 78.4,
-      anxiety_paroxysm_risk: "Elevated"
+      cognitive_workload_indicator: "Elevated",
+      anxiety_indicator: "Insufficient evidence from single-modality EEG / requires multimodal telemetry"
     },
     sampling_rate_hz: caseItem.eeg_sampling_rate_hz,
     duration_seconds: 10.0,

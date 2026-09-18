@@ -1,3 +1,77 @@
+export interface SessionProvenance {
+  dataset_name: string;
+  subject_id: string;
+  task: string;
+  condition: string;
+  window_length_sec: number;
+  sampling_rate_hz: number;
+  channels_recorded: string;
+  cohort_type: string;
+}
+
+export interface SignalQualityDetail {
+  overall_score: number;
+  quality_grade: "Optimal" | "Acceptable" | "Degraded";
+  electrode_contact: string;
+  ocular_artifact: string;
+  cranial_emg_artifact: string;
+  motion_artifact: string;
+  mains_noise_50hz: string;
+  gating_verdict: string;
+}
+
+export interface PersonalBaselineBandComparison {
+  band: "Delta" | "Theta" | "Alpha" | "Beta" | "Gamma";
+  range_hz: string;
+  resting_baseline_rel_percent: number;
+  current_session_rel_percent: number;
+  deviation_percent: number;
+  direction: "elevated" | "suppressed" | "nominal";
+  analytic_significance: string;
+}
+
+export interface NumericalBandPower {
+  band: "Delta" | "Theta" | "Alpha" | "Beta" | "Gamma";
+  range_hz: string;
+  abs_power_uv2: number;
+  rel_power_percent: number;
+}
+
+export interface TemporalTrajectoryPoint {
+  time_sec: number;
+  phase: "Baseline" | "Rising Arousal" | "Peak Arousal" | "Recovery / Sustained";
+  arousal_index: number;
+  note: string;
+}
+
+export interface ModelValidationMetrics {
+  evaluation_protocol: string;
+  script_source: string;
+  accuracy: number;
+  sensitivity: number;
+  specificity: number;
+  precision: number;
+  f1_macro: number;
+  auroc: number;
+  total_cases_evaluated: number;
+  total_subjects: number;
+  disclaimer: string;
+}
+
+export interface ExplainableAIReasoning {
+  primary_features: string[];
+  spectral_findings: string[];
+  artifact_validation: string;
+  temporal_stability: string;
+}
+
+export interface StructuredInterpretation {
+  current_finding: string;
+  evidence: string;
+  interpretation: string;
+  limitation: string;
+}
+
 export interface CaseItem {
   id: string;
   patient_anon_id: string;
@@ -8,12 +82,14 @@ export interface CaseItem {
   description: string | null;
   risk_stage: string;
   predicted_class: string;
+  three_state_class?: "baseline" | "rising_arousal" | "high_arousal";
   domain?: string;
   dataset_source?: string;
   montage_channel?: string | null;
   sleep_stage?: string | null;
   title?: string;
   highlights?: string[];
+  session_provenance?: SessionProvenance;
 }
 
 export interface TimeWindow {
@@ -31,9 +107,9 @@ export interface StressMetrics {
   frontal_alpha_asymmetry: number;
   beta_alpha_ratio: number;
   fm_theta_power_percent: number;
-  autonomic_tone: "Parasympathetic Dominant" | "Sympathetic Arousal" | "Acute Hyperarousal";
   stress_index_percent: number;
-  anxiety_paroxysm_risk: "Low" | "Moderate" | "Elevated" | "High";
+  cognitive_workload_indicator: "Nominal" | "Elevated" | "High Cognitive Friction";
+  anxiety_indicator: "Insufficient evidence from single-modality EEG / requires multimodal telemetry" | "Concordant with task stimulation protocol";
 }
 
 export interface SleepMetrics {
@@ -49,13 +125,23 @@ export interface SleepMetrics {
 export interface ClassificationSummary {
   binary_class: string;
   risk_stage: string;
+  three_state_class: "baseline" | "rising_arousal" | "high_arousal";
+  detected_state_title: string;
   confidence: number;
   model_name: string;
   provenance: string;
+  session_provenance: SessionProvenance;
   domain?: string;
   sleep_stage?: string | null;
   sleep_metrics?: SleepMetrics | null;
   stress_metrics?: StressMetrics | null;
+  signal_quality: SignalQualityDetail;
+  baseline_comparison: PersonalBaselineBandComparison[];
+  numerical_band_powers: NumericalBandPower[];
+  temporal_trajectory: TemporalTrajectoryPoint[];
+  model_validation: ModelValidationMetrics;
+  explainable_reasoning: ExplainableAIReasoning;
+  structured_interpretation: StructuredInterpretation;
 }
 
 export interface AnalysisResponse {

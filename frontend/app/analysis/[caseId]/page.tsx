@@ -245,6 +245,9 @@ export default function CaseAnalysisPage() {
         onChangeSpeed={handleChangeSpeed}
         hideLeadExplanation={!isSignalCompleted}
         onChannelChange={handleChannelChange}
+        numericalBandPowers={analysis.classification.numerical_band_powers}
+        signalQuality={analysis.classification.signal_quality}
+        sessionProvenance={analysis.classification.session_provenance}
       />
 
       {/* Real-Time Signal Stream & Progressive Reveal Banner */}

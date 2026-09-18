@@ -39,18 +39,21 @@ export async function GET(
     classification: {
       binary_class: pred.predicted_class,
       risk_stage: pred.risk_stage,
+      three_state_class: pred.three_state_class || (pred.predicted_class === "baseline" ? "baseline" : "high_arousal"),
+      detected_state_title: pred.detected_state_title || pred.risk_stage,
       confidence: pred.confidence,
-      model_name: pred.model_name || "Özdemir CNN Multi-Head (128x128 SST)",
-      provenance: `${caseItem.dataset_source?.toUpperCase()} Stress & Anxiety EEG Benchmark Cohort`,
+      model_name: pred.model_name || "Özdemir Conv2D CNN Backbone (128x128 STFT)",
+      provenance: pred.provenance || `${caseItem.dataset_source?.toUpperCase()} Research Benchmark Cohort`,
+      session_provenance: pred.session_provenance || caseItem.session_provenance,
       domain: caseItem.domain,
-      stress_metrics: pred.stress_metrics || {
-        frontal_alpha_asymmetry: -0.22,
-        beta_alpha_ratio: 1.65,
-        fm_theta_power_percent: 24.5,
-        autonomic_tone: "Sympathetic Dominance",
-        stress_index_percent: 78.4,
-        anxiety_paroxysm_risk: "Elevated"
-      }
+      stress_metrics: pred.stress_metrics,
+      signal_quality: pred.signal_quality,
+      baseline_comparison: pred.baseline_comparison || [],
+      numerical_band_powers: pred.numerical_band_powers || [],
+      temporal_trajectory: pred.temporal_trajectory || [],
+      model_validation: pred.model_validation,
+      explainable_reasoning: pred.explainable_reasoning,
+      structured_interpretation: pred.structured_interpretation
     },
     key_markers: pred.key_markers || [],
     cached: true

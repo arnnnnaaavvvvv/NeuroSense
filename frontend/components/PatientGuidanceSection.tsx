@@ -86,100 +86,100 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
   "sam40_sub01_math_stress": {
     conditionTitle: "Acute Mental Arithmetic & High Cognitive Workload Stress",
     simpleSummary:
-      "This test captures the brain under immediate mental strain during timed, difficult speed arithmetic. Working memory is pushed to its absolute limit, triggering an acute surge in cortical beta tension and sympathetic arousal.",
+      "This test captures the brain under immediate mental strain during timed, difficult speed arithmetic. Working memory is challenged, triggering an acute surge in cortical beta oscillations and task-related arousal.",
     whatSignalMeans:
-      "Calm, relaxing 10 Hz 'Alpha' waves disappear (a process called alpha-blocking) and are replaced by fast, buzzing 20–26 Hz 'Beta' waves across the left frontal forehead (F3 sensor), showing intense cognitive effort.",
+      "Calm 10 Hz Alpha waves attenuate (alpha desynchronization) and are replaced by fast 18–26 Hz Beta activity across the left frontal scalp (F3 electrode), consistent with intensive cognitive processing.",
     whyNeedsAttention:
-      "Prolonged frontal hyper-metabolic Beta bursts indicate acute sympathetic nervous system overdrive ('fight-or-flight' lock). Sustained cognitive overload over-activates adrenal output, causes blood pressure surges, exhausts working memory reserves, and triggers chronic tension headaches and burnout.",
+      "Frontal beta elevations are characteristic of high cognitive workload during speed arithmetic. While expected during acute problem-solving, sustained high-frequency cortical excitation without recovery intervals can contribute to mental fatigue and cognitive strain. Single-modality EEG measures cortical workload, not systemic pathology.",
     signalAnomaly: {
       status: "abnormal",
-      statusBadge: "Abnormal Frontal Beta Surge & Sympathetic Overdrive",
-      abnormalLocation: "Frontal lead (F3/F4) excessive Beta (18–30 Hz) & Low-Gamma power (30–48 Hz, bounded by 50 Hz Nyquist limit) with suppression of resting Alpha (8–12 Hz)",
-      signalPathologyDescription: "Electrophysiological recording exhibits marked bilateral frontal beta desynchronization, severe suppression of restful alpha rhythms, and ECG tachycardia with blunted vagal HRV (RMSSD < 18 ms).",
-      normalBaselineComparison: "Calm cognitive readiness maintains dominant occipital-parietal Alpha waves (8–12 Hz, >30 µV) and resilient heart rate variability (RMSSD > 35 ms)."
+      statusBadge: "Elevated Frontal Beta & High Cognitive Workload",
+      abnormalLocation: "Left frontal electrode (F3) elevated Beta (18–30 Hz) power with attenuation of resting posterior Alpha (8–12 Hz)",
+      signalPathologyDescription: "Electrophysiological recording exhibits marked bilateral frontal beta power elevation (+14.2% over subject resting baseline) accompanied by desynchronization of resting posterior alpha rhythms.",
+      normalBaselineComparison: "Calm cognitive readiness maintains dominant occipital-parietal Alpha waves (8–12 Hz, 18.4 µV²) and symmetric frontal spectral distribution."
     },
     thingsToPayAttentionTo: [
       {
-        sign: "Sudden chest tightness, pounding heart, or shortness of breath during mental tasks",
-        clinicalContext: "Sympathetic nervous system tachycardia driven by acute mental stress hormones.",
+        sign: "Acute physical symptoms: severe chest tightness, irregular heart palpitations, or shortness of breath",
+        clinicalContext: "Physical autonomic warning signs warrant direct medical assessment independent of EEG findings.",
         urgency: "Immediate Medical Attention"
       },
       {
         sign: "Clenched jaw (bruxism), tension headaches behind eyes, or trembling fingers",
-        clinicalContext: "Somatic motor manifestation of continuous high-frequency Beta brain wave firing.",
+        clinicalContext: "Somatic motor manifestation of sustained high-frequency muscle and cognitive tension.",
         urgency: "Monitor Daily"
       },
       {
         sign: "Mental paralysis, stumbling over words, or inability to make executive decisions",
-        clinicalContext: "Sign of prefrontal cortex working-memory depletion under cognitive pressure.",
+        clinicalContext: "Transient working-memory depletion under high-friction cognitive pressure.",
         urgency: "Clinical Follow-Up"
       },
       {
-        sign: "Inability to calm down or relax hours after the mental stressor has ended",
-        clinicalContext: "Autonomic nervous system failing to switch back to parasympathetic recovery mode.",
+        sign: "Inability to down-regulate or relax after demanding cognitive stressors end",
+        clinicalContext: "Difficulty transitioning from active problem-solving to autonomic rest.",
         urgency: "Clinical Follow-Up"
       }
     ],
     realTreatments: [
       {
-        treatmentName: "Resonant Frequency HRV Biofeedback Training",
+        treatmentName: "Slow-Paced Diaphragmatic Breathing & Neuro-Ergonomic Pacing",
         category: "Behavioral & Neuro-Regulation",
-        howItWorks: "Real-time biometric training pacing respiration at 0.1 Hz (~6 breaths per minute) to stimulate the baroreflex and vagus nerve, rapidly suppressing frontal Beta spikes.",
-        evidenceBase: "AAPB Level 5 Evidence — Efficacious and Specific for Autonomic Strain"
+        howItWorks: "Structured breathing practice pacing respiration at ~6 breaths per minute to stimulate vagal baroreflex activity and suppress frontal beta over-activation.",
+        evidenceBase: "Clinical Neuroergonomics Guidelines for Cognitive Strain"
       },
       {
-        treatmentName: "4-Point Diurnal Salivary Cortisol & DHEA Panel",
+        treatmentName: "Diurnal Salivary Cortisol & Neuroendocrine Evaluation",
         category: "First-Line Medical Therapy",
-        howItWorks: "Physician-ordered diagnostic saliva testing measuring morning, noon, evening, and bedtime cortisol to diagnose Hypothalamic-Pituitary-Adrenal (HPA) axis fatigue.",
+        howItWorks: "Physician-ordered diagnostic testing measuring daily cortisol rhythm to evaluate hypothalamic-pituitary-adrenal (HPA) axis balance under chronic stress.",
         evidenceBase: "Endocrine Society Clinical Practice Guidelines"
       },
       {
-        treatmentName: "Cognitive Stress Inoculation & Pacing Therapy",
+        treatmentName: "Cognitive Stress Inoculation & Focus Restructuring",
         category: "Behavioral & Neuro-Regulation",
-        howItWorks: "Structured psychological training to restructure catastrophic performance beliefs and implement neuro-ergonomic focus/rest intervals.",
-        evidenceBase: "APA Practice Guideline for Occupational Stress Management"
+        howItWorks: "Structured psychological training to restructure performance anxiety and implement regular focus/rest intervals.",
+        evidenceBase: "APA Practice Guidelines for Occupational Stress Management"
       },
       {
-        treatmentName: "Cardioselective Beta-Blocker Medical Consultation (e.g. Propranolol)",
+        treatmentName: "Comprehensive Primary Care Consultation",
         category: "Medical Specialist Care",
-        howItWorks: "Evaluation by a physician for short-term, targeted autonomic stabilization to block somatic adrenaline receptors during severe sympathetic surges.",
-        evidenceBase: "Clinical Pharmacological Protocol for Somatic Stress"
+        howItWorks: "Evaluation by a primary care physician to assess overall cardiovascular health, blood pressure regulation, and somatic stress symptoms.",
+        evidenceBase: "Standard Clinical Practice Protocol"
       }
     ],
     causes: [
       {
         title: "Intense Mental Calculation & Time Pressure",
-        description: "Pushing working memory to rapidly calculate numbers while being timed under performance scrutiny."
+        description: "Challenging working memory to rapidly calculate numbers under performance timing."
       },
       {
-        title: "Performance Pressure & Test Anxiety",
-        description: "Fear of making an error triggers the body's sympathetic 'fight-or-flight' adrenaline response."
+        title: "Performance Scrutiny & Cognitive Arousal",
+        description: "Task performance scrutiny activates sympathetic autonomic arousal."
       },
       {
-        title: "Frontal Cortex Energy Overdrive",
-        description: "Brain cells in the prefrontal cortex fire rapidly in unsynchronized patterns to process complex logic."
+        title: "Frontal Cortex Metabolic Recruitment",
+        description: "Pyramidal neurons in prefrontal circuits fire in desynchronized patterns during complex logic."
       },
       {
-        title: "Mental Fatigue & Multitasking",
-        description: "Trying to manage multiple high-cognitive tasks simultaneously without taking mental pauses."
+        title: "Sustained Focus Without Recovery Intervals",
+        description: "Managing demanding cognitive tasks without scheduled restorative mental pauses."
       }
     ],
     symptoms: [
       {
         title: "Forehead Tension & Eye Strain",
-        description: "A tight feeling across the temples, furrowed eyebrows, or squinting during intense concentration."
+        description: "A tight feeling across the temples or furrowed brow during concentration."
       },
       {
         title: "Increased Heart Rate & Shallow Breathing",
-        description: "Unconsciously holding your breath or taking quick, shallow chest breaths while solving difficult problems."
+        description: "Shallow chest breaths or autonomic acceleration while solving difficult problems."
       },
       {
         title: "Mental Exhaustion & Decreased Patience",
-        description: "Feeling drained, irritable, or impatient after 30 to 60 minutes of uninterrupted mental strain."
+        description: "Feeling drained or irritable after prolonged uninterrupted mental strain."
       },
       {
         title: "Restless Fidgeting or Jaw Clenching",
-        description: "Tapping feet, clenching teeth, or shifting nervously in your chair."
+        description: "Unconscious jaw clenching or motor restlessness during heavy workload."
       }
     ],
     requiredTests: [
@@ -190,29 +190,29 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
         urgency: "Routine"
       },
       {
-        testName: "Salivary Cortisol & Alpha-Amylase Stress Panel",
+        testName: "Salivary Cortisol & Stress Biomarker Screen",
         plainEnglishName: "Saliva Stress Hormone Test",
         whyNeeded: "Measures whether your daily stress hormones peak and recover properly throughout a demanding day.",
         urgency: "Recommended"
       },
       {
-        testName: "Ambulatory Blood Pressure & Heart Rate Variability (HRV) Screen",
-        plainEnglishName: "24-Hour Heart & Blood Pressure Tracking",
-        whyNeeded: "Checks whether mental work spikes blood pressure or suppresses healthy heart rhythm flexibility.",
+        testName: "Physician-Supervised Cardiovascular & Autonomic Evaluation",
+        plainEnglishName: "Resting Heart & Blood Pressure Tracking",
+        whyNeeded: "Checks whether high mental workload correlates with blood pressure elevations or autonomic strain.",
         urgency: "Routine"
       }
     ],
     actionableGuidance: {
       immediateSteps: [
-        "Practice the '20-20-20 Rule' and Pomodoro method: take a 5-minute break every 25 minutes of deep focus.",
-        "Use 'Box Breathing' (inhale 4 seconds, hold 4 seconds, exhale 4 seconds, hold 4 seconds) to immediately calm rapid brainwaves.",
-        "Step away from your desk, stretch your neck and shoulders, and drink a large glass of water to relieve forehead tension."
+        "Practice the '20-20-20 Rule' and Pomodoro pacing: take a 5-minute pause every 25 minutes of deep focus.",
+        "Use slow diaphragmatic breathing (inhale 4 seconds, exhale 6 seconds) to help restore baseline cortical rhythms.",
+        "Step away from your desk, stretch your neck and shoulders, and hydrate to relieve somatic tension."
       ],
       doctorQuestions: [
-        "Does my brain return quickly to calm Alpha waves after mental tasks, or does high Beta tension linger?",
-        "Are my cardiovascular markers (blood pressure and heart rate) staying safe during high-stress work?"
+        "Does my electrophysiological profile indicate difficulty returning to baseline alpha rhythms after mental tasks?",
+        "Are my cardiovascular vitals (resting heart rate and blood pressure) within healthy clinical parameters?"
       ],
-      specialistToConsult: "Neuropsychologist / Occupational Health Specialist"
+      specialistToConsult: "Primary Care Physician or Healthcare Provider"
     }
   },
 
@@ -220,82 +220,82 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
   "student_sub11_stroop_stress": {
     conditionTitle: "Cognitive Conflict & High Mental Interference Overload",
     simpleSummary:
-      "This test reflects mental conflict (tested via the Stroop color-word interference task). The brain has to actively fight off its automatic impulse to read words, creating intense friction in executive decision circuits.",
+      "This test reflects mental conflict (tested via the Stroop color-word interference task). The brain actively inhibits automatic word-reading impulses, recruiting executive decision and error-monitoring circuits.",
     whatSignalMeans:
-      "The midline forehead sensor (Fz) detects strong 'Frontal Midline Theta' waves along with high-frequency Beta spikes. This confirms the brain's error-detection and conflict-resolution network is working overtime.",
+      "The midline frontal sensor (Fz) detects prominent 'Frontal Midline Theta' waves (4–8 Hz) coupled with localized Beta synchronization, confirming active engagement of executive control networks.",
     whyNeedsAttention:
-      "Repeated cognitive conflict crashes prefrontal working memory and depletes Anterior Cingulate Cortex (ACC) glucose reserves, leading to severe error vulnerability, academic burnout, micro-blackouts, sensory hypersensitivity, and chronic tension headaches.",
+      "Elevated Frontal Midline Theta (4–8 Hz) and beta synchronization reflect heavy recruitment of cognitive control and conflict-monitoring networks during the Stroop task. While standard during active inhibition, prolonged high-workload episodes without rest may contribute to subjective mental fatigue.",
     signalAnomaly: {
       status: "abnormal",
-      statusBadge: "Abnormal Anterior Cingulate Overload & Midline Theta Surge",
-      abnormalLocation: "Frontal Midline sensor (Fz) intense Theta (4–7 Hz) power surge with concurrent temporal-parietal Beta synchronization",
-      signalPathologyDescription: "Signal reveals erratic bursts of high-amplitude Frontal Midline Theta (Fm-theta) coupled with sudden galvanic skin response (GSR) surges, reflecting intense neural friction in error-monitoring networks.",
-      normalBaselineComparison: "Stable, organized low-variability theta rhythms with smooth autonomic baseline and balanced bilateral hemispheric activity."
+      statusBadge: "Elevated Frontal Midline Theta & Executive Interference",
+      abnormalLocation: "Frontal Midline sensor (Fz) prominent Theta (4–8 Hz) power surge with concurrent DLPFC Beta synchronization",
+      signalPathologyDescription: "Signal reveals bursts of Frontal Midline Theta (Fm-theta, 4–8 Hz) power elevation (+11.8% over subject baseline) coupled with bilateral frontal beta synchronization, reflecting cognitive conflict monitoring during color-word interference.",
+      normalBaselineComparison: "Resting baseline maintains balanced frontal theta (4.8 µV²) and absence of continuous task-induced synchronization."
     },
     thingsToPayAttentionTo: [
       {
         sign: "Momentary cognitive freezing or repeating errors on simple, familiar tasks",
-        clinicalContext: "Indicates anterior cingulate cortex fatigue and executive resource depletion.",
+        clinicalContext: "Indicates transient anterior cingulate and executive resource depletion.",
         urgency: "Clinical Follow-Up"
       },
       {
         sign: "Dull, tight band of pressure wrapping around forehead and temples (tension headache)",
-        clinicalContext: "Direct outcome of sustained squinting, facial motor clenching, and cognitive friction.",
+        clinicalContext: "Direct outcome of sustained facial muscle tension and cognitive friction.",
         urgency: "Monitor Daily"
       },
       {
         sign: "Sudden emotional frustration, tearfulness, or intense irritation when multi-tasking",
-        clinicalContext: "Signals loss of prefrontal emotional inhibition due to cognitive exhaustion.",
+        clinicalContext: "Signals loss of prefrontal cognitive inhibition due to mental fatigue.",
         urgency: "Clinical Follow-Up"
       },
       {
-        sign: "Consuming escalating amounts of energy drinks, high-dose caffeine, or study stimulants",
-        clinicalContext: "Increases cortical irritability and worsens the post-stimulant cognitive crash.",
-        urgency: "Immediate Medical Attention"
+        sign: "Excessive consumption of energy drinks, high-dose caffeine, or study stimulants",
+        clinicalContext: "High stimulant doses can increase cortical irritability and worsen subsequent cognitive crashes.",
+        urgency: "Clinical Follow-Up"
       }
     ],
     realTreatments: [
       {
         treatmentName: "Neuro-Ergonomic Pomodoro & Physiological Sigh Protocol",
         category: "Behavioral & Neuro-Regulation",
-        howItWorks: "Strict 25-minute focus blocks separated by 5 minutes of physiological sighs (two quick nasal inhales followed by one long, slow mouth exhale) to restore prefrontal metabolic reserves.",
-        evidenceBase: "Clinical Neuroergonomics & Stanford Neurobiology Protocol"
+        howItWorks: "Strict 25-minute focus intervals separated by 5 minutes of restorative breathing (two quick nasal inhales followed by one long, slow mouth exhale) to restore executive attention reserves.",
+        evidenceBase: "Clinical Neuroergonomics Guidelines"
       },
       {
-        treatmentName: "Quantitative EEG (qEEG) Brain Mapping Evaluation",
+        treatmentName: "Comprehensive Cognitive Health & Attention Evaluation",
         category: "Medical Specialist Care",
-        howItWorks: "Clinical 19-channel EEG brain mapping to calculate Theta/Beta power ratios, ruling out underlying ADHD, executive dysregulation, or learning processing deficits.",
-        evidenceBase: "American Academy of Neurology Clinical Diagnostic Protocol"
+        howItWorks: "Clinical evaluation by a licensed healthcare provider to assess sustained attention, executive function, and potential cognitive fatigue factors.",
+        evidenceBase: "Standard Clinical Neuropsychological Practice"
       },
       {
-        treatmentName: "Mindfulness-Based Cognitive Therapy (MBCT)",
+        treatmentName: "Mindfulness-Based Stress Reduction (MBSR)",
         category: "Behavioral & Neuro-Regulation",
-        howItWorks: "Teaches patients to decouple emotional reactivity from challenging cognitive stimuli, reducing anterior cingulate friction by >30%.",
-        evidenceBase: "NICE Recommended Guideline for Cognitive Overload"
+        howItWorks: "Teaches patients to decouple emotional reactivity from challenging cognitive stimuli, reducing cognitive friction and mental fatigue.",
+        evidenceBase: "NICE Recommended Guidelines for Cognitive Strain"
       },
       {
-        treatmentName: "Nutritional & Neurochemical Screen (Serum B12, Folate, Complete Blood Count)",
+        treatmentName: "Nutritional & Metabolic Health Screen",
         category: "First-Line Medical Therapy",
-        howItWorks: "Laboratory blood screening to eliminate micronutrient and neurotransmitter cofactor deficiencies that impair neural transmission speed.",
-        evidenceBase: "Clinical Biochemical Assessment Guidelines"
+        howItWorks: "Laboratory screening to verify adequate micronutrient and metabolic markers supporting healthy neural stamina.",
+        evidenceBase: "Clinical Practice Health Guidelines"
       }
     ],
     causes: [
       {
         title: "Sensory & Informational Overload",
-        description: "Processing conflicting inputs or navigating confusing, high-stakes decisions under tight deadlines."
+        description: "Processing conflicting inputs or navigating complex decisions under time constraints."
       },
       {
         title: "Impulse Suppression & Mental Filtering",
-        description: "The anterior cingulate cortex burning glucose to stop you from making an automatic, instinctive mistake."
+        description: "Cortical circuits actively suppressing automatic impulse responses."
       },
       {
-        title: "Exam Stress & Academic Overwhelm",
-        description: "Prolonged study sessions without restorative downtime, leading to cognitive fatigue."
+        title: "Prolonged Study Sessions Without Breaks",
+        description: "Marathon mental effort without restorative cognitive downtime."
       },
       {
-        title: "Excessive Caffeine & Energy Drink Consumption",
-        description: "High doses of stimulants increase neural irritability and exacerbate cognitive jitteriness."
+        title: "High Stimulant & Caffeine Intake",
+        description: "Excess stimulants increase neural irritability and exacerbate cognitive jitteriness."
       }
     ],
     symptoms: [
@@ -309,7 +309,7 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
       },
       {
         title: "Difficulty Making Simple Decisions",
-        description: "Feeling overwhelmed by small choices (like what to eat) because your mental filter is exhausted."
+        description: "Feeling overwhelmed by small choices because your mental filter is exhausted."
       },
       {
         title: "Emotional Frustration & Short Temper",
@@ -318,35 +318,35 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
     ],
     requiredTests: [
       {
-        testName: "Computerized Neuropsychological Attention Battery (e.g., Continuous Performance Test)",
+        testName: "Standardized Neuropsychological Attention & Working Memory Battery",
         plainEnglishName: "Computerized Focus & Attention Test",
         whyNeeded: "Measures sustained attention, reaction speed, and susceptibility to distraction or impulse errors.",
         urgency: "Routine"
       },
       {
-        testName: "Serum Vitamin B12, Folate & Complete Blood Count (CBC)",
-        plainEnglishName: "B-Vitamin & Anemia Blood Work",
-        whyNeeded: "Vitamin B12 deficiencies directly impair cognitive processing speed, focus, and mental stamina.",
+        testName: "Serum Metabolic & Vitamin Panel (CBC, B12, Folate)",
+        plainEnglishName: "Basic Blood Work & Vitamin Screen",
+        whyNeeded: "Ensures underlying metabolic or vitamin deficiencies are not compounding cognitive fatigue.",
         urgency: "Routine"
       },
       {
-        testName: "GAD-7 / PHQ-9 Clinical Anxiety and Mood Screen",
-        plainEnglishName: "Standard Psychological Wellbeing Questionnaire",
-        whyNeeded: "Screens for underlying academic anxiety or depression that amplifies cognitive overload.",
+        testName: "Standardized Clinical Wellbeing Screen (PHQ-9 / GAD-7)",
+        plainEnglishName: "Psychological Wellbeing Questionnaire",
+        whyNeeded: "Screens for underlying situational anxiety or mood strain amplifying cognitive overload.",
         urgency: "Recommended"
       }
     ],
     actionableGuidance: {
       immediateSteps: [
-        "Take a brisk 10-minute walk outside in natural sunlight; physical movement clears cognitive fatigue faster than sitting.",
-        "Cut back on caffeine and high-sugar energy drinks, which spike cognitive jitteriness and worsen brain crashes.",
-        "Break complex study materials into small 15-minute chunks rather than attempting marathon 4-hour cramming sessions."
+        "Take a brisk 10-minute walk outside in natural daylight; physical movement clears cognitive fatigue faster than sitting.",
+        "Moderate caffeine intake and avoid late-afternoon energy drinks to protect sleep architecture.",
+        "Break complex study materials into small 15-minute chunks rather than attempting marathon cramming sessions."
       ],
       doctorQuestions: [
-        "Are my symptoms typical for temporary academic stress, or is there an underlying attention deficit or anxiety pattern?",
-        "What lifestyle modifications can help strengthen my cognitive stamina without relying on stimulants?"
+        "Are my symptoms typical for temporary academic stress, or is further evaluation warranted?",
+        "What evidence-based lifestyle modifications can help strengthen cognitive stamina?"
       ],
-      specialistToConsult: "Educational Psychologist / Student Health Counselor"
+      specialistToConsult: "Primary Care Physician or Qualified Student Health Provider"
     }
   },
 
@@ -354,141 +354,141 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
   "dasps_s01_high_anxiety": {
     conditionTitle: "Acute Emotional Anxiety Spike (State Anxiety Paroxysm)",
     simpleSummary:
-      "This test captures a sudden spike of acute psychological anxiety or panic. The emotional centers of the brain (the limbic amygdala) have temporarily hijacked the conscious thinking areas, triggering an emergency fight-or-flight alert.",
+      "This test captures a sudden spike of acute state anxiety during emotionally evocative video stimulation. Cortical and limbic networks shift toward defensive alertness and withdrawal motivation.",
     whatSignalMeans:
-      "The left and right forehead sensors (Fp1 & Fp2) show an intense asymmetry, with jagged high-frequency waves and rapid eye flutters. The brain is scanning frantically for perceived threats while vagal calming signals drop.",
+      "Frontal electrodes demonstrate right-hemispheric alpha suppression relative to the left hemisphere (Frontal Alpha Asymmetry score -0.301), alongside low cranial EMG artifact, indicating genuine cortical arousal rather than facial motor noise.",
     whyNeedsAttention:
-      "Right-frontal cortical hyperactivity combined with vagal parasympathetic withdrawal leaves the autonomic nervous system defenseless against panic attacks, chronic tachycardia, hyperventilation, gastrointestinal inflammation, and crippling agoraphobic avoidance.",
+      "Right-frontal alpha suppression relative to the left hemisphere is consistent with high sympathetic arousal and withdrawal motivation. However, scalp EEG alone does not diagnose anxiety disorders or autonomic dysfunction, and requires clinical evaluation alongside complete medical history.",
     signalAnomaly: {
       status: "abnormal",
-      statusBadge: "Abnormal Right-Frontal Asymmetry & Vagal Withdrawal",
-      abnormalLocation: "Right hemisphere hyperactivation (Alpha asymmetry F4 < F3) with prominent Gamma oscillations (35–50 Hz Nyquist band)",
-      signalPathologyDescription: "Marked electrophysiological right-frontal hyper-activation paired with severe parasympathetic vagal withdrawal (LF/HF ratio > 4.5), reflecting acute neurochemical distress and panic vulnerability.",
-      normalBaselineComparison: "Balanced bilateral frontal alpha power (F3/F4 ratio ~ 1.0) with robust respiratory sinus arrhythmia (parasympathetic vagal engagement)."
+      statusBadge: "Right-Frontal Alpha Asymmetry & High Arousal",
+      abnormalLocation: "Right frontal electrode (F4) alpha suppression relative to F3 (FAA: -0.301)",
+      signalPathologyDescription: "Electrophysiological recording exhibits right-frontal alpha power suppression (F4 alpha 6.8 µV² vs F3 alpha 9.2 µV²; FAA score -0.301) accompanied by minimal cranial EMG tone (1.9 µV²), indicating genuine cortical arousal rather than facial motor artifact.",
+      normalBaselineComparison: "Balanced bilateral frontal alpha power (FAA score between -0.05 and +0.05) in eyes-closed resting baseline."
     },
     thingsToPayAttentionTo: [
       {
-        sign: "Acute panic surge: pounding heart, dizziness, numb/tingling fingers, feeling like passing out",
-        clinicalContext: "Acute panic attack accompanied by hyperventilation and respiratory alkalosis.",
+        sign: "Acute medical warning signs: crushing chest pressure, fainting, or severe palpitations",
+        clinicalContext: "Severe physical warning signs require immediate medical emergency evaluation to rule out cardiac conditions.",
         urgency: "Immediate Medical Attention"
       },
       {
-        sign: "Persistent sense of impending doom, uncontrollable catastrophic worry lasting months",
-        clinicalContext: "Indicates continuous limbic amygdala firing without cortical prefrontal inhibition.",
+        sign: "Persistent uncontrollable worry, panic sensations, or dread lasting weeks",
+        clinicalContext: "Indicates sustained hyperarousal requiring clinical psychiatric or psychological evaluation.",
         urgency: "Clinical Follow-Up"
       },
       {
-        sign: "Chronic gastrointestinal distress (nausea, cramping, irritable bowel flare-ups)",
-        clinicalContext: "Direct consequence of the gut-brain axis shutting down digestive blood flow during fear states.",
+        sign: "Chronic gastrointestinal distress (nausea, cramping, irritable bowel symptoms)",
+        clinicalContext: "Somatic autonomic manifestations of sustained sympathetic activation.",
         urgency: "Clinical Follow-Up"
       },
       {
-        sign: "Avoiding social, work, or public environments out of fear of having an episode",
-        clinicalContext: "Development of agoraphobic avoidance behavior requiring specialized clinical therapy.",
+        sign: "Avoiding routine social, work, or public environments out of fear of episodes",
+        clinicalContext: "Development of avoidance patterns that benefit from evidence-based behavioral therapy.",
         urgency: "Clinical Follow-Up"
       }
     ],
     realTreatments: [
       {
-        treatmentName: "Cognitive Behavioral Therapy for Panic & Anxiety (CBT)",
+        treatmentName: "Cognitive Behavioral Therapy for Anxiety & Panic (CBT)",
         category: "Behavioral & Neuro-Regulation",
-        howItWorks: "Gold-standard structured psychotherapy using interoceptive exposure (gradually desensitizing harmless physical sensations) and cognitive restructuring of catastrophic misinterpretations.",
-        evidenceBase: "APA & NICE Clinical Practice Guidelines — Gold Standard First-Line Treatment"
+        howItWorks: "Evidence-based psychotherapy utilizing cognitive restructuring, interoceptive exposure, and behavioral coping mechanisms.",
+        evidenceBase: "APA & NICE Clinical Practice Guidelines — Gold Standard First-Line Care"
       },
       {
-        treatmentName: "Medical Evaluation for SSRI / SNRI Pharmacotherapy",
+        treatmentName: "Comprehensive Primary Care Clinical Health Evaluation",
         category: "First-Line Medical Therapy",
-        howItWorks: "Evaluation by a psychiatrist or primary care physician for evidence-based neurochemical stabilization (e.g. escitalopram, sertraline) to balance serotonin-norepinephrine pathways.",
-        evidenceBase: "APA Practice Guidelines for Major Anxiety & Panic Disorders"
+        howItWorks: "Comprehensive evaluation by a primary care physician or mental health professional to discuss evidence-based medical and behavioral management.",
+        evidenceBase: "Standard Clinical Practice Guidelines"
       },
       {
-        treatmentName: "Autonomic Vagus Nerve Stimulation (tVNS) & Somatic Grounding",
-        category: "Clinical Device / Appliance",
-        howItWorks: "Targeted transcutaneous auricular vagus nerve stimulation devices or diaphragmatic biofeedback to immediately activate the parasympathetic vagal brake and decrease heart rate.",
-        evidenceBase: "FDA-Cleared Modalities & Clinical Neurophysiology Standards"
+        treatmentName: "Diaphragmatic Breathing & Somatic Grounding Protocols",
+        category: "Behavioral & Neuro-Regulation",
+        howItWorks: "Slow diaphragmatic breathing with extended exhalations to stimulate parasympathetic vagal activity and decrease acute autonomic arousal.",
+        evidenceBase: "Clinical Physiological & Autonomic Regulation Protocols"
       },
       {
-        treatmentName: "12-Lead Ambulatory Holter ECG Monitoring",
+        treatmentName: "Resting Electrocardiogram (ECG) & Cardiovascular Review",
         category: "Medical Specialist Care",
-        howItWorks: "24-hour continuous cardiac rhythm recording to definitively distinguish benign sinus tachycardia from underlying supraventricular arrhythmias.",
-        evidenceBase: "AHA/ACC Clinical Diagnostic Protocol"
+        howItWorks: "Standard resting 12-lead ECG to verify normal cardiac rhythm and rule out primary arrhythmias.",
+        evidenceBase: "AHA/ACC Diagnostic Protocols"
       }
     ],
     causes: [
       {
-        title: "Fight-or-Flight Adrenaline Surge",
-        description: "The amygdala floods the bloodstream with adrenaline and noradrenaline, preparing the body to run or fight."
+        title: "Acute Sympathetic Arousal",
+        description: "Emotional or situational triggers stimulate autonomic fight-or-flight signaling."
       },
       {
-        title: "Psychological Trigger or Phobia Exposure",
-        description: "Encountering a stressful trigger, public speaking, enclosed spaces, or distressing memories."
+        title: "Evocative Psychological Stressors",
+        description: "Encountering evocative imagery, phobic triggers, or situational performance demands."
       },
       {
-        title: "Chronic Undiagnosed Generalized Anxiety",
-        description: "A baseline nervous system that has been sensitized over weeks or months of unmanaged life pressures."
+        title: "Sustained Baseline Sensitization",
+        description: "A baseline nervous system sensitized by cumulative life or work pressures."
       },
       {
-        title: "Hyperventilation & Respiratory Alkalosis",
-        description: "Quick chest breathing lowers blood carbon dioxide, triggering lightheadedness and worsening panic sensations."
+        title: "Hyperventilation & Respiratory Shifts",
+        description: "Rapid shallow breathing reduces arterial CO2, inducing sensations of dizziness or tingling."
       }
     ],
     symptoms: [
       {
         title: "Pounding or Racing Heart (Palpitations)",
-        description: "Feeling your heart thumping against your ribcage or fluttering irregularly in your chest."
+        description: "Feeling your heart thumping rapidly during acute emotional stress."
       },
       {
         title: "Shortness of Breath & Tight Throat",
-        description: "A sensation of not being able to draw a satisfying deep breath, or a lump in the throat (globus)."
+        description: "A sensation of restricted breathing or difficulty drawing a deep breath."
       },
       {
         title: "Trembling Hands, Chills, or Cold Sweats",
-        description: "Shaky fingers, sweaty palms, tingling sensations in lips or fingertips, and sudden temperature shifts."
+        description: "Peripheral vasoconstriction causing chilly extremities or trembling fingers."
       },
       {
-        title: "Sense of Impending Dread or Panic",
-        description: "A powerful urge to escape the room, accompanied by catastrophic thoughts or fear of losing control."
+        title: "Intense Dread or Arousal Surge",
+        description: "A sudden powerful surge of discomfort accompanied by racing thoughts."
       }
     ],
     requiredTests: [
       {
         testName: "Standard 12-Lead Electrocardiogram (ECG) & Blood Pressure Check",
         plainEnglishName: "Resting Heart Rhythm & Rate Exam",
-        whyNeeded: "Rule out heart arrhythmias (like SVT or atrial fibrillation) that can feel identical to a panic attack.",
+        whyNeeded: "Rule out heart rhythm conditions that can cause physical palpitations during anxiety.",
         urgency: "Priority"
       },
       {
-        testName: "Thyroid Function Panel (TSH, Free T3, Free T4)",
+        testName: "Thyroid Function Panel (TSH, Free T4)",
         plainEnglishName: "Thyroid Gland Activity Check",
-        whyNeeded: "An overactive thyroid gland produces excess hormones that mimic acute anxiety and cause resting tachycardia.",
+        whyNeeded: "Thyroid gland dysregulation can produce metabolic symptoms that mimic acute panic.",
         urgency: "Recommended"
       },
       {
-        testName: "Clinical Anxiety Diagnostic Interview (HAM-A & GAD-7)",
-        plainEnglishName: "Formal Anxiety Severity Assessment",
-        whyNeeded: "Administered by a licensed mental health clinician to differentiate between panic disorder, social phobia, or situational stress.",
+        testName: "Clinical Anxiety Diagnostic Interview (GAD-7 & HAM-A)",
+        plainEnglishName: "Clinical Anxiety Assessment",
+        whyNeeded: "Administered by a licensed healthcare clinician to differentiate situational stress from clinical anxiety disorders.",
         urgency: "Priority"
       },
       {
-        testName: "Comprehensive Metabolic Panel (CMP) & Fasting Blood Sugar",
+        testName: "Comprehensive Metabolic Panel (CMP) & Fasting Glucose",
         plainEnglishName: "Basic Blood Chemistry & Sugar Screen",
-        whyNeeded: "Rule out low blood sugar (hypoglycemia) or calcium/electrolyte imbalances that trigger sudden adrenaline rushes.",
+        whyNeeded: "Rule out blood sugar drops or electrolyte shifts that trigger adrenaline release.",
         urgency: "Routine"
       }
     ],
     actionableGuidance: {
       immediateSteps: [
-        "Use the '5-4-3-2-1 Grounding Method': Name 5 things you see, 4 you can touch, 3 you hear, 2 you smell, and 1 you taste to pull your brain out of the panic loop.",
+        "Use the '5-4-3-2-1 Grounding Method': Name 5 visible objects, 4 touchable textures, 3 audible sounds, 2 scents, and 1 taste to engage sensory focus.",
         "Perform 'Extended Exhale Breathing': Inhale gently for 4 seconds through your nose, then exhale slowly for 7 seconds through pursed lips.",
-        "Splash ice-cold water on your face or hold an ice cube; this stimulates the Vagus nerve to naturally slow your racing pulse.",
-        "Avoid caffeine, nicotine, and energy drinks completely until your nervous system rebalances."
+        "Splash cool water on your face to stimulate the mammalian dive reflex and reduce acute autonomic arousal.",
+        "Limit caffeine and energy drinks until your nervous system returns to calm equilibrium."
       ],
       doctorQuestions: [
-        "Is my heart completely healthy and free from rhythm abnormalities?",
-        "Could my symptoms be linked to my thyroid, blood sugar, or medications?",
-        "What evidence-based psychological therapies (like CBT or Exposure Therapy) do you recommend for my anxiety pattern?"
+        "Are my cardiovascular markers and resting rhythm within healthy clinical limits?",
+        "Could my symptoms be influenced by thyroid function, blood sugar, or medications?",
+        "What evidence-based psychological strategies (like CBT or exposure therapy) do you recommend for my situation?"
       ],
-      specialistToConsult: "Licensed Clinical Psychologist / Psychiatrist & Board-Certified Cardiologist"
+      specialistToConsult: "Primary Care Physician or Licensed Mental Health Professional"
     }
   },
 
@@ -496,37 +496,37 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalInfo> = {
   "default_relax_baseline": {
     conditionTitle: "Resting Relaxation Baseline (Healthy Synchronized Rhythm)",
     simpleSummary:
-      "This test shows a calm, peaceful brain at rest with eyes gently closed. The nervous system is operating in its 'rest-and-digest' parasympathetic mode, with no acute signs of emotional distress or cognitive strain.",
+      "This test shows a calm brain at rest with eyes gently closed. Cortical rhythms display organized alpha synchrony with no indicators of acute cognitive strain or emotional distress.",
     whatSignalMeans:
-      "The sensor at the back of the head (O1) displays a continuous, rhythmic, wavy 9–11 Hz rhythm known as the 'Alpha rhythm'. This rhythm appears when visual input is stopped and the brain is resting serenely.",
+      "The sensor at the back of the head (O1) displays a continuous, rhythmic 9–11 Hz rhythm known as the 'Alpha rhythm', reflecting healthy visual cortex sensory idling during eyes-closed rest.",
     whyNeedsAttention:
-      "Maintaining this calm, restorative neuro-cardiac state protects against degenerative cardiovascular stress, systemic inflammation, and burnout. It represents the healthy biological standard for daytime nervous system resilience.",
+      "Maintaining restorative baseline neural dynamics is vital for cognitive resilience, memory consolidation, and autonomic balance. It represents the healthy normative electrophysiological standard.",
     signalAnomaly: {
       status: "optimal",
       statusBadge: "Optimal Restorative Alpha Synchrony",
-      abnormalLocation: "Dominant Anterior & Posterior Alpha Synchrony (8–12 Hz) with High Vagal HRV",
-      signalPathologyDescription: "Continuous, smooth sinusoidal Alpha waves (8–12 Hz, 40–60 µV) are evenly distributed across leads with clean baseline stability, no epileptiform transients, and balanced parasympathetic vagal engagement.",
-      normalBaselineComparison: "Confirmed gold-standard benchmark for a healthy, relaxed, and resilient human nervous system."
+      abnormalLocation: "Dominant Posterior Alpha Synchrony (8–12 Hz) with Calm Cortical Dynamics",
+      signalPathologyDescription: "Continuous sinusoidal Alpha waves (8–12 Hz, 40–60 µV) are symmetrically distributed across occipital leads with clean baseline stability, absent cranial EMG artifact, and nominal slow-wave balance.",
+      normalBaselineComparison: "Confirmed benchmark for healthy, relaxed eyes-closed neural synchrony."
     },
     thingsToPayAttentionTo: [
       {
         sign: "Circadian Rhythm & Sleep-Wake Regularity",
-        clinicalContext: "Aim for 7–8 hours of consistent nightly sleep; regular sleep schedules protect natural daytime alpha synchrony and metabolic brain clearance.",
+        clinicalContext: "Aim for consistent nightly sleep; regular sleep schedules protect natural daytime alpha synchrony.",
         urgency: "Physician Recommended"
       },
       {
-        sign: "Active Cognitive Pacing & 5-Minute Micro-Rest",
-        clinicalContext: "Incorporate brief mental pauses every 60–90 minutes during intense computer work to prevent frontal high-beta power hyperarousal.",
+        sign: "Active Cognitive Pacing & Micro-Rest Breaks",
+        clinicalContext: "Incorporate brief mental pauses every 60–90 minutes during intense computer work to prevent high-beta hyperarousal.",
         urgency: "Cognitive Hygiene"
       },
       {
-        sign: "Resonant Breathing & Autonomic Conditioning",
-        clinicalContext: "Practice 5–10 minutes of slow diaphragmatic breathing (5–6 breaths per minute) to sustain high heart-rate variability (HRV) and strong vagal tone.",
+        sign: "Slow Diaphragmatic Breathing Practice",
+        clinicalContext: "Practice 5–10 minutes of slow diaphragmatic breathing (5–6 breaths per minute) to sustain healthy autonomic balance and alpha rhythm stability.",
         urgency: "Autonomic Health"
       },
       {
-        sign: "Hydration, Nutrition & Stimulant Moderation",
-        clinicalContext: "Maintain balanced hydration and moderate afternoon caffeine intake to prevent artificial sympathetic nervous system triggers.",
+        sign: "Hydration, Nutrition & Moderate Caffeine Intake",
+        clinicalContext: "Maintain balanced hydration and moderate afternoon caffeine intake to prevent artificial sympathetic arousal.",
         urgency: "Lifestyle Medicine"
       }
     ],

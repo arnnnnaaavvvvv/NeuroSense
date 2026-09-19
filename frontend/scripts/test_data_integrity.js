@@ -58,14 +58,37 @@ for (const [caseId, p] of Object.entries(data.predictions)) {
     );
   }
 
-  // 4. Single source of truth consistency
+  // 4. Check Single Source of Truth
+  const bandMap = Object.fromEntries(bands.map(b => [b.band, b.rel_power_percent]));
   for (const bc of p.baseline_comparison) {
-    const matchingBand = bands.find(b => b.band === bc.band);
     assert(
-      matchingBand && matchingBand.rel_power_percent === bc.current_session_rel_percent,
-      `[${caseId}] Band ${bc.band}: baseline_comparison current must equal numerical_band_powers`
+      bc.current_session_rel_percent === bandMap[bc.band],
+      `[${caseId}] Band ${bc.band}: baseline current (${bc.current_session_rel_percent}) must match numerical (${bandMap[bc.band]})`
     );
   }
 }
 
-console.log(`✅ All ${passed}/${total} data-integrity assertions passed!`);
+// 5. Test Trend Sequence Logic & Disclosures
+const trendLogicPath = path.join(__dirname, '..', 'lib', 'trend-logic.ts');
+const trendLogicContent = fs.readFileSync(trendLogicPath, 'utf8');
+
+// Assert no forbidden time fields
+const forbiddenFields = ['time_to_event', 'countdown', 'time_remaining', 'predicted_minutes', 'time_estimate'];
+for (const field of forbiddenFields) {
+  assert(!trendLogicContent.includes(`${field}:`), `Forbidden time field ${field} found in trend-logic.ts`);
+}
+
+// Assert no forbidden phrases
+const forbiddenPhrases = ['panic', 'before it happens', 'in 5 minutes', 'in 10 minutes', 'detects symptoms of anxiety'];
+for (const phrase of forbiddenPhrases) {
+  assert(!trendLogicContent.toLowerCase().includes(phrase), `Forbidden phrase '${phrase}' found in trend-logic.ts`);
+}
+
+// Check TrendTrajectoryPanel.tsx for language guardrails
+const panelPath = path.join(__dirname, '..', 'components', 'TrendTrajectoryPanel.tsx');
+const panelContent = fs.readFileSync(panelPath, 'utf8');
+for (const phrase of forbiddenPhrases) {
+  assert(!panelContent.toLowerCase().includes(phrase), `Forbidden phrase '${phrase}' found in TrendTrajectoryPanel.tsx`);
+}
+
+console.log(`✅ All ${passed}/${total} data-integrity and trend-logic assertions passed!`);

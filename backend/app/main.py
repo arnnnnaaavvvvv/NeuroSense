@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from app.core.config import settings
 from app.db.database import init_db, SessionLocal
 from app.db.models import Case
-from app.routers import cases, analyze, precautions, export, demo
+from app.routers import cases, analyze, precautions, export, demo, trend
 from app.ml.model import load_cnn_model
 from app.rag.embed_guidelines import seed_guidelines
 
@@ -73,12 +73,14 @@ app.include_router(analyze.router)
 app.include_router(precautions.router)
 app.include_router(export.router)
 app.include_router(demo.router)
+app.include_router(trend.router)
 
 app.include_router(cases.router, prefix=settings.API_V1_STR)
 app.include_router(analyze.router, prefix=settings.API_V1_STR)
 app.include_router(precautions.router, prefix=settings.API_V1_STR)
 app.include_router(export.router, prefix=settings.API_V1_STR)
 app.include_router(demo.router, prefix=settings.API_V1_STR)
+app.include_router(trend.router, prefix=settings.API_V1_STR)
 
 
 @app.get("/health", tags=["Health"])

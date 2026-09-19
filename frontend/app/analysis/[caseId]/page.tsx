@@ -88,14 +88,21 @@ export default function CaseAnalysisPage() {
       const deltaSeconds = (timestamp - lastTickTimeRef.current) / 1000.0;
       lastTickTimeRef.current = timestamp;
 
+      let completed = false;
       setCurrentTime((prev) => {
         const nextTime = prev + deltaSeconds * playbackSpeed;
         if (nextTime >= duration) {
-          setIsSignalCompleted(true);
-          return nextTime % duration; // Seamless continuous live telemetry stream
+          completed = true;
+          return duration;
         }
         return nextTime;
       });
+
+      if (completed) {
+        setIsPlaying(false);
+        setIsSignalCompleted(true);
+        return;
+      }
 
       animationFrameRef.current = requestAnimationFrame(loop);
     };

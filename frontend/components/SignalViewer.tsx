@@ -462,23 +462,7 @@ export default function SignalViewer({
               className="w-full h-full block"
             />
 
-            <div className="absolute top-2.5 left-3 text-[11px] font-mono text-slate-200 pointer-events-none bg-slate-950/90 px-2.5 py-1 rounded-lg border border-slate-700/80 flex items-center gap-2 shadow-lg">
-              <div className="flex items-center gap-1.5">
-                <span className={`w-2 h-2 rounded-full animate-ping ${viewerTheme.liveDotColor}`} />
-                <span className={`text-[10px] font-bold uppercase tracking-wider ${viewerTheme.liveBadgeColor}`}>
-                  LIVE TELEMETRY
-                </span>
-              </div>
-              <span className="text-slate-500">&bull;</span>
-              <span>
-                Active Channel: <strong className={viewerTheme.voltageColor}>{selectedLead}</strong>
-              </span>
-              <span className="text-slate-500">&bull;</span>
-              <span className="font-bold text-white px-1.5 py-0.2 rounded bg-black/80 border border-white/10 font-mono tracking-wider">
-                {liveMicrovolt >= 0 ? `+${liveMicrovolt.toFixed(1)}` : liveMicrovolt.toFixed(1)} µV
-              </span>
-              <span className="text-[10px] text-slate-500 font-mono">(&plusmn;100 µV)</span>
-            </div>
+            {/* Waveform voltage bounds */}
             <div className="absolute bottom-2.5 left-3 text-[10px] font-mono text-slate-400 pointer-events-none bg-slate-950/80 px-1.5 py-0.5 rounded">
               -100 µV
             </div>

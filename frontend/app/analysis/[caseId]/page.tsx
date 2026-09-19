@@ -300,6 +300,7 @@ export default function CaseAnalysisPage() {
           <ResultCard
             classification={analysis.classification}
             keyMarkers={analysis.key_markers}
+            caseId={caseId}
           />
 
           {/* Patient Health Guidance: Causes, Symptoms, Required Tests & Doctor Questions */}

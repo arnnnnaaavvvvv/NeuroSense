@@ -18,16 +18,19 @@ import {
   TrendingUp,
   FileCheck,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Sparkles
 } from "lucide-react";
 import { ClassificationSummary } from "../lib/types";
+import PlainLanguageSummary from "./PlainLanguageSummary";
 
 interface ResultCardProps {
   classification: ClassificationSummary;
   keyMarkers: string[];
+  caseId?: string;
 }
 
-export default function ResultCard({ classification, keyMarkers }: ResultCardProps) {
+export default function ResultCard({ classification, keyMarkers, caseId = "" }: ResultCardProps) {
   const { 
     risk_stage, 
     confidence, 
@@ -46,6 +49,7 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
   } = classification;
 
   const [showValidationDetails, setShowValidationDetails] = useState(false);
+  const [viewMode, setViewMode] = useState<"telemetry" | "plain_english">("telemetry");
 
   // 3-State badge styling
   let stateBadgeBg = "bg-emerald-950/60 border-emerald-500/40 text-emerald-300";
@@ -78,7 +82,7 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
 
   return (
     <div className="bg-[#090d16] text-white rounded-2xl p-5 sm:p-6 border border-slate-800 space-y-6 shadow-xl">
-      {/* 1. Header Bar: Terminology Downgraded from "Clinical Verdict" */}
+      {/* 1. Header Bar with View Mode Switcher */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
         <div className="flex items-center gap-2">
           <Cpu className="w-4 h-4 text-cyan-400 shrink-0" />
@@ -86,16 +90,73 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
             AI-Assisted EEG State Assessment
           </h3>
         </div>
-        <div className="flex items-center gap-2">
-          <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border uppercase tracking-wider flex items-center gap-1.5 ${stateBadgeBg}`}>
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Switcher Toggle */}
+          <div className="flex items-center bg-slate-900 p-1 rounded-xl border border-slate-800">
+            <button
+              onClick={() => setViewMode("telemetry")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                viewMode === "telemetry"
+                  ? "bg-slate-800 text-white shadow-xs"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <Cpu className="w-3.5 h-3.5" />
+              <span>AI Telemetry</span>
+            </button>
+            <button
+              onClick={() => setViewMode("plain_english")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                viewMode === "plain_english"
+                  ? "bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20"
+                  : "text-emerald-400 hover:text-emerald-300 hover:bg-slate-800/60"
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>✨ Plain-Language Summary</span>
+            </button>
+          </div>
+
+          <span className={`text-[11px] font-bold px-2.5 py-1.5 rounded-full border uppercase tracking-wider flex items-center gap-1.5 ${stateBadgeBg}`}>
             {stateIcon}
             <span>{stateBadgeLabel}</span>
           </span>
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800">
+          <span className="text-[10px] font-mono px-2 py-1 rounded bg-slate-900 text-slate-400 border border-slate-800">
             Inference Only
           </span>
         </div>
       </div>
+
+      {/* PLAIN-LANGUAGE PATIENT SUMMARY VIEW */}
+      {viewMode === "plain_english" && (
+        <PlainLanguageSummary
+          classification={classification}
+          keyMarkers={keyMarkers}
+          caseId={caseId}
+          onSwitchToTelemetry={() => setViewMode("telemetry")}
+        />
+      )}
+
+      {/* TECHNICAL AI TELEMETRY VIEW */}
+      {viewMode === "telemetry" && (
+        <>
+          {/* Quick Access Plain-Language Callout Banner */}
+          <div className="p-3.5 rounded-xl bg-gradient-to-r from-emerald-950/30 via-slate-900 to-emerald-950/20 border border-emerald-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 text-xs text-slate-300">
+              <Sparkles className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span>
+                Looking for a simple medical explanation?{" "}
+                <strong className="text-white">Learn what the signal detected, what caused it, and what to do.</strong>
+              </span>
+            </div>
+            <button
+              onClick={() => setViewMode("plain_english")}
+              className="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-all shrink-0 shadow-sm flex items-center gap-1"
+            >
+              <span>Explain in Plain English</span>
+              <span aria-hidden="true">&rarr;</span>
+            </button>
+          </div>
 
       {/* 2. Primary Assessment Card: Title & Cognitive vs Anxiety Distinction */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
@@ -440,6 +501,8 @@ export default function ResultCard({ classification, keyMarkers }: ResultCardPro
             Cohort Record: {session_provenance.cohort_type}
           </div>
         </div>
+      )}
+        </>
       )}
     </div>
   );

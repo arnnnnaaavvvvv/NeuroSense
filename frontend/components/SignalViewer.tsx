@@ -33,6 +33,7 @@ import {
   type ElectrodeChannelDetail,
   type LeadPlainDetail
 } from "../lib/montage-registry";
+import HumanBrainTopography from "./HumanBrainTopography";
 
 interface SignalViewerProps {
   waveformData: RawWaveformData | null;
@@ -646,129 +647,24 @@ export default function SignalViewer({
         <div className="lg:col-span-5 bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm text-slate-900 flex flex-col justify-between">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <div className="flex items-center gap-2">
-              <Compass className="w-4 h-4 text-emerald-600" />
+              <Brain className="w-4 h-4 text-emerald-600" />
               <h4 className="font-bold text-xs uppercase tracking-wider text-slate-900">
-                10-20 Scalp Topography &amp; Active Lead
+                10-20 Cortical Scalp Topography
               </h4>
             </div>
             <span className="text-[10px] font-mono text-slate-400 uppercase">
-              Standard 10-20 System
+              Axial Superior View
             </span>
           </div>
 
-          <div className="relative flex items-center justify-center py-2">
-            {/* SVG 10-20 Head Map */}
-            <svg viewBox="0 0 200 200" className="w-48 h-48 drop-shadow-xs">
-              {/* Head Circle */}
-              <circle
-                cx="100"
-                cy="100"
-                r="76"
-                fill="#0f172a"
-                stroke="#334155"
-                strokeWidth="2"
-              />
-              {/* Nose / Nasion (Top) */}
-              <polygon
-                points="94,24 100,10 106,24"
-                fill="#0f172a"
-                stroke="#334155"
-                strokeWidth="2"
-              />
-              {/* Left Ear */}
-              <path
-                d="M 24,88 C 15,92 15,108 24,112"
-                fill="none"
-                stroke="#334155"
-                strokeWidth="2"
-              />
-              {/* Right Ear */}
-              <path
-                d="M 176,88 C 185,92 185,108 176,112"
-                fill="none"
-                stroke="#334155"
-                strokeWidth="2"
-              />
-              {/* Sagittal and coronal midline axes */}
-              <line
-                x1="100"
-                y1="24"
-                x2="100"
-                y2="176"
-                stroke="#1e293b"
-                strokeDasharray="2,3"
-              />
-              <line
-                x1="24"
-                y1="100"
-                x2="176"
-                y2="100"
-                stroke="#1e293b"
-                strokeDasharray="2,3"
-              />
-
-              {/* Electrode Nodes */}
-              {Object.entries(ELECTRODE_POSITIONS).map(([leadKey, pos]) => {
-                const isAvailable = availableChannels.includes(leadKey);
-                const isSelected = selectedLead === leadKey;
-
-                if (!isAvailable && !["Fp1", "F3", "Fz", "F4", "Cz", "Pz", "O1"].includes(leadKey)) {
-                  return null;
-                }
-
-                return (
-                  <g
-                    key={leadKey}
-                    className={isAvailable ? "cursor-pointer" : "cursor-not-allowed opacity-40"}
-                    onClick={() => isAvailable && handleSelectLead(leadKey)}
-                  >
-                    {/* Pulsing selection ring */}
-                    {isSelected && (
-                      <circle
-                        cx={pos.x * 2}
-                        cy={pos.y * 2}
-                        r="14"
-                        fill="#10b981"
-                        fillOpacity="0.25"
-                        stroke="#10b981"
-                        strokeWidth="1.5"
-                        className="animate-pulse"
-                      />
-                    )}
-                    {/* Node circle */}
-                    <circle
-                      cx={pos.x * 2}
-                      cy={pos.y * 2}
-                      r={isSelected ? "9" : "7"}
-                      fill={isSelected ? "#10b981" : isAvailable ? "#1e293b" : "#090d16"}
-                      stroke={isSelected ? "#050811" : isAvailable ? "#64748b" : "#334155"}
-                      strokeWidth={isSelected ? "2" : "1.2"}
-                    />
-                    {/* Node label */}
-                    <text
-                      x={pos.x * 2}
-                      y={pos.y * 2 + (isSelected ? 3.5 : 3)}
-                      textAnchor="middle"
-                      fill={isSelected ? "#050811" : isAvailable ? "#f1f5f9" : "#64748b"}
-                      fontSize={isSelected ? "8" : "7"}
-                      fontWeight="bold"
-                      fontFamily="monospace"
-                    >
-                      {leadKey.length > 3 ? leadKey.slice(0, 3) : leadKey}
-                    </text>
-                  </g>
-                );
-              })}
-            </svg>
-          </div>
-
-          <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
-            <span className="font-medium">
-              Click any node on the scalp to switch live channel
-            </span>
-            <span className="font-mono text-emerald-700 font-bold">
-              Active: {selectedLead}
-            </span>
+          <div className="py-2 flex items-center justify-center flex-1">
+            <HumanBrainTopography
+              selectedLead={selectedLead}
+              availableChannels={availableChannels}
+              onSelectLead={handleSelectLead}
+              themeColor={viewerTheme.phosphor}
+              themeGlow={viewerTheme.glow}
+            />
           </div>
         </div>
 

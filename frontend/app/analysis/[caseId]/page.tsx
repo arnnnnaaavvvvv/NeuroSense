@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, ArrowRight, AlertCircle, FileDown, Activity, Sparkles, RotateCcw, Layers } from "lucide-react";
+import { ArrowLeft, ArrowRight, AlertCircle, FileDown, Activity, Sparkles, RotateCcw } from "lucide-react";
 
 import { fetchAnalysis, fetchPrecautions, fetchWaveformData } from "../../../lib/api";
 import { AnalysisResponse, PrecautionResponse, RawWaveformData } from "../../../lib/types";
@@ -26,7 +26,6 @@ export default function CaseAnalysisPage() {
   const [loadingPrecautions, setLoadingPrecautions] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
-  const [showTrendDemo, setShowTrendDemo] = useState(true);
 
   // Signal Playback & Progressive Completion Reveal State
   const [isPlaying, setIsPlaying] = useState(false);
@@ -212,26 +211,6 @@ export default function CaseAnalysisPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => {
-              setShowTrendDemo((prev) => !prev);
-              if (!showTrendDemo) {
-                setTimeout(() => {
-                  trendDemoRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-                }, 100);
-              }
-            }}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all border ${
-              showTrendDemo 
-                ? "bg-cyan-950 text-cyan-300 border-cyan-800" 
-                : "bg-white hover:bg-zinc-100 text-zinc-800 border-zinc-300 shadow-xs"
-            }`}
-            title="Demonstration of early-warning logic (demonstration) across an ordered sequence of EEG recordings"
-          >
-            <Layers className="w-3.5 h-3.5 text-cyan-500" />
-            <span>{showTrendDemo ? "Hide Trend Demo" : "View Trend Demonstration"}</span>
-          </button>
-
           {isSignalCompleted ? (
             <button
               onClick={() => setIsExportModalOpen(true)}
@@ -323,64 +302,36 @@ export default function CaseAnalysisPage() {
         </div>
       )}
 
-      {/* REST OF THE DETAILS (Revealed after signal stream finishes, or when trend demo requested) */}
-      {(isSignalCompleted || showTrendDemo) && (
+      {/* REST OF THE DETAILS: Only revealed after signal stream finishes */}
+      {isSignalCompleted && (
         <div ref={resultsRef} className="space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700">
-          {/* Pretrained CNN Classification & Key Signal Markers Card (Single-Window) */}
-          {isSignalCompleted && (
-            <ResultCard
-              classification={analysis.classification}
-              keyMarkers={analysis.key_markers}
-              caseId={caseId}
+          {/* Single-Window CNN Result */}
+          <ResultCard
+            classification={analysis.classification}
+            keyMarkers={analysis.key_markers}
+            caseId={caseId}
+          />
+
+          {/* Multi-Window Trend Detection — shown after signal ends */}
+          <div ref={trendDemoRef}>
+            <TrendTrajectoryPanel
+              initialSequenceId={
+                caseId.startsWith("dasps")
+                  ? "dasps_s01_escalation"
+                  : caseId.startsWith("sam40")
+                    ? "sam40_sub01_escalation"
+                    : "cross_cohort_progression"
+              }
             />
-          )}
+          </div>
 
-          {/* 5. MULTI-WINDOW TREND DETECTION DEMONSTRATION (Clearly separated from single-window ResultCard) */}
-          {showTrendDemo && (
-            <div ref={trendDemoRef} className="pt-2 border-t-2 border-dashed border-zinc-200/80 space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-zinc-900 text-zinc-100 p-4 rounded-xl border border-zinc-800">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-cyan-950 text-cyan-300 border border-cyan-800">
-                      Multi-Window Sequence Layer
-                    </span>
-                    <h3 className="font-bold text-sm text-zinc-100">
-                      Demonstration of Early-Warning Logic (Demonstration) Across Sequenced Windows
-                    </h3>
-                  </div>
-                  <p className="text-xs text-zinc-400">
-                    Structurally separate from the single-window reading above: computes rate-of-change across an ordered sequence of real EEG recordings.
-                  </p>
-                </div>
-                <button
-                  onClick={() => setShowTrendDemo(false)}
-                  className="px-3 py-1.5 rounded-lg text-xs font-mono text-zinc-400 hover:text-zinc-200 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition-all shrink-0 self-start sm:self-center"
-                >
-                  Hide Trend Panel
-                </button>
-              </div>
-
-              <TrendTrajectoryPanel
-                initialSequenceId={
-                  caseId.startsWith("dasps")
-                    ? "dasps_s01_escalation"
-                    : caseId.startsWith("sam40")
-                      ? "sam40_sub01_escalation"
-                      : "cross_cohort_progression"
-                }
-              />
-            </div>
-          )}
-
-          {/* Patient Health Guidance: Causes, Symptoms, Required Tests & Doctor Questions */}
-          {isSignalCompleted && (
-            <PatientGuidanceSection
-              caseId={caseId}
-              domain={analysis.domain}
-              stageOrRisk={analysis.classification.risk_stage}
-              patientAnonId={analysis.patient_anon_id}
-            />
-          )}
+          {/* Patient Health Guidance */}
+          <PatientGuidanceSection
+            caseId={caseId}
+            domain={analysis.domain}
+            stageOrRisk={analysis.classification.risk_stage}
+            patientAnonId={analysis.patient_anon_id}
+          />
         </div>
       )}
 

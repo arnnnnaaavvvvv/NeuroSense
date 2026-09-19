@@ -91,9 +91,8 @@ export default function CaseAnalysisPage() {
       setCurrentTime((prev) => {
         const nextTime = prev + deltaSeconds * playbackSpeed;
         if (nextTime >= duration) {
-          setIsPlaying(false);
           setIsSignalCompleted(true);
-          return duration;
+          return nextTime % duration; // Seamless continuous live telemetry stream
         }
         return nextTime;
       });
@@ -220,16 +219,6 @@ export default function CaseAnalysisPage() {
         </div>
       </div>
 
-      {/* Clinical Context Callout */}
-      {analysis.description && (
-        <div className="bg-zinc-950 text-white p-4 rounded-2xl border border-zinc-800 text-xs text-zinc-300 leading-relaxed shadow-xs flex items-start gap-3">
-          <Activity className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-          <div>
-            <strong className="text-white font-semibold">Clinical Dataset Context: </strong>
-            <span>{analysis.description}</span>
-          </div>
-        </div>
-      )}
 
       {/* 1. Oscilloscope Graph with Integrated Playback Option Directly Below & Lead Explanations */}
       <SignalViewer

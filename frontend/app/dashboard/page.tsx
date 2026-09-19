@@ -25,6 +25,138 @@ import { fetchCases } from "../../lib/api";
 import { CaseItem, CategoryFilter } from "../../lib/types";
 import { getErrorMessage } from "../../lib/errors";
 import ScrollReveal from "../../components/ScrollReveal";
+import CardLiveSignal from "../../components/CardLiveSignal";
+
+// Helper to determine risk-tier styling, fonts, and visual accents
+function getCardRiskTheme(c: CaseItem) {
+  const rLower = (c.risk_stage || "").toLowerCase();
+  const idLower = (c.id || "").toLowerCase();
+  const predLower = (c.predicted_class || "").toLowerCase();
+
+  // 1. Baseline / Low Risk (Resting Control)
+  if (
+    predLower.includes("baseline") ||
+    c.three_state_class === "baseline" ||
+    rLower.includes("baseline") ||
+    rLower.includes("relax")
+  ) {
+    return {
+      tier: "LOW RISK",
+      severityLabel: "Severity: Nominal (L1)",
+      categorySubtitle: "Calm Neural Baseline",
+      icon: CheckCircle2,
+      iconColor: "text-emerald-400",
+      cardContainer:
+        "group relative bg-gradient-to-b from-[#091a14]/95 via-[#0b0e14] to-[#07090d] text-white rounded-2xl border border-emerald-500/35 hover:border-emerald-400/80 p-6 flex flex-col justify-between transition-all duration-300 shadow-[0_4px_30px_rgba(16,185,129,0.08)] hover:shadow-[0_12px_44px_rgba(16,185,129,0.22)] h-full overflow-hidden",
+      topHairline: "bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-300",
+      dotStyle: "bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)]",
+      caseIdStyle: "font-mono text-xs font-semibold text-emerald-200/90 group-hover:text-emerald-300 transition-colors tracking-wide",
+      leadBadgeStyle: "font-mono text-[11px] text-emerald-300/90 bg-emerald-950/70 border border-emerald-800/60 px-2 py-0.5 rounded whitespace-nowrap shrink-0",
+      stageBadgeStyle: "bg-emerald-500/15 text-emerald-300 border-emerald-500/40 ring-1 ring-emerald-500/25 font-sans font-semibold text-xs",
+      tierBadgeStyle: "font-mono text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full bg-emerald-950/90 text-emerald-300 border border-emerald-700/60 shadow-[0_0_8px_rgba(16,185,129,0.2)]",
+      datasetBadgeStyle: "text-[10px] font-mono text-emerald-400/80 uppercase tracking-wider bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/60",
+      titleStyle: "font-display font-semibold text-base sm:text-lg text-zinc-100 tracking-tight leading-snug group-hover:text-emerald-200 transition-colors",
+      categorySubtitleStyle: "text-[10px] font-mono font-medium uppercase tracking-wider text-emerald-400/80 flex flex-wrap items-center gap-x-2 gap-y-0.5",
+      descriptionStyle: "text-xs text-zinc-300/85 leading-relaxed font-sans line-clamp-3 group-hover:text-zinc-200 transition-colors",
+      biomarkersLabelStyle: "text-[10px] font-mono uppercase font-bold tracking-widest text-emerald-400/90 flex items-center gap-1.5",
+      biomarkerChipStyle: "inline-block text-[11px] font-mono font-medium bg-emerald-950/50 text-emerald-200/95 px-2.5 py-1 rounded-md border border-emerald-800/60 hover:border-emerald-500/80 transition-colors",
+      strokeColor: "#10b981",
+      glowColor: "#34d399",
+      footerTextStyle: "text-[11px] font-mono text-emerald-300/70",
+      buttonStyle: "inline-flex items-center gap-2 text-xs font-sans font-bold px-4 py-2 rounded-xl bg-emerald-500 text-zinc-950 hover:bg-emerald-400 transition-all shadow-[0_0_16px_rgba(16,185,129,0.35)] hover:shadow-[0_0_24px_rgba(16,185,129,0.6)] group/btn",
+    };
+  }
+
+  // 2. High State Anxiety / Panic (DASPS)
+  if (rLower.includes("anxiety") || idLower.includes("anxiety") || idLower.includes("dasps")) {
+    return {
+      tier: "HIGH RISK",
+      severityLabel: "Severity: High (L3)",
+      categorySubtitle: "State Anxiety Paroxysm",
+      icon: HeartPulse,
+      iconColor: "text-purple-400",
+      cardContainer:
+        "group relative bg-gradient-to-b from-[#1a082b]/95 via-[#0c0916] to-[#07090d] text-white rounded-2xl border border-purple-500/40 hover:border-purple-400/90 p-6 flex flex-col justify-between transition-all duration-300 shadow-[0_4px_30px_rgba(168,85,247,0.12)] hover:shadow-[0_12px_44px_rgba(168,85,247,0.28)] h-full overflow-hidden",
+      topHairline: "bg-gradient-to-r from-purple-500 via-fuchsia-500 to-violet-400",
+      dotStyle: "bg-purple-400 shadow-[0_0_10px_rgba(168,85,247,0.9)] animate-pulse",
+      caseIdStyle: "font-mono text-xs font-bold text-purple-200/95 group-hover:text-purple-300 transition-colors tracking-wide",
+      leadBadgeStyle: "font-mono text-[11px] text-purple-300/90 bg-purple-950/70 border border-purple-800/60 px-2 py-0.5 rounded whitespace-nowrap shrink-0",
+      stageBadgeStyle: "bg-purple-500/15 text-purple-300 border-purple-500/40 ring-1 ring-purple-500/25 font-sans font-semibold text-xs",
+      tierBadgeStyle: "font-mono text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full bg-purple-950/90 text-purple-300 border border-purple-700/60 shadow-[0_0_8px_rgba(168,85,247,0.25)]",
+      datasetBadgeStyle: "text-[10px] font-mono text-purple-400/80 uppercase tracking-wider bg-purple-950/80 px-2 py-0.5 rounded border border-purple-800/60",
+      titleStyle: "font-display font-extrabold text-base sm:text-lg text-white tracking-tight leading-snug group-hover:text-purple-200 transition-colors",
+      categorySubtitleStyle: "text-[10px] font-mono font-semibold uppercase tracking-wider text-purple-400/90 flex flex-wrap items-center gap-x-2 gap-y-0.5",
+      descriptionStyle: "text-xs text-zinc-300/85 leading-relaxed font-sans line-clamp-3 group-hover:text-zinc-200 transition-colors",
+      biomarkersLabelStyle: "text-[10px] font-mono uppercase font-bold tracking-widest text-purple-400/90 flex items-center gap-1.5",
+      biomarkerChipStyle: "inline-block text-[11px] font-mono font-medium bg-purple-950/50 text-purple-200/95 px-2.5 py-1 rounded-md border border-purple-800/60 hover:border-purple-500/80 transition-colors",
+      strokeColor: "#c084fc",
+      glowColor: "#e879f9",
+      footerTextStyle: "text-[11px] font-mono text-purple-300/70",
+      buttonStyle: "inline-flex items-center gap-2 text-xs font-sans font-bold px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white transition-all shadow-[0_0_16px_rgba(168,85,247,0.35)] hover:shadow-[0_0_24px_rgba(168,85,247,0.6)] group/btn",
+    };
+  }
+
+  // 3. Cognitive Conflict / Executive Load (Stroop)
+  if (
+    rLower.includes("conflict") ||
+    rLower.includes("stroop") ||
+    idLower.includes("stroop") ||
+    c.three_state_class === "rising_arousal"
+  ) {
+    return {
+      tier: "MODERATE RISK",
+      severityLabel: "Severity: Moderate (L2)",
+      categorySubtitle: "Executive Cognitive Conflict",
+      icon: Zap,
+      iconColor: "text-amber-400",
+      cardContainer:
+        "group relative bg-gradient-to-b from-[#1f1406]/95 via-[#0f0e10] to-[#07090d] text-white rounded-2xl border border-amber-500/40 hover:border-amber-400/90 p-6 flex flex-col justify-between transition-all duration-300 shadow-[0_4px_30px_rgba(245,158,11,0.12)] hover:shadow-[0_12px_44px_rgba(245,158,11,0.28)] h-full overflow-hidden",
+      topHairline: "bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-400",
+      dotStyle: "bg-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.9)] animate-pulse",
+      caseIdStyle: "font-mono text-xs font-bold text-amber-200/95 group-hover:text-amber-300 transition-colors tracking-wide",
+      leadBadgeStyle: "font-mono text-[11px] text-amber-300/90 bg-amber-950/70 border border-amber-800/60 px-2 py-0.5 rounded whitespace-nowrap shrink-0",
+      stageBadgeStyle: "bg-amber-500/15 text-amber-300 border-amber-500/40 ring-1 ring-amber-500/25 font-sans font-semibold text-xs",
+      tierBadgeStyle: "font-mono text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full bg-amber-950/90 text-amber-300 border border-amber-700/60 shadow-[0_0_8px_rgba(245,158,11,0.25)]",
+      datasetBadgeStyle: "text-[10px] font-mono text-amber-400/80 uppercase tracking-wider bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800/60",
+      titleStyle: "font-display font-bold text-base sm:text-lg text-white tracking-tight leading-snug group-hover:text-amber-200 transition-colors",
+      categorySubtitleStyle: "text-[10px] font-mono font-semibold uppercase tracking-wider text-amber-400/90 flex flex-wrap items-center gap-x-2 gap-y-0.5",
+      descriptionStyle: "text-xs text-zinc-300/85 leading-relaxed font-sans line-clamp-3 group-hover:text-zinc-200 transition-colors",
+      biomarkersLabelStyle: "text-[10px] font-mono uppercase font-bold tracking-widest text-amber-400/90 flex items-center gap-1.5",
+      biomarkerChipStyle: "inline-block text-[11px] font-mono font-medium bg-amber-950/50 text-amber-200/95 px-2.5 py-1 rounded-md border border-amber-800/60 hover:border-amber-500/80 transition-colors",
+      strokeColor: "#f59e0b",
+      glowColor: "#fbbf24",
+      footerTextStyle: "text-[11px] font-mono text-amber-300/70",
+      buttonStyle: "inline-flex items-center gap-2 text-xs font-sans font-bold px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 transition-all shadow-[0_0_16px_rgba(245,158,11,0.35)] hover:shadow-[0_0_24px_rgba(245,158,11,0.6)] group/btn",
+    };
+  }
+
+  // 4. Acute Cognitive Stress / Workload (SAM-40 Math Stress)
+  return {
+    tier: "HIGH RISK",
+    severityLabel: "Severity: High (L3)",
+    categorySubtitle: "Acute Cognitive Strain",
+    icon: Flame,
+    iconColor: "text-rose-400",
+    cardContainer:
+      "group relative bg-gradient-to-b from-[#200814]/95 via-[#0e0a12] to-[#07090d] text-white rounded-2xl border border-rose-500/40 hover:border-rose-400/90 p-6 flex flex-col justify-between transition-all duration-300 shadow-[0_4px_30px_rgba(244,63,94,0.12)] hover:shadow-[0_12px_44px_rgba(244,63,94,0.28)] h-full overflow-hidden",
+    topHairline: "bg-gradient-to-r from-rose-500 via-red-500 to-rose-400",
+    dotStyle: "bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.9)] animate-pulse",
+    caseIdStyle: "font-mono text-xs font-bold text-rose-200/95 group-hover:text-rose-300 transition-colors tracking-wide",
+    leadBadgeStyle: "font-mono text-[11px] text-rose-300/90 bg-rose-950/70 border border-rose-800/60 px-2 py-0.5 rounded whitespace-nowrap shrink-0",
+    stageBadgeStyle: "bg-rose-500/15 text-rose-300 border-rose-500/40 ring-1 ring-rose-500/25 font-sans font-semibold text-xs",
+    tierBadgeStyle: "font-mono text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full bg-rose-950/90 text-rose-300 border border-rose-700/60 shadow-[0_0_8px_rgba(244,63,94,0.25)]",
+    datasetBadgeStyle: "text-[10px] font-mono text-rose-400/80 uppercase tracking-wider bg-rose-950/80 px-2 py-0.5 rounded border border-rose-800/60",
+    titleStyle: "font-display font-extrabold text-base sm:text-lg text-white tracking-tight leading-snug group-hover:text-rose-200 transition-colors",
+    categorySubtitleStyle: "text-[10px] font-mono font-semibold uppercase tracking-wider text-rose-400/90 flex flex-wrap items-center gap-x-2 gap-y-0.5",
+    descriptionStyle: "text-xs text-zinc-300/85 leading-relaxed font-sans line-clamp-3 group-hover:text-zinc-200 transition-colors",
+    biomarkersLabelStyle: "text-[10px] font-mono uppercase font-bold tracking-widest text-rose-400/90 flex items-center gap-1.5",
+    biomarkerChipStyle: "inline-block text-[11px] font-mono font-medium bg-rose-950/50 text-rose-200/95 px-2.5 py-1 rounded-md border border-rose-800/60 hover:border-rose-500/80 transition-colors",
+    strokeColor: "#f43f5e",
+    glowColor: "#fb7185",
+    footerTextStyle: "text-[11px] font-mono text-rose-300/70",
+    buttonStyle: "inline-flex items-center gap-2 text-xs font-sans font-bold px-4 py-2 rounded-xl bg-rose-500 hover:bg-rose-400 text-white transition-all shadow-[0_0_16px_rgba(244,63,94,0.35)] hover:shadow-[0_0_24px_rgba(244,63,94,0.6)] group/btn",
+  };
+}
 
 function DashboardContent() {
   const searchParams = useSearchParams();
@@ -258,75 +390,84 @@ function DashboardContent() {
       {!loading && !error && finalCases.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {finalCases.map((c, i) => {
-            const rLower = (c.risk_stage || "").toLowerCase();
-            let badgeStyle = "bg-emerald-950/50 text-emerald-200 border-emerald-500/40 ring-1 ring-emerald-500/20";
-            let iconColor = "text-emerald-400";
-            let StageIcon = CheckCircle2;
-
-            if (rLower.includes("stress") && !rLower.includes("conflict")) {
-              badgeStyle = "bg-rose-950/50 text-rose-200 border-rose-500/40 ring-1 ring-rose-500/20";
-              iconColor = "text-rose-400";
-              StageIcon = Flame;
-            } else if (rLower.includes("conflict") || rLower.includes("stroop")) {
-              badgeStyle = "bg-amber-950/50 text-amber-200 border-amber-500/40 ring-1 ring-amber-500/20";
-              iconColor = "text-amber-400";
-              StageIcon = Zap;
-            } else if (rLower.includes("anxiety")) {
-              badgeStyle = "bg-purple-950/50 text-purple-200 border-purple-500/40 ring-1 ring-purple-500/20";
-              iconColor = "text-purple-400";
-              StageIcon = HeartPulse;
-            }
+            const theme = getCardRiskTheme(c);
+            const StageIcon = theme.icon;
 
             return (
               <ScrollReveal key={c.id} animation="fade-up" delay={i * 60} className="h-full">
-                <div className="group relative bg-[#090d16] text-white rounded-2xl border border-zinc-800 p-6 flex flex-col justify-between hover:border-zinc-700 transition-all shadow-md hover:shadow-xl h-full">
+                <div className={theme.cardContainer}>
+                  {/* Glowing Top Risk Hairline */}
+                  <div className={`absolute top-0 left-0 right-0 h-[3px] ${theme.topHairline}`} />
+
                   <div className="space-y-4">
                     {/* Top Case ID & Patient Pill */}
-                    <div className="flex items-center justify-between gap-2 border-b border-zinc-800/80 pb-3">
+                    <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
                       <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                        <span className="font-mono text-xs text-zinc-300 font-semibold group-hover:text-cyan-300 transition-colors">
+                        <span className={`w-2.5 h-2.5 rounded-full ${theme.dotStyle}`} />
+                        <span className={theme.caseIdStyle}>
                           {c.id}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1.5 font-mono text-[11px] text-zinc-400 bg-zinc-900/80 px-2 py-0.5 rounded border border-zinc-800">
+                      <div className={`flex items-center gap-1.5 ${theme.leadBadgeStyle}`}>
                         <span>Lead: {c.montage_channel || "F3"}</span>
                         <span>&bull;</span>
                         <span>{formatPatientBadge(c.patient_anon_id)}</span>
                       </div>
                     </div>
 
-                    {/* Stage & Risk Evaluation Badge */}
-                    <div className="flex items-center justify-between gap-2">
-                      <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${badgeStyle}`}>
-                        <StageIcon className={`w-3.5 h-3.5 ${iconColor}`} />
+                    {/* Stage & Risk Evaluation Badges */}
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border ${theme.stageBadgeStyle}`}>
+                        <StageIcon className={`w-3.5 h-3.5 ${theme.iconColor}`} />
                         <span>{c.risk_stage}</span>
                       </div>
-                      <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">
-                        {c.dataset_source || "eeg"}
-                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <span className={theme.tierBadgeStyle}>
+                          {theme.tier}
+                        </span>
+                        <span className={theme.datasetBadgeStyle}>
+                          {c.dataset_source || "eeg"}
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Title & Description */}
+                    {/* Title & Description with Risk Typography */}
                     <div className="space-y-1.5">
-                      <h3 className="font-bold text-base text-white tracking-tight group-hover:text-cyan-300 transition-colors">
+                      <div className={theme.categorySubtitleStyle}>
+                        <span>{theme.categorySubtitle}</span>
+                        <span>&bull;</span>
+                        <span>{theme.severityLabel}</span>
+                      </div>
+                      <h3 className={theme.titleStyle}>
                         {c.title || c.risk_stage}
                       </h3>
-                      <p className="text-xs text-zinc-400 leading-relaxed line-clamp-3">
+                      <p className={theme.descriptionStyle}>
                         {c.description}
                       </p>
                     </div>
 
+                    {/* Live Oscilloscope Sweep */}
+                    <div className="pt-2">
+                      <CardLiveSignal
+                        caseId={c.id}
+                        channel={c.montage_channel || "F3"}
+                        strokeColor={theme.strokeColor}
+                        glowColor={theme.glowColor}
+                        samplingRate={c.eeg_sampling_rate_hz || 128}
+                      />
+                    </div>
+
                     {/* Key Electrographic Biomarkers */}
                     <div className="space-y-2 pt-1">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 block">
+                      <span className={theme.biomarkersLabelStyle}>
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-current opacity-80" />
                         Detected Biomarkers (128×128 SST)
                       </span>
                       <div className="flex flex-wrap gap-1.5">
                         {(c.highlights || []).map((hl, hIdx) => (
                           <span
                             key={hIdx}
-                            className="inline-block text-[11px] bg-zinc-900/90 text-zinc-300 px-2 py-0.5 rounded-md border border-zinc-800 font-medium"
+                            className={theme.biomarkerChipStyle}
                           >
                             {hl}
                           </span>
@@ -336,14 +477,14 @@ function DashboardContent() {
                   </div>
 
                   {/* Bottom Action Footer */}
-                  <div className="pt-6 mt-4 border-t border-zinc-800/80 flex items-center justify-between">
-                    <div className="text-[11px] font-mono text-zinc-500">
+                  <div className="pt-6 mt-4 border-t border-white/10 flex items-center justify-between">
+                    <div className={theme.footerTextStyle}>
                       {c.eeg_sampling_rate_hz} Hz &bull; Single Segment
                     </div>
 
                     <Link
                       href={`/analysis/${c.id}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-xl bg-white text-zinc-950 hover:bg-zinc-200 transition-all shadow-xs group/btn"
+                      className={theme.buttonStyle}
                     >
                       <span>Inspect Signal</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />

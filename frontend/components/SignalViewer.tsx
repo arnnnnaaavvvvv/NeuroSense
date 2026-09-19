@@ -54,6 +54,64 @@ interface SignalViewerProps {
   sessionProvenance?: SessionProvenance;
 }
 
+function getViewerTheme(riskStage: string) {
+  const r = (riskStage || "").toLowerCase();
+  if (r.includes("workload") || (r.includes("stress") && !r.includes("conflict"))) {
+    return {
+      phosphor: "#f43f5e",
+      glow: "#fb7185",
+      dimPhosphor: "rgba(244, 63, 94, 0.22)",
+      voltageColor: "text-rose-400",
+      activeChannelBg: "bg-rose-500 text-white font-bold shadow-sm shadow-rose-500/30",
+      liveBadgeColor: "text-rose-400",
+      liveDotColor: "bg-rose-500",
+      sweepColor: "#f43f5e",
+      tagBorder: "border-rose-500/30",
+      tagBg: "bg-rose-500/20 text-rose-300",
+    };
+  }
+  if (r.includes("anxiety")) {
+    return {
+      phosphor: "#c084fc",
+      glow: "#e879f9",
+      dimPhosphor: "rgba(192, 132, 252, 0.22)",
+      voltageColor: "text-purple-400",
+      activeChannelBg: "bg-purple-600 text-white font-bold shadow-sm shadow-purple-500/30",
+      liveBadgeColor: "text-purple-400",
+      liveDotColor: "bg-purple-400",
+      sweepColor: "#c084fc",
+      tagBorder: "border-purple-500/30",
+      tagBg: "bg-purple-500/20 text-purple-300",
+    };
+  }
+  if (r.includes("conflict") || r.includes("stroop")) {
+    return {
+      phosphor: "#f59e0b",
+      glow: "#fbbf24",
+      dimPhosphor: "rgba(245, 158, 11, 0.22)",
+      voltageColor: "text-amber-400",
+      activeChannelBg: "bg-amber-500 text-slate-950 font-bold shadow-sm shadow-amber-500/30",
+      liveBadgeColor: "text-amber-400",
+      liveDotColor: "bg-amber-400",
+      sweepColor: "#f59e0b",
+      tagBorder: "border-amber-500/30",
+      tagBg: "bg-amber-500/20 text-amber-300",
+    };
+  }
+  return {
+    phosphor: "#10b981",
+    glow: "#34d399",
+    dimPhosphor: "rgba(16, 185, 129, 0.22)",
+    voltageColor: "text-emerald-400",
+    activeChannelBg: "bg-emerald-500 text-slate-950 font-bold shadow-sm shadow-emerald-500/30",
+    liveBadgeColor: "text-emerald-400",
+    liveDotColor: "bg-emerald-400",
+    sweepColor: "#10b981",
+    tagBorder: "border-emerald-500/30",
+    tagBg: "bg-emerald-500/20 text-emerald-300",
+  };
+}
+
 export default function SignalViewer({
   waveformData,
   sstImageUrl,
@@ -77,6 +135,9 @@ export default function SignalViewer({
   const [selectedLead, setSelectedLead] = useState<string>("F3");
   const [showAllLeadsDrawer, setShowAllLeadsDrawer] = useState(false);
   const [showSpectrogramGuide, setShowSpectrogramGuide] = useState(false);
+  const [liveMicrovolt, setLiveMicrovolt] = useState<number>(0);
+
+  const viewerTheme = getViewerTheme(riskStage);
 
   const handleSelectLead = (lead: string) => {
     if (lead === selectedLead) return;
@@ -163,55 +224,100 @@ export default function SignalViewer({
     const ampRange = 100.0;
     const pxPerSample = width / totalSamples;
 
-    // Draw the continuous EEG trace in emerald phosphor theme
+    // Progress within current sweep window
+    const progress = duration > 0 ? (currentTime % duration) / duration : 0;
+    const sweepX = progress * width;
+    const currentSampleIdx = Math.max(0, Math.min(totalSamples - 1, Math.floor(progress * totalSamples)));
+    const currentSampleVal = samples[currentSampleIdx] || 0;
+    setLiveMicrovolt(currentSampleVal);
+
+    const normCurVal = Math.max(-1, Math.min(1, currentSampleVal / ampRange));
+    const sweepY = midY - normCurVal * (height / 2 - 15);
+
+    // Authentic hospital telemetry erase-gap ahead of sweep head (24px)
+    const eraseGap = 24;
+    const rightResumeIdx = Math.min(totalSamples, currentSampleIdx + Math.ceil(eraseGap / pxPerSample));
+
+    // 1. Draw older trace (ahead of erase gap to the right edge) with soft fading phosphor persistence
+    ctx.save();
     ctx.beginPath();
-    ctx.strokeStyle = "#10b981"; // Emerald phosphor
-    ctx.lineWidth = 1.8;
+    ctx.strokeStyle = viewerTheme.dimPhosphor;
+    ctx.lineWidth = 1.4;
     ctx.lineJoin = "round";
 
-    for (let i = 0; i < totalSamples; i++) {
+    let oldStarted = false;
+    for (let i = rightResumeIdx; i < totalSamples; i++) {
       const x = i * pxPerSample;
       const val = samples[i];
-      // Map [-ampRange, +ampRange] to [height - 10, 10]
       const normVal = Math.max(-1, Math.min(1, val / ampRange));
       const y = midY - normVal * (height / 2 - 15);
 
-      if (i === 0) {
+      if (!oldStarted) {
         ctx.moveTo(x, y);
+        oldStarted = true;
       } else {
         ctx.lineTo(x, y);
       }
     }
     ctx.stroke();
+    ctx.restore();
 
-    // Live playback sweep line (white-cyan cursor with subtle glow)
-    const progress = duration > 0 ? Math.min(1, Math.max(0, currentTime / duration)) : 0;
-    const sweepX = progress * width;
-
-    // Scanning sweep head
+    // 2. Draw freshly written live EEG trace (from 0 up to currentSampleIdx) with intense phosphor luminescence
     ctx.save();
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 2;
-    ctx.shadowColor = "#34d399";
-    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.strokeStyle = viewerTheme.phosphor;
+    ctx.shadowColor = viewerTheme.glow;
+    ctx.shadowBlur = 10;
+    ctx.lineWidth = 2.0;
+    ctx.lineJoin = "round";
+
+    let freshStarted = false;
+    for (let i = 0; i <= currentSampleIdx; i++) {
+      const x = i * pxPerSample;
+      const val = samples[i];
+      const normVal = Math.max(-1, Math.min(1, val / ampRange));
+      const y = midY - normVal * (height / 2 - 15);
+
+      if (!freshStarted) {
+        ctx.moveTo(x, y);
+        freshStarted = true;
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // 3. Draw Scanning Sweep Head (vertical luminous laser line with vertical gradient)
+    ctx.save();
+    const beamGrad = ctx.createLinearGradient(sweepX, 0, sweepX, height);
+    beamGrad.addColorStop(0, "rgba(255, 255, 255, 0.05)");
+    beamGrad.addColorStop(0.5, viewerTheme.glow);
+    beamGrad.addColorStop(1, "rgba(255, 255, 255, 0.05)");
+    ctx.strokeStyle = beamGrad;
+    ctx.lineWidth = 1.8;
     ctx.beginPath();
     ctx.moveTo(sweepX, 0);
     ctx.lineTo(sweepX, height);
     ctx.stroke();
 
-    // Sweep cursor blip
-    const currentSampleIdx = Math.floor(progress * (totalSamples - 1));
-    const currentSampleVal = samples[currentSampleIdx] || 0;
-    const normCurVal = Math.max(-1, Math.min(1, currentSampleVal / ampRange));
-    const sweepY = midY - normCurVal * (height / 2 - 15);
-
-    ctx.fillStyle = "#34d399";
+    // Glowing tracer blip on active peak
+    ctx.shadowColor = viewerTheme.glow;
+    ctx.shadowBlur = 14;
+    ctx.fillStyle = "#ffffff";
     ctx.beginPath();
     ctx.arc(sweepX, sweepY, 4, 0, Math.PI * 2);
     ctx.fill();
+
+    // Outer aura ring
+    ctx.strokeStyle = viewerTheme.phosphor;
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    ctx.arc(sweepX, sweepY, 8, 0, Math.PI * 2);
+    ctx.stroke();
     ctx.restore();
 
-  }, [waveformData, selectedLead, currentTime, duration]);
+  }, [waveformData, selectedLead, currentTime, duration, viewerTheme]);
 
   const cleanSstUrl = sstImageUrl.startsWith("http") || sstImageUrl.startsWith("/")
     ? sstImageUrl
@@ -331,7 +437,7 @@ export default function SignalViewer({
                     onClick={() => handleSelectLead(lead)}
                     className={`px-2.5 py-1 rounded-lg font-mono text-xs transition-all flex items-center gap-1.5 ${
                       isSelected
-                        ? "bg-emerald-500 text-slate-950 font-bold shadow-sm shadow-emerald-500/25"
+                        ? viewerTheme.activeChannelBg
                         : "text-slate-400 hover:text-slate-200 hover:bg-slate-800"
                     }`}
                     title={`Switch to ${lead} channel (continuous playback at current time)`}
@@ -355,8 +461,22 @@ export default function SignalViewer({
               className="w-full h-full block"
             />
 
-            <div className="absolute top-2.5 left-3 text-[11px] font-mono text-slate-300 pointer-events-none bg-slate-950/80 px-2 py-0.5 rounded border border-slate-800">
-              Active Channel: <strong className="text-emerald-300">{selectedLead}</strong> &bull; +100 µV
+            <div className="absolute top-2.5 left-3 text-[11px] font-mono text-slate-200 pointer-events-none bg-slate-950/90 px-2.5 py-1 rounded-lg border border-slate-700/80 flex items-center gap-2 shadow-lg">
+              <div className="flex items-center gap-1.5">
+                <span className={`w-2 h-2 rounded-full animate-ping ${viewerTheme.liveDotColor}`} />
+                <span className={`text-[10px] font-bold uppercase tracking-wider ${viewerTheme.liveBadgeColor}`}>
+                  LIVE TELEMETRY
+                </span>
+              </div>
+              <span className="text-slate-500">&bull;</span>
+              <span>
+                Active Channel: <strong className={viewerTheme.voltageColor}>{selectedLead}</strong>
+              </span>
+              <span className="text-slate-500">&bull;</span>
+              <span className="font-bold text-white px-1.5 py-0.2 rounded bg-black/80 border border-white/10 font-mono tracking-wider">
+                {liveMicrovolt >= 0 ? `+${liveMicrovolt.toFixed(1)}` : liveMicrovolt.toFixed(1)} µV
+              </span>
+              <span className="text-[10px] text-slate-500 font-mono">(&plusmn;100 µV)</span>
             </div>
             <div className="absolute bottom-2.5 left-3 text-[10px] font-mono text-slate-400 pointer-events-none bg-slate-950/80 px-1.5 py-0.5 rounded">
               -100 µV
@@ -516,9 +636,6 @@ export default function SignalViewer({
 
         <div className="flex justify-between items-center text-[11px] text-slate-500 pt-0.5">
           <span>00:00.000 (Start)</span>
-          <span className="font-medium text-slate-700">
-            Drag slider to scrub through the waveform &amp; spectrogram in real time (Continuous playback maintained)
-          </span>
           <span>{formatTime(duration)} (End)</span>
         </div>
       </div>

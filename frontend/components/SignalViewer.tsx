@@ -4,7 +4,6 @@ import React, { useRef, useEffect, useState } from "react";
 import {
   Activity,
   Layers,
-  HelpCircle,
   ChevronDown,
   ChevronUp,
   Play,
@@ -900,50 +899,6 @@ export default function SignalViewer({
             )}
           </div>
 
-          {/* 5. Spectrogram & Waveform Guide (Collapsible Evaluator Helper) */}
-          <div className="bg-slate-900 text-white rounded-2xl border border-slate-800 overflow-hidden">
-            <button
-              onClick={() => setShowSpectrogramGuide(!showSpectrogramGuide)}
-              className="w-full px-5 py-3 flex items-center justify-between text-xs font-semibold text-slate-300 hover:bg-slate-800/80 transition-colors"
-            >
-              <div className="flex items-center gap-2 text-sky-400">
-                <HelpCircle className="w-4 h-4" />
-                <span>Electrophysiological Telemetry &amp; STFT Spectral Analysis Methodology</span>
-              </div>
-              {showSpectrogramGuide ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </button>
-
-            {showSpectrogramGuide && (
-              <div className="p-5 border-t border-slate-800 text-xs text-slate-300 space-y-4 leading-relaxed bg-slate-950/60">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
-                    <span className="font-bold text-white text-sm block">
-                      1. Continuous Time-Domain Oscilloscope
-                    </span>
-                    <p className="text-slate-400 text-xs leading-relaxed">
-                      Displays raw scalp voltage potentials (in microvolts, µV) sampled at 128 Hz. The sweeping cursor tracks exact time-locked synchronization across the 10.0-second analysis epoch, preserving morphology of transients, ocular blinks, and rhythm spindles.
-                    </p>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
-                    <span className="font-bold text-white text-sm block">
-                      2. Continuous Wavelet / STFT Time-Frequency Tensor
-                    </span>
-                    <p className="text-slate-400 text-xs leading-relaxed">
-                      Decomposes the time-domain signal into localized spectral energy density using a continuous wavelet / STFT filterbank resampled via bilinear interpolation into a 128x128 grid across the 0.5–50.0 Hz clinical display crop. At 128 Hz sampling, the theoretical Nyquist frequency is 64.0 Hz; the &gt;50.0 Hz portion is cropped from visual display to suppress powerline harmonics and focus on physiologically relevant bands (Delta to Gamma).
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-sky-950/40 border border-sky-500/30 text-xs text-sky-200 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-sky-400 shrink-0" />
-                  <span>
-                    <strong>Model Validation:</strong> Multi-channel time-frequency inputs are evaluated at 93.8% leave-one-subject-out cross-validation accuracy across standardized benchmark evaluations (<code className="text-sky-300">evaluate_loso_validation.py</code>). Single-modality EEG is non-diagnostic and should be considered alongside complete clinical history.
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
         </>
       )}
     </div>

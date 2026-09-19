@@ -6,7 +6,8 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start -p 3000",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "node scripts/test_data_integrity.js"
   },
   "dependencies": {
     "lucide-react": "^0.359.0",

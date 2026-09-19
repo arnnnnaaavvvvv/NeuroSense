@@ -117,7 +117,7 @@ function getReportTheme(riskStage: string, caseId: string) {
     simpleSummary: "Your brain was evaluated during rapid, timed speed arithmetic under performance pressure. Your working memory operated at maximum capacity, causing active thinking stress waves (Beta) to surge while natural relaxation waves (Alpha) shut off.",
     causeExplanation: "Timed speed mental arithmetic. Subtracting numbers rapidly against a countdown clock challenged working memory and triggered acute performance stress in your prefrontal calculation centers.",
     dominantWave: "Beta Waves (13–30 Hz)",
-    dominantRole: "The 'Active Thinking & Stress' Wave. Beta rhythms surged +44.1% above normal while calm Alpha waves dropped -38.2% (Alpha Blocking), reflecting an engine running at high RPM under heavy load.",
+    dominantRole: "The 'Active Thinking & Stress' Wave. Beta rhythms surged +44.3% above normal while calm Alpha waves dropped -38.3% (Alpha Blocking), reflecting an engine running at high RPM under heavy load.",
     aiReasoning: "Because fast Beta waves dominated while calming Alpha waves were suppressed across left frontal lead F3, the AI model identified a definitive marker of high cognitive workload with 99.1% certainty.",
     isBaseline: false,
   };

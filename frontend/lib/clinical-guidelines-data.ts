@@ -30,7 +30,8 @@ export interface ClinicalIntervention {
     | "First-Line Medical Therapy" 
     | "Behavioral & Neuro-Regulation" 
     | "Clinical Device / Appliance" 
-    | "Medical Specialist Care";
+    | "Medical Specialist Care"
+    | "Physician Laboratory Evaluation";
   howItWorks: string;
   evidenceBase: string;
 }
@@ -91,14 +92,14 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalDefinition> = {
       status: "abnormal",
       statusBadge: "Elevated Frontal Beta & High Cognitive Workload",
       abnormalLocation: "Left frontal electrode (F3) elevated Beta (18–30 Hz) power with attenuation of resting posterior Alpha (8–12 Hz)",
-      signalPathologyDescription: "Electrophysiological recording exhibits marked bilateral frontal beta power elevation (+14.2% over subject resting baseline) accompanied by desynchronization of resting posterior alpha rhythms.",
-      normalBaselineComparison: "Calm cognitive readiness maintains dominant occipital-parietal Alpha waves (8–12 Hz, 18.4 µV²) and symmetric frontal spectral distribution."
+      signalPathologyDescription: "Electrophysiological recording exhibits marked bilateral frontal beta power elevation (+44.3% over subject resting baseline) accompanied by desynchronization of resting posterior alpha rhythms (-38.3%).",
+      normalBaselineComparison: "Current session relative Beta is 39.4% (+44.3% deviation from subject reference 27.3%), with concurrent Alpha desynchronization (-38.3% deviation from subject reference 37.1%)."
     },
     clinicalWarningSigns: [
       {
-        sign: "Acute physical symptoms: severe chest tightness, irregular heart palpitations, or shortness of breath",
-        clinicalContext: "Physical autonomic warning signs warrant direct medical assessment independent of EEG findings.",
-        urgency: "Immediate Medical Attention"
+        sign: "Severe Cognitive Fatigue & Focus Depletion",
+        clinicalContext: "General wellbeing note, not derived from this EEG reading: Persistent difficulty concentrating or mental exhaustion after intense problem-solving.",
+        urgency: "Clinical Follow-Up"
       },
       {
         sign: "Clenched jaw (bruxism), tension headaches behind eyes, or trembling fingers",
@@ -125,7 +126,7 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalDefinition> = {
       },
       {
         treatmentName: "Diurnal Salivary Cortisol & Neuroendocrine Evaluation",
-        category: "First-Line Medical Therapy",
+        category: "Physician Laboratory Evaluation",
         howItWorks: "Physician-ordered diagnostic testing measuring daily cortisol rhythm to evaluate hypothalamic-pituitary-adrenal (HPA) axis balance under chronic stress.",
         evidenceBase: "Endocrine Society Clinical Practice Guidelines"
       },
@@ -166,8 +167,8 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalDefinition> = {
         description: "A tight feeling across the temples or furrowed brow during concentration."
       },
       {
-        title: "Increased Heart Rate & Shallow Breathing",
-        description: "Shallow chest breaths or autonomic acceleration while solving difficult problems."
+        title: "Difficulty Down-Regulating Cognitive Focus",
+        description: "Persistent mental buzzing or racing thoughts making it difficult to transition into resting relaxation."
       },
       {
         title: "Mental Exhaustion & Decreased Patience",
@@ -225,8 +226,8 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalDefinition> = {
       status: "abnormal",
       statusBadge: "Elevated Frontal Midline Theta & Executive Interference",
       abnormalLocation: "Frontal Midline sensor (Fz) prominent Theta (4–8 Hz) power surge with concurrent DLPFC Beta synchronization",
-      signalPathologyDescription: "Signal reveals bursts of Frontal Midline Theta (Fm-theta, 4–8 Hz) power elevation (+11.8% over subject baseline) coupled with bilateral frontal beta synchronization, reflecting cognitive conflict monitoring during color-word interference.",
-      normalBaselineComparison: "Resting baseline maintains balanced frontal theta (4.8 µV²) and absence of continuous task-induced synchronization."
+      signalPathologyDescription: "Signal reveals bursts of Frontal Midline Theta (Fm-theta, 4–8 Hz) power elevation (+36.4% over subject baseline) coupled with bilateral frontal beta augmentation (+30.9%), reflecting cognitive conflict monitoring during color-word interference.",
+      normalBaselineComparison: "Current session Frontal Midline Theta represents 35.2% of total power (+36.4% deviation from subject reference 25.8%), with Alpha suppression (-35.1% from subject reference 30.2%)."
     },
     clinicalWarningSigns: [
       {
@@ -358,15 +359,15 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalDefinition> = {
     signalAnomaly: {
       status: "abnormal",
       statusBadge: "Right-Frontal Alpha Asymmetry & High Arousal",
-      abnormalLocation: "Right frontal electrode (F4) alpha suppression relative to F3 (FAA: -0.301)",
-      signalPathologyDescription: "Electrophysiological recording exhibits right-frontal alpha power suppression (F4 alpha 6.8 µV² vs F3 alpha 9.2 µV²; FAA score -0.301) accompanied by minimal cranial EMG tone (1.9 µV²), indicating genuine cortical arousal rather than facial motor artifact.",
-      normalBaselineComparison: "Balanced bilateral frontal alpha power (FAA score between -0.05 and +0.05) in eyes-closed resting baseline."
+      abnormalLocation: "Right frontal electrode (F4) alpha suppression relative to F3 (FAA: -0.48)",
+      signalPathologyDescription: "Electrophysiological recording exhibits right-frontal relative beta power elevation (+48.7% over subject resting baseline) accompanied by marked bilateral alpha suppression (-42.8%) and Frontal Alpha Asymmetry of -0.48.",
+      normalBaselineComparison: "Current session relative Beta is 45.8% (+48.7% deviation from subject reference 30.8%), with posterior Alpha desynchronization (-42.8% deviation from subject reference 31.8%)."
     },
     clinicalWarningSigns: [
       {
-        sign: "Acute medical warning signs: crushing chest pressure, fainting, or severe palpitations",
-        clinicalContext: "Severe physical warning signs require immediate medical emergency evaluation to rule out cardiac conditions.",
-        urgency: "Immediate Medical Attention"
+        sign: "Severe Emotional Distress & Persistent Panic Sensations",
+        clinicalContext: "General wellbeing note, not derived from this EEG reading: Overwhelming distress or panic sensations interfering with daily functioning warrant professional medical evaluation.",
+        urgency: "Clinical Follow-Up"
       },
       {
         sign: "Persistent uncontrollable worry, panic sensations, or dread lasting weeks",
@@ -430,12 +431,12 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalDefinition> = {
     ],
     symptoms: [
       {
-        title: "Pounding or Racing Heart (Palpitations)",
-        description: "Feeling your heart thumping rapidly during acute emotional stress."
+        title: "Subjective Hypervigilance & Racing Thoughts",
+        description: "General psychological response documented in state anxiety literature; 7-channel scalp EEG reflects cortical fast-wave shifts and does not measure cardiac metrics."
       },
       {
-        title: "Shortness of Breath & Tight Throat",
-        description: "A sensation of restricted breathing or difficulty drawing a deep breath."
+        title: "Heightened Startle & Environmental Sensitivity",
+        description: "Documented in state anxiety literature; reflects sympathetic nervous system arousal independent of EEG electrode signals."
       },
       {
         title: "Trembling Hands, Chills, or Cold Sweats",
@@ -501,8 +502,8 @@ export const CLINICAL_KNOWLEDGE_BASE: Record<string, CaseClinicalDefinition> = {
       status: "optimal",
       statusBadge: "Optimal Restorative Alpha Synchrony",
       abnormalLocation: "Dominant Posterior Alpha Synchrony (8–12 Hz) with Calm Cortical Dynamics",
-      signalPathologyDescription: "Continuous sinusoidal Alpha waves (8–12 Hz, 40–60 µV) are symmetrically distributed across occipital leads with clean baseline stability, absent cranial EMG artifact, and nominal slow-wave balance.",
-      normalBaselineComparison: "Confirmed benchmark for healthy, relaxed eyes-closed neural synchrony."
+      signalPathologyDescription: "Continuous sinusoidal Alpha waves (8–12 Hz) are symmetrically distributed across posterior leads with clean baseline stability, nominal beta power (13.4%), and nominal 0.0% deviation from resting reference.",
+      normalBaselineComparison: "Resting baseline reference: Alpha power dominates at 54.1% of total spectral power with nominal Beta power (13.4%) and neutral frontal symmetry."
     },
     clinicalWarningSigns: [
       {

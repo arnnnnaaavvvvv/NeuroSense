@@ -23,6 +23,8 @@ import {
   Flame
 } from "lucide-react";
 
+import benchmarkData from "../lib/benchmark-data.json";
+
 import {
   getCaseClinicalInfo,
   type CaseClinicalInfo,
@@ -84,6 +86,9 @@ export default function PatientGuidanceSection({
   };
 
   const caseData = getCaseClinicalInfo(caseId, stageOrRisk);
+  const benchmarkPredictions = (benchmarkData as any).predictions || {};
+  const currentCaseBenchmark = benchmarkPredictions[caseId] || null;
+  const structuredInterpretation = currentCaseBenchmark?.structured_interpretation;
 
   const isOptimal =
     caseData.signalAnomaly.status === "optimal" ||
@@ -207,7 +212,7 @@ export default function PatientGuidanceSection({
                     : "bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700"
                 }`}
               >
-                4. Real Tests &amp; Treatments ({caseData.requiredTests.length + caseData.realTreatments.length})
+                4. Related Clinical Concepts ({caseData.requiredTests.length + caseData.realTreatments.length})
               </button>
               <button
                 onClick={() => handleTabSwitch("actions")}
@@ -284,13 +289,34 @@ export default function PatientGuidanceSection({
                   </div>
                 )}
 
-                {/* Clinical Justification / Interpretation */}
-                <div className="text-xs text-slate-700 leading-relaxed pt-0.5">
-                  <strong className="text-slate-900">
-                    {isOptimal ? "Physician Interpretation: " : "Clinical Justification: "}
-                  </strong>
-                  {caseData.whyNeedsAttention}
-                </div>
+                {/* 4-Part Telemetry Breakdown: Finding -> Evidence -> Interpretation -> Limitation */}
+                {structuredInterpretation ? (
+                  <div className="p-3.5 rounded-lg bg-slate-900 text-slate-200 border border-slate-800 space-y-2 text-xs">
+                    <div>
+                      <span className="font-bold text-emerald-400 block font-mono text-[10px] uppercase">1. Finding</span>
+                      <p className="text-slate-300 leading-relaxed">{structuredInterpretation.current_finding}</p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-cyan-400 block font-mono text-[10px] uppercase">2. Evidence</span>
+                      <p className="text-slate-300 leading-relaxed">{structuredInterpretation.evidence}</p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-amber-400 block font-mono text-[10px] uppercase">3. Interpretation</span>
+                      <p className="text-slate-300 leading-relaxed">{structuredInterpretation.interpretation}</p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-slate-400 block font-mono text-[10px] uppercase">4. Limitation</span>
+                      <p className="text-slate-400 leading-relaxed">{structuredInterpretation.limitation}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-xs text-slate-700 leading-relaxed pt-0.5 space-y-1">
+                    <strong className="text-slate-900">
+                      {isOptimal ? "Physician Interpretation: " : "Physiological Context: "}
+                    </strong>
+                    <p>{caseData.whyNeedsAttention}</p>
+                  </div>
+                )}
 
                 <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
                   {isOptimal ? (
@@ -327,12 +353,12 @@ export default function PatientGuidanceSection({
                     <p className="text-[11px] text-emerald-900 pt-1 leading-relaxed">
                       {isOptimal
                         ? "No specialist consultation or medical intervention is required. Continue routine annual preventative wellness checkups with your primary care physician to sustain this healthy nervous system baseline."
-                        : "Consult with this medical specialist to evaluate confirmatory gold-standard tests and discuss evidence-based therapeutic options."}
+                        : "Consider discussing with a qualified healthcare professional to evaluate relevant clinical assessments and evidence-based strategies."}
                     </p>
                   </div>
                   <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
                     <div className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">
-                      {isOptimal ? "Clinical Baseline Verification" : "Healthy Baseline Comparison"}
+                      {isOptimal ? "Clinical Baseline Verification" : "Personal Baseline Comparison"}
                     </div>
                     <p className="text-[11px] text-slate-600 leading-relaxed">
                       {caseData.signalAnomaly.normalBaselineComparison}
@@ -369,13 +395,13 @@ export default function PatientGuidanceSection({
                   <h3 className="font-bold text-slate-900 text-sm sm:text-base">
                     {isOptimal
                       ? "Doctor-Recommended Practices to Maintain Neural Health & Resilience"
-                      : "Real Things on Which the Patient Needs to Pay Attention"}
+                      : "Self-Monitoring & Cognitive Wellbeing Observations"}
                   </h3>
                 </div>
                 <span className={`text-[11px] ${isOptimal ? "text-emerald-700 font-medium" : "text-slate-500"}`}>
                   {isOptimal
                     ? "Evidence-Based Preventive Health & Brain Hygiene Protocols"
-                    : "Critical Physiological Warning Signs & Red Flags"}
+                    : "General wellbeing note, not derived from this EEG reading"}
                 </span>
               </div>
 
@@ -462,10 +488,10 @@ export default function PatientGuidanceSection({
                       <span>Optimal Neurological Health Verified</span>
                     </div>
                     <h4 className="text-sm sm:text-base font-bold text-white">
-                      No Diagnostic Tests or Medical Treatments Required
+                      Baseline Resting Neuroelectric State Verified
                     </h4>
                     <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
-                      All cortical brainwaves, resting alpha synchrony, and autonomic indicators are within normal healthy parameters. You do not need confirmatory scans, prescription medications, or specialist workups.
+                      All cortical brainwaves, resting posterior alpha synchrony, and spectral power distributions are within expected resting parameters.
                     </p>
                   </div>
                   <button
@@ -483,20 +509,20 @@ export default function PatientGuidanceSection({
                   <div>
                     <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-300">
                       <Pill className="w-4 h-4" />
-                      <span>Real Diagnostic Tests &amp; Real Medical Treatments</span>
+                      <span>General Information: Related Clinical Concepts</span>
                     </div>
                     <h4 className="text-sm sm:text-base font-bold text-white pt-1">
-                      {caseData.requiredTests.length} Confirmatory Clinical Tests &amp; {caseData.realTreatments.length} Evidence-Based Therapies
+                      {caseData.requiredTests.length} Related Diagnostic Concepts &amp; {caseData.realTreatments.length} Clinical Concepts in Literature
                     </h4>
                     <p className="text-xs text-slate-300 pt-0.5">
-                      Clinically validated diagnostic evaluations and physician-directed treatments matching this stress/anxiety pattern.
+                      Educational background on diagnostic concepts and interventions documented in clinical literature. Consider discussing with a qualified healthcare professional.
                     </p>
                   </div>
                   <button
                     onClick={() => handleTabSwitch("tests")}
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 transition-all shadow-sm shrink-0"
                   >
-                    <span>View Full Tests &amp; Treatments</span>
+                    <span>View Related Clinical Concepts</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -505,7 +531,7 @@ export default function PatientGuidanceSection({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-slate-700/60 text-xs">
                   <div className="space-y-1">
                     <div className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
-                      Diagnostic Tests:
+                      Related Diagnostic Concepts (Educational):
                     </div>
                     <ul className="text-slate-200 text-[11px] space-y-0.5">
                       {caseData.requiredTests.slice(0, 2).map((t, i) => (
@@ -518,7 +544,7 @@ export default function PatientGuidanceSection({
                   </div>
                   <div className="space-y-1">
                     <div className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
-                      Medical Treatments:
+                      Related Clinical Modalities (Educational):
                     </div>
                     <ul className="text-slate-200 text-[11px] space-y-0.5">
                       {caseData.realTreatments.slice(0, 2).map((tr, i) => (
@@ -644,30 +670,35 @@ export default function PatientGuidanceSection({
                 onClick={() => handleTabSwitch("tests")}
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-sm transition-all"
               >
-                <span>Next: Real Tests &amp; Treatments ({caseData.requiredTests.length + caseData.realTreatments.length})</span>
+                <span>Next: Related Clinical Concepts ({caseData.requiredTests.length + caseData.realTreatments.length})</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
         )}
 
-        {/* TAB 4: REAL TESTS & REAL TREATMENTS */}
+        {/* TAB 4: RELATED CLINICAL CONCEPTS */}
         {!isOptimal && effectiveTab === "tests" && (
           <div className="space-y-6">
-            {/* SECTION 1: REQUIRED DIAGNOSTIC TESTS */}
+            <div className="p-3.5 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-600 leading-relaxed">
+              <strong className="text-slate-800">Educational Context Notice: </strong>
+              The diagnostic concepts and interventions below are documented in published clinical guidelines and psychological literature for informational reference only. NeuroSense does not prescribe treatments or formulate diagnostic orders. Consider discussing these concepts with a qualified healthcare professional.
+            </div>
+
+            {/* SECTION 1: RELATED DIAGNOSTIC CONCEPTS */}
             <div className="space-y-3.5">
               <div className="flex flex-wrap items-center justify-between gap-2 pb-1 border-b border-slate-200">
                 <div>
                   <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                     <ClipboardList className="w-4 h-4 text-amber-600" />
-                    <span>Real Diagnostic Tests for This Condition</span>
+                    <span>Related Clinical Diagnostic Concepts</span>
                   </h3>
                   <p className="text-xs text-slate-500">
-                    Bring this checklist to your physician to request or verify these formal clinical evaluations:
+                    Diagnostic evaluations documented in medical literature for clinical discussion:
                   </p>
                 </div>
                 <span className="text-xs font-semibold px-2.5 py-1 bg-amber-100 text-amber-900 rounded-full border border-amber-200">
-                  Diagnostic Workup ({caseData.requiredTests.length} Tests)
+                  Diagnostic Concepts ({caseData.requiredTests.length})
                 </span>
               </div>
 
@@ -703,7 +734,7 @@ export default function PatientGuidanceSection({
                       </div>
 
                       <div className="pl-6 text-xs text-slate-600 leading-relaxed">
-                        <strong className="text-slate-800">Why your doctor orders this: </strong>
+                        <strong className="text-slate-800">Clinical Purpose: </strong>
                         {t.whyNeeded}
                       </div>
                     </div>
@@ -712,20 +743,20 @@ export default function PatientGuidanceSection({
               </div>
             </div>
 
-            {/* SECTION 2: REAL MEDICAL TREATMENTS & THERAPIES */}
+            {/* SECTION 2: EVIDENCE-BASED INTERVENTIONS IN LITERATURE */}
             <div className="space-y-3.5 pt-2">
               <div className="flex flex-wrap items-center justify-between gap-2 pb-1 border-b border-slate-200">
                 <div>
                   <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                     <Pill className="w-4 h-4 text-emerald-600" />
-                    <span>Real Medical Treatments &amp; Evidence-Based Therapies</span>
+                    <span>Evidence-Based Interventions Documented in Literature</span>
                   </h3>
                   <p className="text-xs text-slate-500">
-                    Clinically established medical therapies, devices, and protocols prescribed by physicians for this specific pattern:
+                    Non-pharmacological and clinical modalities published in medical and psychological guidelines:
                   </p>
                 </div>
                 <span className="text-xs font-semibold px-2.5 py-1 bg-emerald-100 text-emerald-900 rounded-full border border-emerald-200">
-                  Evidence-Based Treatments ({caseData.realTreatments.length})
+                  Documented Interventions ({caseData.realTreatments.length})
                 </span>
               </div>
 
@@ -773,6 +804,15 @@ export default function PatientGuidanceSection({
                   );
                 })}
               </div>
+            </div>
+
+            {/* Informational Disclaimer */}
+            <div className="p-3 rounded-lg bg-amber-50/70 border border-amber-200/80 text-[11px] text-amber-900 leading-relaxed flex items-start gap-2">
+              <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+              <span>
+                <strong>Physician Consultation Reminder: </strong>
+                All listed interventions are documented in published clinical practice guidelines for informational and educational context only. NeuroSense does not prescribe treatments. Always consult a qualified healthcare professional before making any medical, pharmacological, or therapeutic changes.
+              </span>
             </div>
 
             {/* Tab Navigation Footer */}

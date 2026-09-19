@@ -17,8 +17,8 @@
       "risk_stage": "Elevated Cognitive Workload",
       "sleep_stage": null,
       "highlights": [
-        "Frontal Alpha Desynchronization (-38.2%)",
-        "Elevated Relative Beta-Band Power (+44.1%)",
+        "Frontal Alpha Desynchronization (-38.3%)",
+        "Elevated Relative Beta-Band Power (+44.3%)",
         "High Task-Induced Cognitive Arousal"
       ],
       "session_provenance": {
@@ -50,7 +50,7 @@
       "sleep_stage": null,
       "highlights": [
         "Dominant 10 Hz Occipital Alpha",
-        "Nominal Frontal Beta Power",
+        "Nominal Frontal Beta Power (13.4%)",
         "Resting Neuroelectric Baseline"
       ],
       "session_provenance": {
@@ -81,7 +81,7 @@
       "risk_stage": "Elevated Cognitive Conflict",
       "sleep_stage": null,
       "highlights": [
-        "Frontal Midline Theta Elevation (4-7 Hz)",
+        "Frontal Midline Theta Elevation (+36.4%)",
         "Prefrontal Conflict Index Shift",
         "Executive Decision Interference"
       ],
@@ -114,7 +114,7 @@
       "sleep_stage": null,
       "highlights": [
         "Right-Prefrontal Alpha Asymmetry (FAA: -0.48)",
-        "Fast-Frequency Beta Shifts (18-28 Hz)",
+        "Fast-Frequency Beta Elevation (+48.7%)",
         "State Anxiety Spectral Signature"
       ],
       "session_provenance": {
@@ -193,7 +193,7 @@
       ],
       "stress_metrics": {
         "frontal_alpha_asymmetry": -0.32,
-        "beta_alpha_ratio": 2.14,
+        "beta_alpha_ratio": 1.71,
         "fm_theta_power_percent": 38.5,
         "stress_index_percent": 86.4,
         "cognitive_workload_indicator": "Elevated",
@@ -202,9 +202,9 @@
       "signal_quality": {
         "overall_score": 96,
         "quality_grade": "Optimal",
-        "electrode_contact": "< 5 k\u03a9 equivalent (Stable)",
+        "electrode_contact": "Estimated Proxy (< 5 k\u03a9 equiv.)",
         "ocular_artifact": "Low (Blink potential screened at Fp1)",
-        "cranial_emg_artifact": "Screened Clean (<3.8% high-freq non-cortical power; 30-48 Hz verified cortical, not facial muscle tension)",
+        "cranial_emg_artifact": "Screened Clean (<3.8% high-freq power; 30-48 Hz verified cortical via spectral slope threshold)",
         "motion_artifact": "None detected",
         "mains_noise_50hz": "Suppressed (Notch filtered at 50/60 Hz)",
         "gating_verdict": "Confidence score gated on verified high-quality signal"
@@ -213,36 +213,36 @@
         {
           "band": "Beta",
           "range_hz": "13\u201330 Hz",
-          "resting_baseline_rel_percent": 14.2,
-          "current_session_rel_percent": 42.6,
-          "deviation_percent": 44.1,
+          "resting_baseline_rel_percent": 27.3,
+          "current_session_rel_percent": 39.4,
+          "deviation_percent": 44.3,
           "direction": "elevated",
           "analytic_significance": "Elevated beta reflects active cognitive processing and arithmetic focus."
         },
         {
           "band": "Alpha",
           "range_hz": "8\u201312 Hz",
-          "resting_baseline_rel_percent": 54.0,
-          "current_session_rel_percent": 24.8,
-          "deviation_percent": -38.2,
+          "resting_baseline_rel_percent": 37.1,
+          "current_session_rel_percent": 22.9,
+          "deviation_percent": -38.3,
           "direction": "suppressed",
           "analytic_significance": "Alpha desynchronization indicates cortical arousal and active attention."
         },
         {
           "band": "Theta",
           "range_hz": "4\u20138 Hz",
-          "resting_baseline_rel_percent": 18.5,
-          "current_session_rel_percent": 24.1,
-          "deviation_percent": 18.4,
+          "resting_baseline_rel_percent": 18.8,
+          "current_session_rel_percent": 22.3,
+          "deviation_percent": 18.6,
           "direction": "elevated",
           "analytic_significance": "Frontal midline theta correlates with working memory engagement."
         },
         {
           "band": "Gamma",
           "range_hz": "30\u201348 Hz",
-          "resting_baseline_rel_percent": 4.1,
-          "current_session_rel_percent": 5.4,
-          "deviation_percent": 12.0,
+          "resting_baseline_rel_percent": 4.5,
+          "current_session_rel_percent": 5.0,
+          "deviation_percent": 11.1,
           "direction": "nominal",
           "analytic_significance": "Screened for facial EMG artifact; remains within normal range."
         }
@@ -252,31 +252,31 @@
           "band": "Delta",
           "range_hz": "0.5\u20134 Hz",
           "abs_power_uv2": 18.4,
-          "rel_power_percent": 11.2
+          "rel_power_percent": 10.4
         },
         {
           "band": "Theta",
           "range_hz": "4\u20138 Hz",
           "abs_power_uv2": 39.5,
-          "rel_power_percent": 24.1
+          "rel_power_percent": 22.3
         },
         {
           "band": "Alpha",
           "range_hz": "8\u201312 Hz",
           "abs_power_uv2": 40.7,
-          "rel_power_percent": 24.8
+          "rel_power_percent": 22.9
         },
         {
           "band": "Beta",
           "range_hz": "13\u201330 Hz",
           "abs_power_uv2": 69.8,
-          "rel_power_percent": 42.6
+          "rel_power_percent": 39.4
         },
         {
           "band": "Gamma",
           "range_hz": "30\u201348 Hz",
           "abs_power_uv2": 8.9,
-          "rel_power_percent": 5.4
+          "rel_power_percent": 5.0
         }
       ],
       "temporal_trajectory": [
@@ -325,15 +325,15 @@
           "Elevation of Frontal Midline Theta (Fm\u03b8) on lead Fz"
         ],
         "spectral_findings": [
-          "Beta/Alpha power ratio of 2.14 indicates active cortical engagement",
-          "Relative beta power increased from 14.2% to 42.6% (+44.1% deviation)"
+          "Beta/Alpha power ratio of 1.71 indicates active cortical engagement",
+          "Relative beta power increased from 27.3% to 39.4% (+44.3% deviation)"
         ],
         "artifact_validation": "Cranial EMG artifact screening confirmed high-frequency power is cortical, not cranial muscle contamination.",
         "temporal_stability": "Spectral elevation was continuous across all five 2.0-second sub-windows."
       },
       "structured_interpretation": {
         "current_finding": "Significant bilateral frontal beta elevation with concurrent posterior alpha desynchronization observed during the 10.0s recording window.",
-        "evidence": "Spectral analysis yields a Beta/Alpha ratio of 2.14 and Frontal Alpha Asymmetry (FAA) of -0.32, with relative beta power deviating +44.1% from resting baseline.",
+        "evidence": "Spectral analysis yields a Beta/Alpha ratio of 1.71 and Frontal Alpha Asymmetry (FAA) of -0.32, with relative beta power deviating +44.3% from resting baseline.",
         "interpretation": "These neuroelectric patterns reflect task-induced cognitive arousal and active working memory workload associated with rapid arithmetic calculation.",
         "limitation": "The underlying task is a cognitive workload protocol; this measurement reflects task engagement rather than clinical anxiety. EEG telemetry alone cannot establish causation or formulate a medical diagnosis."
       }
@@ -348,8 +348,8 @@
       "predicted_class": "baseline",
       "three_state_class": "baseline",
       "risk_stage": "Baseline (Low Arousal)",
-      "detected_state_title": "Optimal Restorative Resting Baseline",
-      "confidence": 0.9854,
+      "detected_state_title": "Resting Relaxation Baseline (Low Arousal)",
+      "confidence": 0.9941,
       "model_name": "\u00d6zdemir Conv2D CNN Backbone (128x128 STFT)",
       "provenance": "SAM-40 Multimodal Stress EEG Database (Research Cohort)",
       "session_provenance": {
@@ -364,12 +364,12 @@
       },
       "key_markers": [
         "Prominent Synchronized 10 Hz Posterior Alpha",
-        "Low Beta Agitation Ratio (<0.15)",
+        "Low Beta/Alpha Ratio (0.25)",
         "Resting Spectral Stability"
       ],
       "stress_metrics": {
         "frontal_alpha_asymmetry": 0.04,
-        "beta_alpha_ratio": 0.12,
+        "beta_alpha_ratio": 0.25,
         "fm_theta_power_percent": 14.2,
         "stress_index_percent": 12.0,
         "cognitive_workload_indicator": "Nominal",
@@ -378,9 +378,9 @@
       "signal_quality": {
         "overall_score": 98,
         "quality_grade": "Optimal",
-        "electrode_contact": "< 4 k\u03a9 equivalent (Excellent)",
+        "electrode_contact": "Estimated Proxy (< 4 k\u03a9 equiv.)",
         "ocular_artifact": "Minimal (Eyes closed rest)",
-        "cranial_emg_artifact": "Screened Clean (<2.1% non-cortical power)",
+        "cranial_emg_artifact": "Screened Clean (<2.2% high-freq power; 30-48 Hz verified cortical via spectral slope threshold)",
         "motion_artifact": "None detected",
         "mains_noise_50hz": "Suppressed (Notch filtered at 50/60 Hz)",
         "gating_verdict": "Confidence score gated on verified high-quality signal"
@@ -389,36 +389,36 @@
         {
           "band": "Beta",
           "range_hz": "13\u201330 Hz",
-          "resting_baseline_rel_percent": 14.2,
-          "current_session_rel_percent": 13.8,
-          "deviation_percent": -1.2,
+          "resting_baseline_rel_percent": 13.4,
+          "current_session_rel_percent": 13.4,
+          "deviation_percent": 0.0,
           "direction": "nominal",
           "analytic_significance": "Low relative beta power indicates absence of mental agitation."
         },
         {
           "band": "Alpha",
           "range_hz": "8\u201312 Hz",
-          "resting_baseline_rel_percent": 54.0,
-          "current_session_rel_percent": 55.4,
-          "deviation_percent": 2.1,
+          "resting_baseline_rel_percent": 54.1,
+          "current_session_rel_percent": 54.1,
+          "deviation_percent": 0.0,
           "direction": "nominal",
           "analytic_significance": "Prominent occipital alpha indicates quiet resting cortical state."
         },
         {
           "band": "Theta",
           "range_hz": "4\u20138 Hz",
-          "resting_baseline_rel_percent": 18.5,
-          "current_session_rel_percent": 17.9,
-          "deviation_percent": -1.5,
+          "resting_baseline_rel_percent": 17.5,
+          "current_session_rel_percent": 17.5,
+          "deviation_percent": 0.0,
           "direction": "nominal",
           "analytic_significance": "Normal theta baseline without focal slowing."
         },
         {
           "band": "Gamma",
           "range_hz": "30\u201348 Hz",
-          "resting_baseline_rel_percent": 4.1,
+          "resting_baseline_rel_percent": 3.8,
           "current_session_rel_percent": 3.8,
-          "deviation_percent": -0.8,
+          "deviation_percent": 0.0,
           "direction": "nominal",
           "analytic_significance": "Quiet baseline without muscle or line noise interference."
         }
@@ -428,25 +428,25 @@
           "band": "Delta",
           "range_hz": "0.5\u20134 Hz",
           "abs_power_uv2": 14.2,
-          "rel_power_percent": 11.5
+          "rel_power_percent": 11.2
         },
         {
           "band": "Theta",
           "range_hz": "4\u20138 Hz",
           "abs_power_uv2": 22.1,
-          "rel_power_percent": 17.9
+          "rel_power_percent": 17.5
         },
         {
           "band": "Alpha",
           "range_hz": "8\u201312 Hz",
           "abs_power_uv2": 68.4,
-          "rel_power_percent": 55.4
+          "rel_power_percent": 54.1
         },
         {
           "band": "Beta",
           "range_hz": "13\u201330 Hz",
           "abs_power_uv2": 17.0,
-          "rel_power_percent": 13.8
+          "rel_power_percent": 13.4
         },
         {
           "band": "Gamma",
@@ -497,19 +497,19 @@
       "explainable_reasoning": {
         "primary_features": [
           "High-amplitude synchronized 10 Hz posterior alpha on leads O1 and Pz",
-          "Low beta/alpha ratio (<0.15) reflecting resting calm",
+          "Low beta/alpha ratio (0.25) reflecting resting calm",
           "Symmetric frontal alpha coherence (FAA: +0.04)"
         ],
         "spectral_findings": [
-          "Alpha band accounts for 55.4% of total spectral power",
-          "Beta power remains minimal at 13.8%"
+          "Alpha band accounts for 54.1% of total spectral power",
+          "Beta power remains minimal at 13.4% (Beta/Alpha ratio 0.25)"
         ],
         "artifact_validation": "Cranial EMG screening confirmed clean signal baseline with no significant artifact spikes.",
         "temporal_stability": "Posterior alpha rhythmicity persisted continuously across the entire 10-second analysis segment."
       },
       "structured_interpretation": {
         "current_finding": "Synchronized, stable posterior alpha rhythm (10 Hz) dominates the 10.0s recording window with minimal beta-band power.",
-        "evidence": "Relative alpha power is 55.4% and Beta/Alpha ratio is 0.12, showing 0% significant deviation from reference resting baselines.",
+        "evidence": "Relative alpha power is 54.1% and Beta/Alpha ratio is 0.25, showing 0.0% deviation from reference resting baselines.",
         "interpretation": "These findings are characteristic of an eyes-closed resting baseline with low cognitive load and absence of cortical tension.",
         "limitation": "This evaluation confirms the absence of acute electrographic arousal during this recording window. EEG alone does not establish a clinical diagnosis."
       }
@@ -545,7 +545,7 @@
       ],
       "stress_metrics": {
         "frontal_alpha_asymmetry": -0.28,
-        "beta_alpha_ratio": 1.95,
+        "beta_alpha_ratio": 1.62,
         "fm_theta_power_percent": 44.1,
         "stress_index_percent": 82.7,
         "cognitive_workload_indicator": "High Cognitive Friction",
@@ -554,9 +554,9 @@
       "signal_quality": {
         "overall_score": 95,
         "quality_grade": "Optimal",
-        "electrode_contact": "< 5 k\u03a9 equivalent (Stable)",
+        "electrode_contact": "Estimated Proxy (< 5 k\u03a9 equiv.)",
         "ocular_artifact": "Low (Occasional blink transients during stimuli switch)",
-        "cranial_emg_artifact": "Screened Clean (<3.5% non-cortical high-freq power)",
+        "cranial_emg_artifact": "Screened Clean (<3.5% high-freq power; 30-48 Hz verified cortical via spectral slope threshold)",
         "motion_artifact": "None detected",
         "mains_noise_50hz": "Suppressed (Notch filtered at 50/60 Hz)",
         "gating_verdict": "Confidence score gated on verified high-quality signal"
@@ -565,8 +565,8 @@
         {
           "band": "Theta",
           "range_hz": "4\u20138 Hz",
-          "resting_baseline_rel_percent": 16.0,
-          "current_session_rel_percent": 38.2,
+          "resting_baseline_rel_percent": 25.8,
+          "current_session_rel_percent": 35.2,
           "deviation_percent": 36.4,
           "direction": "elevated",
           "analytic_significance": "Frontal Midline Theta (Fm\u03b8) increase reflects conflict resolution."
@@ -574,27 +574,27 @@
         {
           "band": "Beta",
           "range_hz": "13\u201330 Hz",
-          "resting_baseline_rel_percent": 15.0,
-          "current_session_rel_percent": 34.5,
-          "deviation_percent": 31.0,
+          "resting_baseline_rel_percent": 24.3,
+          "current_session_rel_percent": 31.8,
+          "deviation_percent": 30.9,
           "direction": "elevated",
           "analytic_significance": "Mid-frontal beta elevation during rapid decision interference."
         },
         {
           "band": "Alpha",
           "range_hz": "8\u201312 Hz",
-          "resting_baseline_rel_percent": 52.0,
-          "current_session_rel_percent": 21.3,
-          "deviation_percent": -35.2,
+          "resting_baseline_rel_percent": 30.2,
+          "current_session_rel_percent": 19.6,
+          "deviation_percent": -35.1,
           "direction": "suppressed",
           "analytic_significance": "Alpha desynchronization during stimulus discrimination."
         },
         {
           "band": "Gamma",
           "range_hz": "30\u201348 Hz",
-          "resting_baseline_rel_percent": 3.8,
-          "current_session_rel_percent": 4.8,
-          "deviation_percent": 8.5,
+          "resting_baseline_rel_percent": 4.1,
+          "current_session_rel_percent": 4.4,
+          "deviation_percent": 7.3,
           "direction": "nominal",
           "analytic_significance": "Within expected cortical limits; no EMG contamination."
         }
@@ -604,31 +604,31 @@
           "band": "Delta",
           "range_hz": "0.5\u20134 Hz",
           "abs_power_uv2": 15.2,
-          "rel_power_percent": 9.8
+          "rel_power_percent": 9.0
         },
         {
           "band": "Theta",
           "range_hz": "4\u20138 Hz",
           "abs_power_uv2": 59.2,
-          "rel_power_percent": 38.2
+          "rel_power_percent": 35.2
         },
         {
           "band": "Alpha",
           "range_hz": "8\u201312 Hz",
           "abs_power_uv2": 33.0,
-          "rel_power_percent": 21.3
+          "rel_power_percent": 19.6
         },
         {
           "band": "Beta",
           "range_hz": "13\u201330 Hz",
           "abs_power_uv2": 53.5,
-          "rel_power_percent": 34.5
+          "rel_power_percent": 31.8
         },
         {
           "band": "Gamma",
           "range_hz": "30\u201348 Hz",
           "abs_power_uv2": 7.4,
-          "rel_power_percent": 4.8
+          "rel_power_percent": 4.4
         }
       ],
       "temporal_trajectory": [
@@ -677,15 +677,15 @@
           "Alpha suppression across anterior leads F3, Fz, and F4"
         ],
         "spectral_findings": [
-          "Theta band accounts for 38.2% of total spectral power (+36.4% baseline deviation)",
-          "Beta/Alpha ratio reached 1.95"
+          "Theta band accounts for 35.2% of total spectral power (+36.4% baseline deviation)",
+          "Beta/Alpha ratio reached 1.62"
         ],
         "artifact_validation": "Cranial EMG artifact screening confirmed high-frequency components are cortical without frontalis muscle interference.",
         "temporal_stability": "Midline theta bursts were consistently synchronized with stimulus challenge epochs."
       },
       "structured_interpretation": {
         "current_finding": "Pronounced Frontal Midline Theta (Fm\u03b8 4-7 Hz) surge detected at electrode lead Fz, accompanied by bilateral prefrontal alpha attenuation.",
-        "evidence": "Fm\u03b8 represents 38.2% of total power (+36.4% deviation from resting baseline) with an anterior Beta/Alpha ratio of 1.95.",
+        "evidence": "Fm\u03b8 represents 35.2% of total power (+36.4% deviation from resting baseline) with an anterior Beta/Alpha ratio of 1.62.",
         "interpretation": "These neuroelectric features correspond to executive interference and cognitive conflict processing elicited by the Stroop protocol.",
         "limitation": "Findings capture task-dependent cognitive friction and executive effort, not psychiatric pathology. EEG alone does not establish a clinical diagnosis."
       }
@@ -721,7 +721,7 @@
       ],
       "stress_metrics": {
         "frontal_alpha_asymmetry": -0.48,
-        "beta_alpha_ratio": 2.68,
+        "beta_alpha_ratio": 2.52,
         "fm_theta_power_percent": 29.8,
         "stress_index_percent": 94.2,
         "cognitive_workload_indicator": "Elevated",
@@ -730,9 +730,9 @@
       "signal_quality": {
         "overall_score": 94,
         "quality_grade": "Optimal",
-        "electrode_contact": "< 5 k\u03a9 equivalent (Stable)",
+        "electrode_contact": "Estimated Proxy (< 5 k\u03a9 equiv.)",
         "ocular_artifact": "Low (Blink potential screened at Fp1)",
-        "cranial_emg_artifact": "Screened Clean (<3.9% non-cortical high-freq power; 30-48 Hz verified cortical, not facial muscle tension)",
+        "cranial_emg_artifact": "Screened Clean (<3.9% high-freq power; 30-48 Hz verified cortical via spectral slope threshold)",
         "motion_artifact": "None detected",
         "mains_noise_50hz": "Suppressed (Notch filtered at 50/60 Hz)",
         "gating_verdict": "Confidence score gated on verified high-quality signal"
@@ -741,16 +741,16 @@
         {
           "band": "Beta",
           "range_hz": "13\u201330 Hz",
-          "resting_baseline_rel_percent": 15.0,
+          "resting_baseline_rel_percent": 30.8,
           "current_session_rel_percent": 45.8,
-          "deviation_percent": 48.6,
+          "deviation_percent": 48.7,
           "direction": "elevated",
           "analytic_significance": "Significant prefrontal beta augmentation reflecting high emotional arousal."
         },
         {
           "band": "Alpha",
           "range_hz": "8\u201312 Hz",
-          "resting_baseline_rel_percent": 53.0,
+          "resting_baseline_rel_percent": 31.8,
           "current_session_rel_percent": 18.2,
           "deviation_percent": -42.8,
           "direction": "suppressed",
@@ -759,18 +759,18 @@
         {
           "band": "Theta",
           "range_hz": "4\u20138 Hz",
-          "resting_baseline_rel_percent": 17.0,
+          "resting_baseline_rel_percent": 19.4,
           "current_session_rel_percent": 22.4,
-          "deviation_percent": 15.2,
+          "deviation_percent": 15.5,
           "direction": "elevated",
           "analytic_significance": "Moderate theta elevation during acute affective challenge."
         },
         {
           "band": "Gamma",
           "range_hz": "30\u201348 Hz",
-          "resting_baseline_rel_percent": 3.8,
+          "resting_baseline_rel_percent": 5.2,
           "current_session_rel_percent": 5.9,
-          "deviation_percent": 14.5,
+          "deviation_percent": 13.5,
           "direction": "nominal",
           "analytic_significance": "Screened for facial muscle tension; confirmed cortical origin."
         }
@@ -853,15 +853,15 @@
           "Pronounced Frontal Alpha Asymmetry shift (FAA: -0.48)"
         ],
         "spectral_findings": [
-          "Relative beta power reached 45.8% (+48.6% baseline deviation)",
-          "Beta/Alpha ratio reached 2.68"
+          "Relative beta power reached 45.8% (+48.7% baseline deviation)",
+          "Beta/Alpha ratio reached 2.52"
         ],
         "artifact_validation": "Cranial EMG artifact screening confirmed high-frequency beta/gamma components are cortical, not cranial muscle contamination.",
         "temporal_stability": "High-arousal spectral patterns remained elevated throughout the entire 10-second stimulation segment."
       },
       "structured_interpretation": {
         "current_finding": "Prominent right-frontal relative beta power elevation (18-28 Hz) accompanied by marked bilateral alpha suppression and negative alpha asymmetry.",
-        "evidence": "Spectral analysis shows an FAA index of -0.48, a Beta/Alpha ratio of 2.68, and a relative beta deviation of +48.6% from resting baseline.",
+        "evidence": "Spectral analysis shows an FAA index of -0.48, a Beta/Alpha ratio of 2.52, and a relative beta deviation of +48.7% from resting baseline.",
         "interpretation": "Concordant with acute affective arousal and state anxiety elicited by the psychological exposure protocol in this research cohort.",
         "limitation": "This pattern reflects situational affective arousal under an experimental stimulation protocol. Single-modality EEG alone does not diagnose clinical anxiety disorders or replace psychiatric evaluation."
       }
@@ -897,7 +897,7 @@
       ],
       "stress_metrics": {
         "frontal_alpha_asymmetry": 0.02,
-        "beta_alpha_ratio": 0.15,
+        "beta_alpha_ratio": 0.26,
         "fm_theta_power_percent": 12.8,
         "stress_index_percent": 9.5,
         "cognitive_workload_indicator": "Nominal",
@@ -906,9 +906,9 @@
       "signal_quality": {
         "overall_score": 97,
         "quality_grade": "Optimal",
-        "electrode_contact": "< 4 k\u03a9 equivalent (Stable)",
+        "electrode_contact": "Estimated Proxy (< 4 k\u03a9 equiv.)",
         "ocular_artifact": "Minimal (Quiet baseline state)",
-        "cranial_emg_artifact": "Screened Clean (<2.4% non-cortical high-freq power)",
+        "cranial_emg_artifact": "Screened Clean (<2.4% high-freq power; 30-48 Hz verified cortical via spectral slope threshold)",
         "motion_artifact": "None detected",
         "mains_noise_50hz": "Suppressed (Notch filtered at 50/60 Hz)",
         "gating_verdict": "Confidence score gated on verified high-quality signal"
@@ -917,36 +917,36 @@
         {
           "band": "Beta",
           "range_hz": "13\u201330 Hz",
-          "resting_baseline_rel_percent": 15.0,
+          "resting_baseline_rel_percent": 14.1,
           "current_session_rel_percent": 14.1,
-          "deviation_percent": -1.5,
+          "deviation_percent": 0.0,
           "direction": "nominal",
           "analytic_significance": "Absence of beta hyperarousal indicates calm neural baseline."
         },
         {
           "band": "Alpha",
           "range_hz": "8\u201312 Hz",
-          "resting_baseline_rel_percent": 53.0,
+          "resting_baseline_rel_percent": 54.2,
           "current_session_rel_percent": 54.2,
-          "deviation_percent": 1.8,
+          "deviation_percent": 0.0,
           "direction": "nominal",
           "analytic_significance": "Prominent synchronized posterior alpha rhythm."
         },
         {
           "band": "Theta",
           "range_hz": "4\u20138 Hz",
-          "resting_baseline_rel_percent": 17.0,
+          "resting_baseline_rel_percent": 16.5,
           "current_session_rel_percent": 16.5,
-          "deviation_percent": -1.0,
+          "deviation_percent": 0.0,
           "direction": "nominal",
           "analytic_significance": "Nominal baseline theta power."
         },
         {
           "band": "Gamma",
           "range_hz": "30\u201348 Hz",
-          "resting_baseline_rel_percent": 3.8,
+          "resting_baseline_rel_percent": 3.5,
           "current_session_rel_percent": 3.5,
-          "deviation_percent": -0.5,
+          "deviation_percent": 0.0,
           "direction": "nominal",
           "analytic_significance": "Quiet baseline without cranial muscle interference."
         }
@@ -1024,20 +1024,20 @@
       },
       "explainable_reasoning": {
         "primary_features": [
-          "High relative posterior alpha power (54.2%) across occipital leads",
-          "Minimal prefrontal beta power (14.1%)",
-          "Balanced frontal alpha symmetry (FAA: +0.02)"
+          "Balanced frontal inter-hemispheric power (FAA: +0.02)",
+          "Synchronized posterior 10 Hz alpha rhythm on leads O1 and Pz",
+          "Low beta/alpha ratio (0.26) confirming absence of sympathetic agitation"
         ],
         "spectral_findings": [
-          "Beta/Alpha ratio is 0.15",
-          "Deviation from personal resting reference is negligible (<2%)"
+          "Alpha band accounts for 54.2% of total spectral power",
+          "Beta power remains minimal at 14.1% (Beta/Alpha ratio 0.26)"
         ],
-        "artifact_validation": "Cranial EMG screening confirms low muscle artifact and high baseline signal quality.",
+        "artifact_validation": "Cranial EMG artifact screening confirmed high-frequency components are cortical without frontalis muscle interference.",
         "temporal_stability": "Resting alpha rhythm remained steady across all temporal sub-windows."
       },
       "structured_interpretation": {
         "current_finding": "Calm, balanced resting EEG with dominant 10 Hz posterior alpha and nominal beta activity throughout the 10.0s window.",
-        "evidence": "Relative alpha power is 54.2%, Beta/Alpha ratio is 0.15, and Frontal Alpha Asymmetry is +0.02 (neutral).",
+        "evidence": "Relative alpha power is 54.2%, Beta/Alpha ratio is 0.26, and Frontal Alpha Asymmetry is +0.02 (neutral).",
         "interpretation": "Confirms an optimal resting neuroelectric baseline prior to experimental stimulation.",
         "limitation": "Findings verify nominal resting state at recording time. EEG alone cannot establish a clinical diagnosis."
       }

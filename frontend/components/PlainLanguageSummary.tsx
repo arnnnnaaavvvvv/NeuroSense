@@ -137,7 +137,7 @@ export default function PlainLanguageSummary({
     return {
       dominantWave: "Beta Waves (13–30 Hz)",
       simpleName: "The 'Active Thinking & Stress' Wave",
-      explanation: `Your Beta waves spiked by ${betaDev > 0 ? `+${betaDev.toFixed(1)}%` : "+44.1%"} above normal, while your calming Alpha waves dropped by ${Math.abs(alphaDev).toFixed(1)}% (a process doctors call 'Alpha Blocking'). Beta waves are the brain's high-gear waves—they fire whenever you solve difficult problems under pressure.`,
+      explanation: `Your Beta waves spiked by ${betaDev > 0 ? `+${betaDev.toFixed(1)}%` : "+44.3%"} above normal, while your calming Alpha waves dropped by ${Math.abs(alphaDev).toFixed(1)}% (a process doctors call 'Alpha Blocking'). Beta waves are the brain's high-gear waves—they fire whenever you solve difficult problems under pressure.`,
       impactOnAI: `Because high-frequency Beta stress waves surged while your calming Alpha waves shut off, the AI deep-learning model identified a textbook biological marker of high cognitive workload with ${confidencePercent}% probability.`,
     };
   };
@@ -338,10 +338,10 @@ export default function PlainLanguageSummary({
                 Signal Behavior
               </span>
               <strong className="text-white text-sm block">
-                {isBaseline ? "Stable Resting Sync" : `${betaDev > 0 ? `+${betaDev.toFixed(1)}%` : "+44.1%"} Power Surge`}
+                {isBaseline ? "Stable Resting Sync" : `${betaDev > 0 ? `+${betaDev.toFixed(1)}%` : "+44.3%"} Power Surge`}
               </strong>
               <span className="text-[11px] text-slate-400 block leading-snug">
-                {isBaseline ? "Occipital alpha waves steady" : "Calming alpha waves dropped by -38.2%"}
+                {isBaseline ? "Occipital alpha waves steady" : `Calming alpha waves dropped by ${Math.abs(alphaDev) > 0 ? `-${Math.abs(alphaDev).toFixed(1)}%` : "-38.3%"}`}
               </span>
             </div>
 

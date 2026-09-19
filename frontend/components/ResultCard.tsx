@@ -352,15 +352,15 @@ export default function ResultCard({ classification, keyMarkers, caseId = "" }: 
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 text-xs">
-          <div className="bg-slate-900 p-2.5 rounded-lg border border-slate-800">
-            <span className="text-[10px] text-slate-400 uppercase block font-mono">Electrode Impedance</span>
-            <span className="font-semibold text-slate-200">{signal_quality?.electrode_contact || "< 5 kΩ (Stable)"}</span>
+          <div className="bg-slate-900 p-2.5 rounded-lg border border-slate-800" title="Simulated signal-quality proxy based on baseline noise floor; research datasets do not log hardware impedance.">
+            <span className="text-[10px] text-slate-400 uppercase block font-mono">Impedance Proxy (Est.)</span>
+            <span className="font-semibold text-slate-200">{signal_quality?.electrode_contact || "Estimated Proxy (< 5 kΩ equiv.)"}</span>
           </div>
           <div className="bg-slate-900 p-2.5 rounded-lg border border-slate-800">
             <span className="text-[10px] text-slate-400 uppercase block font-mono">Ocular (Blink) Artifact</span>
             <span className="font-semibold text-slate-200">{signal_quality?.ocular_artifact || "Low / Fp1 Reference Corrected"}</span>
           </div>
-          <div className="bg-slate-900 p-2.5 rounded-lg border border-slate-800">
+          <div className="bg-slate-900 p-2.5 rounded-lg border border-slate-800" title="Method: 30–48 Hz spectral slope & non-cortical power ratio threshold (<4%) to rule out cranial muscle tension.">
             <span className="text-[10px] text-emerald-400 uppercase block font-mono">Cranial EMG Screen (30-48 Hz)</span>
             <span className="font-semibold text-emerald-300">{signal_quality?.cranial_emg_artifact || "Screened Clean (Cortical Origin Verified)"}</span>
           </div>

@@ -32,6 +32,50 @@ interface TrendTrajectoryPanelProps {
 
 const predictionsMap = benchmarkData.predictions as Record<string, any>;
 
+interface ProtocolTabMeta {
+  label: string;
+  dataset: string;
+  protocol: string;
+  badge: string;
+  iconLabel: string;
+  tagline: string;
+}
+
+const PROTOCOL_CONFIG: Record<string, ProtocolTabMeta> = {
+  sam40_sub01_escalation: {
+    label: "Cognitive Stress",
+    dataset: "SAM-40",
+    protocol: "Resting Baseline → Math Workload (Subject 01)",
+    badge: "Same-Subject",
+    iconLabel: "SAM-40 (2W)",
+    tagline: "Frontal Beta Desynchronization on Lead F3",
+  },
+  dasps_s01_escalation: {
+    label: "State Anxiety",
+    dataset: "DASPS",
+    protocol: "Resting Baseline → Anxiety Stimulus (Subject 01)",
+    badge: "Same-Subject",
+    iconLabel: "DASPS (2W)",
+    tagline: "Prefrontal High-Beta Surge on Lead Fp1",
+  },
+  cross_cohort_progression: {
+    label: "Graded Escalation",
+    dataset: "Multi-Cohort",
+    protocol: "Rest → Stroop → Math → Anxiety Progression",
+    badge: "Cross-Cohort",
+    iconLabel: "Multi-Cohort (4W)",
+    tagline: "Multi-Subject Rate-of-Change Trajectory",
+  },
+  sam40_sub01_recovery: {
+    label: "Stress Recovery",
+    dataset: "SAM-40",
+    protocol: "Math Workload → Post-Stress Baseline (Subject 01)",
+    badge: "Same-Subject",
+    iconLabel: "SAM-40 (2W)",
+    tagline: "Alpha Rhythm Restoration on Lead O1",
+  },
+};
+
 /* ─── Extract Responsible Single Lead for Condition ─────────────────────────── */
 function getResponsibleChannel(caseId: string): {
   lead: string;
@@ -477,18 +521,33 @@ export default function TrendTrajectoryPanel({
         <div className="flex flex-wrap items-center gap-1.5 bg-slate-900/90 p-1.5 rounded-xl border border-slate-800 shrink-0">
           {Object.values(DEMO_SEQUENCES).map((s) => {
             const isSelected = s.id === selectedSequenceId;
+            const proto = PROTOCOL_CONFIG[s.id] || {
+              label: s.title,
+              cohort: s.same_subject ? "Same-Subject" : "Cross-Cohort",
+              protocol: `${s.source_cases.length} Windows`,
+              iconLabel: `${s.source_cases.length}W`,
+            };
             return (
               <button
                 key={s.id}
                 onClick={() => setSelectedSequenceId(s.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs transition-all flex items-center gap-2 ${
                   isSelected
-                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm font-bold"
-                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
+                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/50 shadow-sm font-bold"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent"
                 }`}
+                title={proto.protocol}
               >
-                {s.same_subject ? "Same-Subject" : "Cross-Cohort"} (
-                {s.source_cases.length}W)
+                <span className="font-mono text-[11px]">{proto.label}</span>
+                <span
+                  className={`text-[9px] font-mono px-1.5 py-0.5 rounded ${
+                    isSelected
+                      ? "bg-cyan-950/90 text-cyan-300 border border-cyan-700/60 font-semibold"
+                      : "bg-slate-950/80 text-slate-500 border border-slate-800"
+                  }`}
+                >
+                  {proto.iconLabel}
+                </span>
               </button>
             );
           })}

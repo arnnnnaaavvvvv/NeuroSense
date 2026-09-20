@@ -32,6 +32,46 @@ interface TrendTrajectoryPanelProps {
 
 const predictionsMap = benchmarkData.predictions as Record<string, any>;
 
+/* ─── Extract Responsible Single Lead for Condition ─────────────────────────── */
+function getResponsibleChannel(caseId: string): {
+  lead: string;
+  name: string;
+  region: string;
+  role: string;
+} {
+  const id = caseId.toLowerCase();
+  if (id.includes("math") || id.includes("stress_01")) {
+    return {
+      lead: "F3",
+      name: "Lead F3",
+      region: "Left Frontal",
+      role: "Cognitive Working Memory & Mental Calculation",
+    };
+  }
+  if (id.includes("anxiety")) {
+    return {
+      lead: "Fp1",
+      name: "Lead Fp1",
+      region: "Left Prefrontal",
+      role: "Affective Reactivity & Emotional Arousal",
+    };
+  }
+  if (id.includes("stroop") || id.includes("conflict")) {
+    return {
+      lead: "Fz",
+      name: "Lead Fz",
+      region: "Frontal Midline",
+      role: "Cognitive Conflict & Midline Theta Surge",
+    };
+  }
+  return {
+    lead: "O1",
+    name: "Lead O1",
+    region: "Occipital Cortex",
+    role: "Sensory Resting Alpha Idling",
+  };
+}
+
 /* ─── Physiological Waveform Fallback Generator ─────────────────────────────── */
 function generateFallbackSamples(caseId: string): number[] {
   const arr: number[] = [];
@@ -74,14 +114,14 @@ function ProfessionalOscilloscopeCanvas({
   isPeak,
   strokeColor,
   glowColor,
-  channelName,
+  channelLabel,
 }: {
   caseId: string;
   samples?: number[];
   isPeak: boolean;
   strokeColor: string;
   glowColor: string;
-  channelName?: string;
+  channelLabel?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -98,15 +138,15 @@ function ProfessionalOscilloscopeCanvas({
     const midY = height / 2;
     const ampRange = 60.0;
 
-    // Deep laboratory CRT dark background
+    // Dark laboratory CRT canvas
     ctx.fillStyle = "#030712";
     ctx.fillRect(0, 0, width, height);
 
-    // Fine electrophysiology measurement grid
+    // Fine grid lines
     ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
     ctx.lineWidth = 1;
 
-    // Horizontal voltage reference lines (+30µV, 0µV, -30µV)
+    // Baseline zero-volt center
     ctx.beginPath();
     ctx.moveTo(0, midY);
     ctx.lineTo(width, midY);
@@ -122,7 +162,7 @@ function ProfessionalOscilloscopeCanvas({
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // Vertical 1-second time calibration grid lines (10 divisions across 10 seconds)
+    // 1-second division ticks
     const colStep = width / 10;
     ctx.beginPath();
     for (let x = colStep; x < width; x += colStep) {
@@ -131,12 +171,12 @@ function ProfessionalOscilloscopeCanvas({
     }
     ctx.stroke();
 
-    // Draw calibrated microvolt signal trace
+    // Signal trace
     ctx.beginPath();
     ctx.strokeStyle = strokeColor;
     ctx.shadowColor = glowColor;
     ctx.shadowBlur = isPeak ? 8 : 4;
-    ctx.lineWidth = isPeak ? 1.9 : 1.3;
+    ctx.lineWidth = isPeak ? 1.8 : 1.3;
     ctx.lineJoin = "round";
 
     const total = waveData.length;
@@ -173,56 +213,49 @@ function ProfessionalOscilloscopeCanvas({
       const peakY =
         midY - Math.max(-1, Math.min(1, peakVal / ampRange)) * (height * 0.42);
 
-      // Outer radial focal ring
+      // Glow halo
       ctx.beginPath();
-      ctx.arc(peakX, peakY, 6, 0, Math.PI * 2);
+      ctx.arc(peakX, peakY, 5, 0, Math.PI * 2);
       ctx.fillStyle = "rgba(244, 63, 94, 0.35)";
       ctx.fill();
 
-      // Precision center dot
+      // Pin center
       ctx.beginPath();
-      ctx.arc(peakX, peakY, 2.5, 0, Math.PI * 2);
+      ctx.arc(peakX, peakY, 2, 0, Math.PI * 2);
       ctx.fillStyle = "#ffffff";
       ctx.shadowColor = "#f43f5e";
-      ctx.shadowBlur = 6;
+      ctx.shadowBlur = 5;
       ctx.fill();
 
-      // Clinical pointer annotation
+      // Annotation
       ctx.font = "bold 8.5px ui-monospace, monospace";
       ctx.fillStyle = "#f43f5e";
       const isRight = peakX > width - 75;
       ctx.textAlign = isRight ? "right" : "left";
       ctx.fillText(
-        `PEAK: ${Math.abs(peakVal).toFixed(1)} µV`,
-        isRight ? peakX - 8 : peakX + 8,
-        peakY < 20 ? peakY + 14 : peakY - 5
+        `PEAK ${Math.abs(peakVal).toFixed(1)} µV`,
+        isRight ? peakX - 6 : peakX + 6,
+        peakY < 20 ? peakY + 12 : peakY - 4
       );
     }
   }, [caseId, samples, isPeak, strokeColor, glowColor]);
 
   return (
-    <div className="relative w-full rounded-lg overflow-hidden border border-slate-800 bg-[#030712]">
+    <div className="relative w-full rounded-lg overflow-hidden border border-slate-800/90 bg-[#030712]">
       <canvas
         ref={canvasRef}
         width={380}
-        height={90}
-        className="w-full h-[88px] block"
+        height={85}
+        className="w-full h-[82px] block"
       />
-      {/* Precision overlay labels */}
       <div className="absolute top-1 left-1.5 flex items-center gap-1.5 text-[8.5px] font-mono text-slate-400 bg-slate-950/85 px-1.5 py-0.5 rounded border border-slate-800/80">
         <Radio className="w-2.5 h-2.5 text-cyan-400" />
-        <span>{channelName || "F3 Lead"}</span>
+        <span>{channelLabel || "EEG Lead"}</span>
         <span className="text-slate-600">|</span>
         <span className="text-slate-300">±60 µV</span>
       </div>
       <div className="absolute bottom-1 right-1.5 text-[8.5px] font-mono text-slate-500 bg-slate-950/85 px-1.5 py-0.5 rounded border border-slate-800/80">
         128 Hz · 10.0s
-      </div>
-      <div className="absolute bottom-1 left-1.5 text-[8px] font-mono text-slate-600">
-        0.0s
-      </div>
-      <div className="absolute top-1 right-1.5 text-[8px] font-mono text-slate-600">
-        +30 µV
       </div>
     </div>
   );
@@ -240,7 +273,7 @@ function ProfessionalSpectrogramImage({
     <div
       className={`relative rounded-lg overflow-hidden border transition-all ${
         isPeak
-          ? "border-rose-500/70 shadow-md shadow-rose-950/40 ring-1 ring-rose-500/40"
+          ? "border-rose-500/70 shadow-sm ring-1 ring-rose-500/30"
           : "border-slate-800"
       } bg-slate-950`}
     >
@@ -254,7 +287,6 @@ function ProfessionalSpectrogramImage({
           }}
         />
 
-        {/* Frequency scale markers */}
         <div className="absolute top-1 left-1.5 text-[8px] font-mono text-slate-400 bg-slate-950/85 px-1 rounded border border-slate-800/60">
           48 Hz
         </div>
@@ -265,14 +297,9 @@ function ProfessionalSpectrogramImage({
           10.0s (STFT)
         </div>
 
-        {/* Power distribution callout */}
-        {isPeak ? (
-          <div className="absolute top-1 right-1.5 bg-rose-600/90 text-white font-mono text-[8.5px] font-bold px-2 py-0.5 rounded shadow flex items-center gap-1">
-            <span>PEAK 20–30 Hz POWER SURGE</span>
-          </div>
-        ) : (
-          <div className="absolute top-1 right-1.5 bg-slate-900/85 text-slate-300 font-mono text-[8px] px-1.5 py-0.5 rounded border border-slate-700/60">
-            <span>Synchronous Spectrum</span>
+        {isPeak && (
+          <div className="absolute top-1 right-1.5 bg-rose-600/90 text-white font-mono text-[8px] font-bold px-1.5 py-0.5 rounded shadow flex items-center gap-1">
+            <span>PEAK 20–30 Hz SURGE</span>
           </div>
         )}
       </div>
@@ -371,13 +398,8 @@ export default function TrendTrajectoryPanel({
           const res = await fetch(`/static/processed/${win.case_id}_raw.json`);
           if (res.ok) {
             const json = await res.json();
-            const ch = win.case_id.includes("math")
-              ? "F3"
-              : win.case_id.includes("anxiety")
-              ? "Fp1"
-              : win.case_id.includes("stroop")
-              ? "Fz"
-              : "O1";
+            const chInfo = getResponsibleChannel(win.case_id);
+            const ch = chInfo.lead;
             map[win.case_id] =
               json.channels?.[ch]?.samples || json.samples || [];
           }
@@ -411,6 +433,7 @@ export default function TrendTrajectoryPanel({
 
   const peakWin = trendData ? trendData.windows[peakWindowIdx] : null;
   const peakPred = peakWin ? predictionsMap[peakWin.case_id] : null;
+  const peakChannel = peakWin ? getResponsibleChannel(peakWin.case_id) : null;
 
   const activeInspectWin =
     selectedWindowIdx !== null && trendData
@@ -419,10 +442,13 @@ export default function TrendTrajectoryPanel({
   const activeInspectPred = activeInspectWin
     ? predictionsMap[activeInspectWin.case_id]
     : null;
+  const activeInspectChannel = activeInspectWin
+    ? getResponsibleChannel(activeInspectWin.case_id)
+    : null;
 
   return (
     <div className="bg-[#080c14] rounded-2xl border border-slate-800/90 p-5 sm:p-7 space-y-6 shadow-2xl relative overflow-hidden font-sans">
-      {/* Subtle ambient clinical lighting */}
+      {/* Subtle ambient lighting */}
       <div className="absolute top-0 right-0 w-80 h-32 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-80 h-32 bg-rose-500/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -442,8 +468,8 @@ export default function TrendTrajectoryPanel({
             Escalation Pattern & Signal Trend Detection
           </h3>
           <p className="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed">
-            Sequential analysis of real calibrated EEG recording windows,
-            pinpointing the exact signal shift responsible for the peak state.
+            Tracks rate-of-change across an ordered sequence of real EEG windows
+            to pinpoint the exact signal shift responsible for the peak state.
           </p>
         </div>
 
@@ -475,13 +501,13 @@ export default function TrendTrajectoryPanel({
         </div>
       )}
 
-      {trendData && badge && seqMeta && peakWin && peakPred && (
+      {trendData && badge && seqMeta && peakWin && peakPred && peakChannel && (
         <>
-          {/* ── 2. Master Telemetry Hub: The Exact Signal Responsible for Peak Condition ── */}
+          {/* ── 2. Focused Peak Signal Hub: ONLY the responsible lead & condition ── */}
           <div className="bg-gradient-to-r from-slate-900/90 via-rose-950/20 to-slate-900/90 rounded-xl border border-rose-500/40 p-4 sm:p-5 shadow-lg relative">
             <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
-              {/* Left Column: Peak Signal Identification & Mechanism */}
-              <div className="space-y-2 max-w-3xl">
+              {/* Left Column: Responsible Signal Identification */}
+              <div className="space-y-2 max-w-2xl">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-[10px] font-mono font-black uppercase tracking-wider bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded border border-rose-500/50 flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-rose-400 inline-block" />
@@ -490,8 +516,9 @@ export default function TrendTrajectoryPanel({
                   <span className="text-[10px] font-mono text-slate-400">
                     Window {peakWindowIdx + 1} of {trendData.windows.length}
                   </span>
-                  <span className="text-[10px] font-mono text-cyan-300 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/40">
-                    {peakPred.session_provenance?.channels_recorded || "7-Channel 10-20 Montage"}
+                  {/* Clean Responsible Lead Badge */}
+                  <span className="text-[10px] font-mono text-cyan-300 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-800/50 font-semibold">
+                    Responsible Channel: {peakChannel.name} ({peakChannel.region})
                   </span>
                 </div>
 
@@ -501,18 +528,20 @@ export default function TrendTrajectoryPanel({
 
                 <p className="text-xs text-slate-300 leading-relaxed">
                   <strong className="text-rose-300 font-medium">
-                    Primary Causal Mechanism:
+                    Primary Causal Shift:
                   </strong>{" "}
-                  {peakPred.structured_interpretation?.interpretation ||
-                    "Acute cortical activation driven by high-frequency beta desynchronization and concurrent alpha suppression."}
+                  {peakPred.key_markers?.[0]
+                    ? `${peakPred.key_markers[0]} on ${peakChannel.name} (${peakChannel.role}).`
+                    : peakPred.structured_interpretation?.current_finding ||
+                      "Acute cortical activation driven by beta desynchronization."}
                 </p>
 
-                {/* Key Markers Responsible for Condition */}
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {peakPred.key_markers?.map((marker: string, i: number) => (
+                {/* Key Markers */}
+                <div className="flex flex-wrap gap-2 pt-0.5">
+                  {peakPred.key_markers?.slice(0, 2).map((marker: string, i: number) => (
                     <span
                       key={i}
-                      className="text-[10.5px] font-mono bg-slate-950/80 text-slate-300 border border-slate-800 px-2 py-0.5 rounded flex items-center gap-1.5"
+                      className="text-[10px] font-mono bg-slate-950/80 text-slate-300 border border-slate-800 px-2 py-0.5 rounded flex items-center gap-1.5"
                     >
                       <Zap className="w-3 h-3 text-amber-400 shrink-0" />
                       {marker}
@@ -521,7 +550,7 @@ export default function TrendTrajectoryPanel({
                 </div>
               </div>
 
-              {/* Right Column: Quantitative Telemetry Quad */}
+              {/* Right Column: Clean Telemetry Quad */}
               <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2.5 shrink-0 lg:w-72">
                 <div className="bg-slate-950/80 p-2.5 rounded-lg border border-slate-800 text-center">
                   <span className="text-[9px] font-mono text-slate-400 block uppercase">
@@ -550,7 +579,7 @@ export default function TrendTrajectoryPanel({
 
                 <div className="bg-slate-950/80 p-2.5 rounded-lg border border-slate-800 text-center">
                   <span className="text-[9px] font-mono text-slate-400 block uppercase">
-                    Beta / Alpha Ratio
+                    Beta / Alpha
                   </span>
                   <span className="text-base font-mono font-black text-slate-200">
                     {peakWin.beta_alpha_ratio.toFixed(2)}
@@ -580,15 +609,15 @@ export default function TrendTrajectoryPanel({
             </div>
           </div>
 
-          {/* ── 3. Sequential Multi-Window Telemetry Cards ── */}
+          {/* ── 3. Clean Sequential Cards: Showing ONLY required details ── */}
           <div className="space-y-3">
             <div className="flex items-center justify-between text-xs font-mono text-slate-400">
               <span className="uppercase tracking-wider font-semibold text-slate-300 flex items-center gap-2">
                 <Activity className="w-4 h-4 text-cyan-400" />
-                Signal Sequence Breakdown ({trendData.windows.length} Calibrated Windows)
+                Signal Sequence Breakdown ({trendData.windows.length} Windows)
               </span>
               <span className="text-[10px] text-slate-500">
-                Click any window to inspect comprehensive spectral matrix
+                Click a window to inspect its specific electrophysiological evidence
               </span>
             </div>
 
@@ -603,10 +632,10 @@ export default function TrendTrajectoryPanel({
                 const isPeak = idx === peakWindowIdx;
                 const isSelected = idx === selectedWindowIdx;
                 const trans = trendData.transitions[idx];
-                const pred = predictionsMap[win.case_id] || {};
                 const arousalPct = Math.round(win.arousal_score * 100);
+                const ch = getResponsibleChannel(win.case_id);
 
-                // Phosphor trace color: Emerald for resting, Amber for rising, Crimson for peak
+                // Trace color palette
                 const strokeColor = isPeak
                   ? "#f43f5e"
                   : arousalPct > 70
@@ -621,26 +650,6 @@ export default function TrendTrajectoryPanel({
                   : arousalPct > 45
                   ? "rgba(250, 204, 21, 0.3)"
                   : "rgba(16, 185, 129, 0.3)";
-
-                const channelName = win.case_id.includes("math")
-                  ? "Lead F3 (Cognitive)"
-                  : win.case_id.includes("anxiety")
-                  ? "Lead Fp1 (Arousal)"
-                  : win.case_id.includes("stroop")
-                  ? "Lead Fz (Conflict)"
-                  : "Lead O1 (Alpha Ref)";
-
-                // Extract primary relative band powers
-                const bands = pred.numerical_band_powers || [];
-                const betaPower =
-                  bands.find((b: any) => b.band === "Beta")?.rel_power_percent ||
-                  0;
-                const alphaPower =
-                  bands.find((b: any) => b.band === "Alpha")?.rel_power_percent ||
-                  0;
-                const thetaPower =
-                  bands.find((b: any) => b.band === "Theta")?.rel_power_percent ||
-                  0;
 
                 return (
                   <div
@@ -672,12 +681,13 @@ export default function TrendTrajectoryPanel({
                           )}
                           {isPeak && (
                             <span className="text-[9px] font-mono text-rose-200 bg-rose-600 px-1.5 py-0.2 rounded font-black tracking-wide uppercase">
-                              PEAK THRESHOLD
+                              PEAK TRIGGER
                             </span>
                           )}
                         </div>
-                        <span className="text-[9px] font-mono text-slate-500 truncate max-w-[90px]">
-                          {win.case_id}
+                        {/* Only responsible lead shown */}
+                        <span className="text-[9.5px] font-mono text-cyan-400 bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-800/40 font-semibold">
+                          {ch.name}
                         </span>
                       </div>
 
@@ -696,76 +706,48 @@ export default function TrendTrajectoryPanel({
                       </div>
                     </div>
 
-                    {/* Calibrated Signal Waveform Trace */}
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between text-[9px] font-mono text-slate-400">
-                        <span>Calibrated EEG Voltage Trace</span>
-                        <span className={isPeak ? "text-rose-400 font-bold" : "text-slate-500"}>
-                          {isPeak ? "Max Peak Excursion" : "128 Hz"}
-                        </span>
-                      </div>
+                    {/* Signal Waveform Trace */}
+                    <div className="space-y-1">
                       <ProfessionalOscilloscopeCanvas
                         caseId={win.case_id}
                         samples={rawWaveforms[win.case_id]}
                         isPeak={isPeak}
                         strokeColor={strokeColor}
                         glowColor={glowColor}
-                        channelName={channelName}
+                        channelLabel={ch.name}
                       />
                     </div>
 
                     {/* STFT Spectrogram Image */}
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between text-[9px] font-mono text-slate-400">
-                        <span>STFT Spectrogram Matrix</span>
-                        <span className="text-[8px] text-slate-500">4–48 Hz</span>
-                      </div>
+                    <div className="space-y-1">
                       <ProfessionalSpectrogramImage
                         caseId={win.case_id}
                         isPeak={isPeak}
                       />
                     </div>
 
-                    {/* Exact Spectral Band Breakdown Matrix */}
+                    {/* Concise Essential Metrics Only */}
                     <div className="space-y-2 pt-2 border-t border-slate-800/80">
-                      <div className="grid grid-cols-3 gap-1 text-[9.5px] font-mono bg-slate-950/80 p-2 rounded-lg border border-slate-800/70">
-                        <div className="text-center">
+                      <div className="grid grid-cols-3 gap-1.5 text-[10px] font-mono bg-slate-950/80 p-2 rounded-lg border border-slate-800/70">
+                        <div>
                           <span className="text-slate-500 block text-[8px] uppercase">
-                            Beta (13–30)
+                            Arousal
                           </span>
                           <span
                             className={`font-bold ${
-                              win.beta_deviation_percent > 10
-                                ? "text-amber-300"
-                                : "text-slate-300"
+                              isPeak
+                                ? "text-rose-400"
+                                : arousalPct > 70
+                                ? "text-amber-400"
+                                : "text-emerald-400"
                             }`}
                           >
-                            {betaPower > 0 ? `${betaPower}%` : "—"}
+                            {arousalPct}%
                           </span>
                         </div>
-                        <div className="text-center">
+                        <div>
                           <span className="text-slate-500 block text-[8px] uppercase">
-                            Alpha (8–12)
-                          </span>
-                          <span className="font-bold text-slate-300">
-                            {alphaPower > 0 ? `${alphaPower}%` : "—"}
-                          </span>
-                        </div>
-                        <div className="text-center">
-                          <span className="text-slate-500 block text-[8px] uppercase">
-                            Theta (4–8)
-                          </span>
-                          <span className="font-bold text-slate-300">
-                            {thetaPower > 0 ? `${thetaPower}%` : "—"}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Neurometric Values */}
-                      <div className="grid grid-cols-2 gap-1.5 text-[10px] font-mono">
-                        <div className="bg-slate-950/60 p-1.5 rounded border border-slate-800/60">
-                          <span className="text-slate-500 block text-[8.5px]">
-                            Beta Deviation
+                            Beta Shift
                           </span>
                           <span
                             className={`font-bold ${
@@ -778,9 +760,9 @@ export default function TrendTrajectoryPanel({
                             {win.beta_deviation_percent.toFixed(1)}%
                           </span>
                         </div>
-                        <div className="bg-slate-950/60 p-1.5 rounded border border-slate-800/60">
-                          <span className="text-slate-500 block text-[8.5px]">
-                            Beta / Alpha
+                        <div>
+                          <span className="text-slate-500 block text-[8px] uppercase">
+                            Beta/Alpha
                           </span>
                           <span className="font-bold text-slate-200">
                             {win.beta_alpha_ratio.toFixed(2)}
@@ -788,9 +770,9 @@ export default function TrendTrajectoryPanel({
                         </div>
                       </div>
 
-                      {/* Rate of change connector to next window */}
+                      {/* Transition slope */}
                       {trans && (
-                        <div className="pt-1.5 flex items-center justify-between text-[10px] font-mono text-slate-400">
+                        <div className="pt-1 flex items-center justify-between text-[10px] font-mono text-slate-400">
                           <span>→ Rate of Change to W{idx + 2}:</span>
                           <span
                             className={`font-bold flex items-center gap-0.5 ${
@@ -811,7 +793,7 @@ export default function TrendTrajectoryPanel({
                       )}
                       {!trans && (
                         <div className="pt-1 text-[9px] font-mono text-slate-500 flex items-center gap-1">
-                          <FlatLine className="w-3 h-3" /> Sequence terminal window
+                          <FlatLine className="w-3 h-3" /> Terminal window in sequence
                         </div>
                       )}
                     </div>
@@ -821,32 +803,30 @@ export default function TrendTrajectoryPanel({
             </div>
           </div>
 
-          {/* ── 4. Detailed Electrophysiological Evidence Dossier ── */}
-          {activeInspectWin && activeInspectPred && (
+          {/* ── 4. Detailed Evidence Dossier: Shown ONLY for responsible/selected window ── */}
+          {activeInspectWin && activeInspectPred && activeInspectChannel && (
             <div className="bg-slate-900/70 rounded-xl border border-slate-800 p-4 sm:p-5 space-y-3">
               <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
                 <div className="flex items-center gap-2">
                   <Brain className="w-4 h-4 text-cyan-400" />
                   <span className="font-bold text-slate-100 text-xs font-mono uppercase tracking-wider">
-                    Window 0{activeInspectWin.window_index + 1} Electrophysiological
-                    Findings & Evidence Dossier
+                    Window 0{activeInspectWin.window_index + 1} ({activeInspectChannel.name}) Electrophysiological Dossier
                   </span>
                   {activeInspectWin.window_index === peakWindowIdx && (
                     <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 uppercase font-black">
-                      Peaked Trigger State
+                      Peak Trigger Lead
                     </span>
                   )}
                 </div>
-                <span className="text-[10px] font-mono text-slate-500">
-                  Provenance: {activeInspectPred.session_provenance?.dataset_name || "Benchmark Cohort"}
+                <span className="text-[10px] font-mono text-slate-400">
+                  {activeInspectChannel.region} — {activeInspectChannel.role}
                 </span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                {/* Clinical Finding */}
                 <div className="space-y-1">
                   <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block font-semibold">
-                    Current Neuroelectric Finding
+                    Neuroelectric Finding
                   </span>
                   <p className="text-slate-300 leading-relaxed text-[11.5px]">
                     {activeInspectPred.structured_interpretation?.current_finding ||
@@ -854,10 +834,9 @@ export default function TrendTrajectoryPanel({
                   </p>
                 </div>
 
-                {/* Spectral Evidence */}
                 <div className="space-y-1">
                   <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block font-semibold">
-                    Electrophysiological Evidence
+                    Quantitative Evidence
                   </span>
                   <p className="text-slate-300 leading-relaxed text-[11.5px]">
                     {activeInspectPred.structured_interpretation?.evidence ||
@@ -865,11 +844,10 @@ export default function TrendTrajectoryPanel({
                   </p>
                 </div>
 
-                {/* Artifact Gating & Signal Quality */}
                 <div className="space-y-1">
                   <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block font-semibold flex items-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                    Artifact Verification
+                    Artifact Screening
                   </span>
                   <p className="text-slate-300 leading-relaxed text-[11.5px]">
                     {activeInspectPred.signal_quality?.cranial_emg_artifact ||

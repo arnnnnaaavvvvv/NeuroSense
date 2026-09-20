@@ -150,10 +150,14 @@ export function analyzeSequenceTrend(sequenceId: string): TrendAnalysisResult {
 
     const confidence = Number(pred.confidence) || 0.5;
     const riskStage = pred.risk_stage || "baseline";
-    const isStress = pred.predicted_class === "stress" || riskStage !== "baseline";
+    const isBaseline =
+      pred.predicted_class === "baseline" ||
+      pred.three_state_class === "baseline" ||
+      (riskStage && riskStage.toLowerCase().includes("baseline"));
+    const isStress = !isBaseline;
     const arousal = isStress 
       ? Math.round((0.5 + confidence * 0.5) * 1000) / 1000
-      : Math.round((0.5 - confidence * 0.5) * 1000) / 1000;
+      : Math.round((0.5 - confidence * 0.45) * 1000) / 1000;
 
     const bar = Number(pred.stress_metrics?.beta_alpha_ratio) || 1.0;
     const label = caseItem?.description || pred.detected_state_title || `Window ${idx + 1}`;

@@ -97,7 +97,7 @@ export default function ResultCard({ classification, keyMarkers, caseId = "" }: 
               }`}
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>✨ Plain-Language Summary</span>
+              <span>Summary</span>
             </button>
           </div>
 

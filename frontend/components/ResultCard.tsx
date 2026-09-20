@@ -124,24 +124,6 @@ export default function ResultCard({ classification, keyMarkers, caseId = "" }: 
       {/* TECHNICAL AI TELEMETRY VIEW */}
       {viewMode === "telemetry" && (
         <>
-          {/* Quick Access Plain-Language Callout Banner */}
-          <div className="p-3.5 rounded-xl bg-gradient-to-r from-emerald-950/30 via-slate-900 to-emerald-950/20 border border-emerald-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5 text-xs text-slate-300">
-              <Sparkles className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>
-                Looking for a simple medical explanation?{" "}
-                <strong className="text-white">Learn what the signal detected, what caused it, and what to do.</strong>
-              </span>
-            </div>
-            <button
-              onClick={() => setViewMode("plain_english")}
-              className="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-all shrink-0 shadow-sm flex items-center gap-1"
-            >
-              <span>Explain in Plain English</span>
-              <span aria-hidden="true">&rarr;</span>
-            </button>
-          </div>
-
       {/* Primary Assessment Card: Title & Cognitive vs Anxiety Distinction */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Left: Identified State */}

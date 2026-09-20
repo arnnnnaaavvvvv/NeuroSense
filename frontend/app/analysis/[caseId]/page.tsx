@@ -11,6 +11,7 @@ import { getErrorMessage } from "../../../lib/errors";
 import SignalViewer from "../../../components/SignalViewer";
 import ResultCard from "../../../components/ResultCard";
 import PatientGuidanceSection from "../../../components/PatientGuidanceSection";
+import TrendTrajectoryPanel from "../../../components/TrendTrajectoryPanel";
 
 export default function CaseAnalysisPage() {
   const params = useParams();
@@ -34,6 +35,17 @@ export default function CaseAnalysisPage() {
   const animationFrameRef = useRef<number | null>(null);
   const lastTickTimeRef = useRef<number | null>(null);
   const resultsRef = useRef<HTMLDivElement | null>(null);
+
+  // Render multi-window escalation trajectory ONLY when active case presents verified arousal symptoms
+  const hasArousalSymptoms = Boolean(
+    analysis?.classification &&
+    analysis.classification.binary_class !== "baseline" &&
+    analysis.classification.three_state_class !== "baseline" &&
+    !analysis.classification.risk_stage?.toLowerCase().includes("baseline") &&
+    (analysis.classification.three_state_class === "high_arousal" ||
+     analysis.classification.three_state_class === "rising_arousal" ||
+     analysis.classification.binary_class === "elevated_risk")
+  );
 
   // 1. Fetch Case Analysis & Waveform, then auto-play signal stream
   useEffect(() => {
@@ -301,6 +313,20 @@ export default function CaseAnalysisPage() {
             keyMarkers={analysis.key_markers}
             caseId={caseId}
           />
+
+          {/* Multi-Window Escalation Trend Detection — rendered ONLY when arousal symptoms are verified */}
+          {hasArousalSymptoms && (
+            <TrendTrajectoryPanel
+              initialSequenceId={
+                caseId.startsWith("dasps")
+                  ? "dasps_s01_escalation"
+                  : caseId.startsWith("sam40")
+                    ? "sam40_sub01_escalation"
+                    : "cross_cohort_progression"
+              }
+              currentCaseId={caseId}
+            />
+          )}
 
           {/* Patient Health Guidance */}
           <PatientGuidanceSection

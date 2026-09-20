@@ -27,6 +27,7 @@ import benchmarkData from "../lib/benchmark-data.json";
 
 interface TrendTrajectoryPanelProps {
   initialSequenceId?: string;
+  currentCaseId?: string;
   onClose?: () => void;
 }
 
@@ -399,14 +400,27 @@ const getTrendBadge = (state: TrendState) => {
 
 /* ─── Main Component ───────────────────────────────────────────────────────── */
 export default function TrendTrajectoryPanel({
-  initialSequenceId = "cross_cohort_progression",
+  initialSequenceId,
+  currentCaseId,
 }: TrendTrajectoryPanelProps) {
-  const [selectedSequenceId, setSelectedSequenceId] =
-    useState<string>(initialSequenceId);
+  const resolveDefaultSequence = () => {
+    if (initialSequenceId) return initialSequenceId;
+    if (currentCaseId?.startsWith("dasps")) return "dasps_s01_escalation";
+    if (currentCaseId?.startsWith("sam40")) return "sam40_sub01_escalation";
+    return "cross_cohort_progression";
+  };
+
+  const [selectedSequenceId, setSelectedSequenceId] = useState<string>(resolveDefaultSequence);
   const [trendData, setTrendData] = useState<TrendAnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [rawWaveforms, setRawWaveforms] = useState<Record<string, number[]>>({});
   const [selectedWindowIdx, setSelectedWindowIdx] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (initialSequenceId) {
+      setSelectedSequenceId(initialSequenceId);
+    }
+  }, [initialSequenceId]);
 
   // Load trend analysis
   useEffect(() => {

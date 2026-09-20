@@ -11,7 +11,6 @@ import { getErrorMessage } from "../../../lib/errors";
 import SignalViewer from "../../../components/SignalViewer";
 import ResultCard from "../../../components/ResultCard";
 import PatientGuidanceSection from "../../../components/PatientGuidanceSection";
-import TrendTrajectoryPanel from "../../../components/TrendTrajectoryPanel";
 
 export default function CaseAnalysisPage() {
   const params = useParams();
@@ -35,7 +34,6 @@ export default function CaseAnalysisPage() {
   const animationFrameRef = useRef<number | null>(null);
   const lastTickTimeRef = useRef<number | null>(null);
   const resultsRef = useRef<HTMLDivElement | null>(null);
-  const trendDemoRef = useRef<HTMLDivElement | null>(null);
 
   // 1. Fetch Case Analysis & Waveform, then auto-play signal stream
   useEffect(() => {
@@ -303,19 +301,6 @@ export default function CaseAnalysisPage() {
             keyMarkers={analysis.key_markers}
             caseId={caseId}
           />
-
-          {/* Multi-Window Trend Detection — shown after signal ends */}
-          <div ref={trendDemoRef}>
-            <TrendTrajectoryPanel
-              initialSequenceId={
-                caseId.startsWith("dasps")
-                  ? "dasps_s01_escalation"
-                  : caseId.startsWith("sam40")
-                    ? "sam40_sub01_escalation"
-                    : "cross_cohort_progression"
-              }
-            />
-          </div>
 
           {/* Patient Health Guidance */}
           <PatientGuidanceSection

@@ -3,14 +3,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, ArrowRight, AlertCircle, FileDown, Activity, Sparkles, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight, AlertCircle, Activity, Sparkles, RotateCcw } from "lucide-react";
 
 import { fetchAnalysis, fetchPrecautions, fetchWaveformData } from "../../../lib/api";
 import { AnalysisResponse, PrecautionResponse, RawWaveformData } from "../../../lib/types";
 import { getErrorMessage } from "../../../lib/errors";
 import SignalViewer from "../../../components/SignalViewer";
 import ResultCard from "../../../components/ResultCard";
-import ClinicalAuditExportModal from "../../../components/ClinicalAuditExportModal";
 import PatientGuidanceSection from "../../../components/PatientGuidanceSection";
 import TrendTrajectoryPanel from "../../../components/TrendTrajectoryPanel";
 
@@ -25,7 +24,6 @@ export default function CaseAnalysisPage() {
   const [loadingAnalysis, setLoadingAnalysis] = useState(true);
   const [loadingPrecautions, setLoadingPrecautions] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   // Signal Playback & Progressive Completion Reveal State
   const [isPlaying, setIsPlaying] = useState(false);
@@ -210,22 +208,12 @@ export default function CaseAnalysisPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          {isSignalCompleted ? (
-            <button
-              onClick={() => setIsExportModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-950 hover:bg-black text-white text-xs font-semibold transition-all shadow-xs"
-            >
-              <FileDown className="w-4 h-4 text-sky-400" />
-              <span>Export Clinical Summary</span>
-            </button>
-          ) : (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-mono">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Signal Stream Active</span>
-            </div>
-          )}
-        </div>
+        {!isSignalCompleted && (
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-mono">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Signal Stream Active</span>
+          </div>
+        )}
       </div>
 
 
@@ -335,12 +323,6 @@ export default function CaseAnalysisPage() {
         </div>
       )}
 
-      {/* 6. Printable Clinical Audit Summary Modal */}
-      <ClinicalAuditExportModal
-        caseId={caseId}
-        isOpen={isExportModalOpen}
-        onClose={() => setIsExportModalOpen(false)}
-      />
     </div>
   );
 }

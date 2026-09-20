@@ -219,6 +219,10 @@ export default function CaseAnalysisPage() {
 
       {/* 1. Oscilloscope Graph with Integrated Playback Option Directly Below & Lead Explanations */}
       <SignalViewer
+        caseId={caseId}
+        responsibleChannel={analysis.montage_channel || undefined}
+        temporalTrajectory={analysis.classification.temporal_trajectory}
+        keyMarkers={analysis.key_markers}
         waveformData={waveformData}
         sstImageUrl={analysis.signal_assets.sst_image_url}
         currentTime={currentTime}

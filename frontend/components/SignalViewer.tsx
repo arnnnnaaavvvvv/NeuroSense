@@ -267,9 +267,20 @@ export default function SignalViewer({
 
   const totalSamples = samples.length;
 
-  // Compute Peak Area Information
+  // Determine whether this is an acute arousal case or a calm resting baseline control
+  const isArousalCase = React.useMemo(() => {
+    const cId = (caseId || "").toLowerCase();
+    const stage = (riskStage || "").toLowerCase();
+    if (cId.includes("baseline") || cId.includes("relax")) return false;
+    if (stage.includes("baseline") || stage.includes("normal") || stage.includes("resting") || stage.includes("low arousal") || stage.includes("low risk")) return false;
+    return true;
+  }, [caseId, riskStage]);
+
+  // Compute Peak Area Information (ONLY for acute arousal/stress cases)
   const peakInfo = React.useMemo(() => {
-    // 1. Check if temporal trajectory specifies a Peak Arousal point
+    if (!isArousalCase) return null;
+
+    // 1. Check if temporal trajectory specifies a verified "Peak Arousal" point
     const trajPeak =
       temporalTrajectory?.find((p) => p.phase === "Peak Arousal") ||
       (temporalTrajectory && temporalTrajectory.length > 0
@@ -325,10 +336,12 @@ export default function SignalViewer({
       arousalIndex,
       note,
     };
-  }, [temporalTrajectory, samples, totalSamples, duration]);
+  }, [isArousalCase, temporalTrajectory, samples, totalSamples, duration]);
 
   // Oscilloscope Title
-  const oscilloscopeTitle = `Causal Signal Monitor: Lead ${selectedLead}`;
+  const oscilloscopeTitle = isArousalCase
+    ? `Causal Signal Monitor: Lead ${selectedLead}`
+    : `Calibrated Baseline Trace: Lead ${selectedLead}`;
 
   // Draw Waveform on Canvas
   useEffect(() => {
@@ -382,8 +395,8 @@ export default function SignalViewer({
     ctx.lineTo(width, midY);
     ctx.stroke();
 
-    // 0. Draw Shaded Peak Arousal Area on Waveform (interval [startTimeSec, endTimeSec])
-    if (peakInfo && duration > 0) {
+    // 0. Draw Shaded Peak Arousal Area on Waveform (interval [startTimeSec, endTimeSec]) - Arousal cases only
+    if (isArousalCase && peakInfo && duration > 0) {
       const peakXStart = (peakInfo.startTimeSec / duration) * width;
       const peakXEnd = (peakInfo.endTimeSec / duration) * width;
       const peakXCenter = (peakInfo.centerTimeSec / duration) * width;
@@ -535,7 +548,7 @@ export default function SignalViewer({
     ctx.stroke();
     ctx.restore();
 
-  }, [waveformData, selectedLead, currentTime, duration, viewerTheme, peakInfo]);
+  }, [waveformData, selectedLead, currentTime, duration, viewerTheme, peakInfo, isArousalCase]);
 
   const cleanSstUrl = sstImageUrl.startsWith("http") || sstImageUrl.startsWith("/")
     ? sstImageUrl
@@ -631,13 +644,19 @@ export default function SignalViewer({
         <div className="lg:col-span-8 bg-slate-950 text-white rounded-2xl p-4 sm:p-5 border border-slate-800 shadow-sm flex flex-col justify-between">
           <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80 mb-2">
             <div className="flex items-center gap-2">
-              <Activity className="w-5 h-5 text-rose-400" />
+              <Activity className={`w-5 h-5 ${isArousalCase ? "text-rose-400" : "text-emerald-400"}`} />
               <div>
                 <h3 className="font-bold text-sm text-white tracking-wide flex items-center gap-2">
-                  <span>Causal Signal Waveform: Lead {leadInfo.leadName}</span>
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 uppercase">
-                    Responsible For Arousal
-                  </span>
+                  <span>{isArousalCase ? `Causal Signal Waveform: Lead ${leadInfo.leadName}` : `Calibrated Baseline Trace: Lead ${leadInfo.leadName}`}</span>
+                  {isArousalCase ? (
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 uppercase">
+                      Responsible For Arousal
+                    </span>
+                  ) : (
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 uppercase">
+                      Resting Control Baseline
+                    </span>
+                  )}
                 </h3>
                 <p className="text-[11px] text-slate-400">
                   {leadInfo.friendlyName} &bull; Calibrated Continuous Telemetry
@@ -646,20 +665,24 @@ export default function SignalViewer({
             </div>
 
             {/* Analyzed Responsible Signal Callout (Replaces 7-lead montage pills) */}
-            <div className="flex items-center gap-2 bg-slate-900/90 rounded-xl px-3 py-1.5 border border-rose-500/30 text-xs">
-              <span className="flex items-center gap-1.5 font-mono text-rose-300 font-bold">
-                <span className="w-2 h-2 rounded-full bg-rose-400 animate-pulse" />
+            <div className={`flex items-center gap-2 bg-slate-900/90 rounded-xl px-3 py-1.5 border ${isArousalCase ? "border-rose-500/30 text-rose-300" : "border-emerald-500/30 text-emerald-300"} text-xs`}>
+              <span className="flex items-center gap-1.5 font-mono font-bold">
+                <span className={`w-2 h-2 rounded-full ${isArousalCase ? "bg-rose-400 animate-pulse" : "bg-emerald-400"}`} />
                 Lead {leadInfo.leadName} ({leadInfo.anatomicalRegion})
               </span>
-              <div className="h-4 w-px bg-slate-800 mx-0.5" />
-              <button
-                onClick={() => onSeek(peakInfo.centerTimeSec)}
-                className="px-2.5 py-1 rounded-lg font-mono text-[11px] font-semibold bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 transition-all flex items-center gap-1.5"
-                title={`Seek to peak arousal zone at ${peakInfo.centerTimeSec.toFixed(1)}s`}
-              >
-                <Zap className="w-3 h-3 text-rose-400" />
-                <span>Peak: {peakInfo.centerTimeSec.toFixed(1)}s</span>
-              </button>
+              {isArousalCase && peakInfo && (
+                <>
+                  <div className="h-4 w-px bg-slate-800 mx-0.5" />
+                  <button
+                    onClick={() => onSeek(peakInfo.centerTimeSec)}
+                    className="px-2.5 py-1 rounded-lg font-mono text-[11px] font-semibold bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 transition-all flex items-center gap-1.5"
+                    title={`Seek to peak arousal zone at ${peakInfo.centerTimeSec.toFixed(1)}s`}
+                  >
+                    <Zap className="w-3 h-3 text-rose-400" />
+                    <span>Peak: {peakInfo.centerTimeSec.toFixed(1)}s</span>
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
@@ -681,12 +704,12 @@ export default function SignalViewer({
             </div>
           </div>
 
-          {/* PRIMARY CAUSAL LEAD & PEAK AROUSAL AREA SUMMARY */}
-          <div className="mt-3 p-3 bg-gradient-to-r from-slate-900 via-rose-950/20 to-slate-900 rounded-xl border border-rose-500/30 flex flex-wrap items-center justify-between gap-3 text-xs">
+          {/* PRIMARY CAUSAL LEAD & PEAK AROUSAL AREA / RESTING BASELINE SUMMARY */}
+          <div className={`mt-3 p-3 bg-gradient-to-r ${isArousalCase ? "from-slate-900 via-rose-950/20 to-slate-900 border-rose-500/30" : "from-slate-900 via-emerald-950/20 to-slate-900 border-emerald-500/30"} rounded-xl border flex flex-wrap items-center justify-between gap-3 text-xs`}>
             <div className="flex items-center gap-2.5">
-              <span className="px-2.5 py-1 rounded-md bg-rose-500/20 text-rose-300 font-mono font-bold text-xs border border-rose-500/40 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
-                CAUSAL LEAD: {leadInfo.leadName}
+              <span className={`px-2.5 py-1 rounded-md ${isArousalCase ? "bg-rose-500/20 text-rose-300 border-rose-500/40" : "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"} font-mono font-bold text-xs border flex items-center gap-1.5`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${isArousalCase ? "bg-rose-400" : "bg-emerald-400"}`} />
+                {isArousalCase ? `CAUSAL LEAD: ${leadInfo.leadName}` : `BASELINE LEAD: ${leadInfo.leadName}`}
               </span>
               <div>
                 <span className="font-semibold text-slate-200">
@@ -698,22 +721,32 @@ export default function SignalViewer({
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <div className="text-right font-mono text-[11px]">
-                <span className="text-slate-400 block text-[10px]">PEAK AROUSAL AREA</span>
-                <span className="text-rose-300 font-bold">
-                  {peakInfo.startTimeSec.toFixed(1)}s – {peakInfo.endTimeSec.toFixed(1)}s (Peak: {peakInfo.peakMicrovolt > 0 ? "+" : ""}{peakInfo.peakMicrovolt.toFixed(1)} µV)
-                </span>
+            {isArousalCase && peakInfo ? (
+              <div className="flex items-center gap-3">
+                <div className="text-right font-mono text-[11px]">
+                  <span className="text-slate-400 block text-[10px]">PEAK AROUSAL AREA</span>
+                  <span className="text-rose-300 font-bold">
+                    {peakInfo.startTimeSec.toFixed(1)}s – {peakInfo.endTimeSec.toFixed(1)}s (Peak: {peakInfo.peakMicrovolt > 0 ? "+" : ""}{peakInfo.peakMicrovolt.toFixed(1)} µV)
+                  </span>
+                </div>
+                <button
+                  onClick={() => onSeek(peakInfo.centerTimeSec)}
+                  className="px-2.5 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-xs font-mono font-semibold transition-all flex items-center gap-1.5"
+                  title={`Jump directly to the peak arousal timestamp (${peakInfo.centerTimeSec.toFixed(1)}s)`}
+                >
+                  <Zap className="w-3.5 h-3.5 text-rose-400" />
+                  <span>Seek Peak</span>
+                </button>
               </div>
-              <button
-                onClick={() => onSeek(peakInfo.centerTimeSec)}
-                className="px-2.5 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-xs font-mono font-semibold transition-all flex items-center gap-1.5"
-                title={`Jump directly to the peak arousal timestamp (${peakInfo.centerTimeSec.toFixed(1)}s)`}
-              >
-                <Zap className="w-3.5 h-3.5 text-rose-400" />
-                <span>Seek Peak</span>
-              </button>
-            </div>
+            ) : (
+              <div className="flex items-center gap-2 font-mono text-[11px] bg-slate-900/80 px-3 py-1.5 rounded-lg border border-emerald-500/30">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <div className="text-right">
+                  <span className="text-slate-400 block text-[10px]">RESTING OSCILLATORY STATE</span>
+                  <span className="text-emerald-300 font-bold">Synchronized 10.1 Hz Occipital Alpha (Stable Idling &bull; Low Arousal)</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -754,8 +787,8 @@ export default function SignalViewer({
                 <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-emerald-300 shadow-[0_0_8px_#10b981]" />
               </div>
 
-              {/* Peak Area Marker Line on Spectrogram */}
-              {duration > 0 && (
+              {/* Peak Area Marker Line on Spectrogram (Arousal Cases Only) */}
+              {isArousalCase && peakInfo && duration > 0 && (
                 <div
                   className="absolute top-0 bottom-0 w-px border-r border-dashed border-rose-400/90 pointer-events-none z-10 -translate-x-1/2"
                   style={{ left: `${(peakInfo.centerTimeSec / duration) * 100}%` }}
@@ -836,15 +869,17 @@ export default function SignalViewer({
               ))}
             </div>
 
-            {/* Quick Seek to Peak Button in Playback Controls */}
-            <button
-              onClick={() => onSeek(peakInfo.centerTimeSec)}
-              className="px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-mono font-semibold transition-colors flex items-center gap-1.5"
-              title={`Jump to Peak Arousal Area (${peakInfo.centerTimeSec.toFixed(1)}s)`}
-            >
-              <Zap className="w-3.5 h-3.5 text-rose-500" />
-              <span>Peak: {peakInfo.centerTimeSec.toFixed(1)}s</span>
-            </button>
+            {/* Quick Seek to Peak Button in Playback Controls (Arousal Cases Only) */}
+            {isArousalCase && peakInfo && (
+              <button
+                onClick={() => onSeek(peakInfo.centerTimeSec)}
+                className="px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-mono font-semibold transition-colors flex items-center gap-1.5"
+                title={`Jump to Peak Arousal Area (${peakInfo.centerTimeSec.toFixed(1)}s)`}
+              >
+                <Zap className="w-3.5 h-3.5 text-rose-500" />
+                <span>Peak: {peakInfo.centerTimeSec.toFixed(1)}s</span>
+              </button>
+            )}
           </div>
 
           {/* Timecode & Status */}
@@ -867,10 +902,10 @@ export default function SignalViewer({
             step={0.05}
             value={currentTime}
             onChange={(e) => onSeek(parseFloat(e.target.value))}
-            className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-500 focus:outline-none"
+            className={`w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer ${isArousalCase ? "accent-rose-500" : "accent-emerald-500"} focus:outline-none`}
           />
-          {/* Peak Area Tick on Scrubber */}
-          {duration > 0 && (
+          {/* Peak Area Tick on Scrubber (Arousal Cases Only) */}
+          {isArousalCase && peakInfo && duration > 0 && (
             <div
               className="absolute top-1 bottom-0 w-1.5 bg-rose-500 pointer-events-none rounded-full shadow-[0_0_8px_#f43f5e] z-10 -translate-x-1/2"
               style={{ left: `${(peakInfo.centerTimeSec / duration) * 100}%` }}

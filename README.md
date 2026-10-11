@@ -8,7 +8,10 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06b6d4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.2+-ee4c2c?style=flat&logo=pytorch)](https://pytorch.org/)
+[![Python](https://img.shields.io/badge/Python-3.11+-3776ab?style=flat&logo=python&logoColor=white)](https://www.python.org/)
 [![Vercel Deployment](https://img.shields.io/badge/Production-Live-0070f3?style=flat&logo=vercel)](https://neurosense-orcin.vercel.app)
 [![Data Integrity Suite](https://img.shields.io/badge/Tests-65%2F65%20Passing-emerald)](frontend/scripts/test_data_integrity.js)
 [![Evaluation Protocol](https://img.shields.io/badge/Validation-LOSO--CV%20(93.8%25%20Acc)-purple)](backend/scripts/evaluate_loso_validation.py)
@@ -17,34 +20,39 @@
 
 ## Overview
 
-**NeuroSense** is a clinical-grade electroencephalography (EEG) and polysomnography (PSG) telemetry intelligence platform engineered to bridge automated microvolt signal processing, deep spatial-frequency representation learning, and deterministic, source-grounded clinical decision support. Designed for neurophysiologists, clinical researchers, and telemedicine monitoring centers, NeuroSense addresses the fatal shortcoming of legacy single-window EEG systems: static thresholding that flags acute events only *after* physiological onset. By combining a calibrated **Özdemir Conv2D CNN backbone** over 128×128 Short-Time Fourier Transform (STFT) matrices with a continuous **Multi-Window Rate-of-Change Escalation Layer** and zero-hallucination **RAG protocol retrieval** (grounded in AASM, NICE, and APA guidelines), NeuroSense detects pre-onset risk trajectories, quantifies cortical arousal acceleration, and presents calibrated laboratory telemetry with real-time waveform oscilloscopes and spectral matrices.
+**NeuroSense** is a clinical-grade electroencephalography (EEG) and polysomnography (PSG) telemetry intelligence platform engineered to bridge automated microvolt signal processing, deep spatial-frequency representation learning, and deterministic, source-grounded clinical decision support. 
+
+Designed for neurophysiologists, clinical researchers, and telemedicine monitoring centers, NeuroSense addresses the critical limitation of legacy single-window EEG systems: static thresholding that flags acute events only *after* physiological onset. NeuroSense implements an end-to-end architecture across two core pillars:
+
+1. **Signal Processing & Deep Representation Core (Python / PyTorch / SciPy):** Ingests multi-lead EEG/PSG signals, applies zero-phase 4th-order Butterworth bandpass filtering (0.5–45 Hz), performs per-window Z-score voltage standardization, screens cranial electromyographic (EMG) muscle artifacts via 30–48 Hz spectral slope analysis, and computes 128×128 Short-Time Fourier Transform (STFT) power matrices. A shared **Özdemir Conv2D CNN backbone** extracts 256-dimensional spatial-frequency latent representations routed to modular diagnostic risk heads (`apnea_risk_head` and `stress_anxiety_risk_head`).
+2. **Deterministic Edge Telemetry Workstation (Next.js 14 App Router on Vercel Edge):** Delivers verified benchmark recordings with $<35\,\text{ms}$ edge latency, synchronized HTML5 Canvas 128 Hz microvolt oscilloscopes, dynamic first-derivative ($\Delta\text{Beta}\%$) and second-derivative ($\Delta^2$) rate-of-change escalation tracking, and zero-hallucination **RAG protocol retrieval** grounded strictly in accredited psychiatric and neurological guidelines (AASM, NICE, APA).
 
 ---
 
 ## Feature Table
 
-| Feature | Description |
-| :--- | :--- |
-| **Pre-Onset Early-Warning Detection** | Slices multi-lead EEG/PSG into empirical pre-onset lookback windows (e.g., 90s prior to obstructive sleep apnea onset; acute stressor transition phases) to predict clinical risk prior to full event manifestation. |
-| **Multi-Window Escalation & Trend Engine** | Computes discrete first-derivative velocity ($\Delta \text{Beta}\%$) and second-derivative acceleration ($\Delta^2$) across sequenced EEG epochs to differentiate transient spikes from progressive neurological escalation. |
-| **Real Calibrated Oscilloscope Waveforms** | Renders authentic 128 Hz microvolt signal traces ($\pm 60\,\mu\text{V}$) with 1-second time calibration grids, zero baselines, and exact peak voltage discharge annotations on standard 10–20 derivations (Fp1, F3, Fz, F4, Cz, Pz, O1). |
-| **128×128 STFT Spectrogram Matrices** | Generates high-resolution time-frequency power distributions across 0.5–48 Hz, isolating localized power shifts in Delta ($0.5\text{--}4\,\text{Hz}$), Theta ($4\text{--}8\,\text{Hz}$), Alpha ($8\text{--}12\,\text{Hz}$), Beta ($13\text{--}30\,\text{Hz}$), and Gamma ($30\text{--}48\,\text{Hz}$). |
-| **Objective Neurometric Feature Extraction** | Computes standardized electrophysiological indices including the Beta/Alpha Ratio (BAR), Frontal Alpha Asymmetry (FAA), Frontal Midline Theta (Fm$\theta$) workload percentages, and relative spectral deviations against resting baseline. |
-| **Artifact Screening & Gating Layer** | Evaluates high-frequency power slope ($30\text{--}48\,\text{Hz}$) to screen and reject cranial electromyographic (EMG) muscle artifacts and ocular blink contamination before model inference confidence is gated. |
-| **Deterministic Clinical Guideline RAG** | Indexes accredited medical standards (American Academy of Sleep Medicine 2017/2021, NICE NG148/CG113, American Psychological Association) to retrieve vetted interventions with zero generative LLM hallucination. |
-| **Dual-Head Multi-Task CNN Architecture** | Shared 3-block convolutional representation extractor routing through modular task heads (`apnea_risk_head` and `stress_anxiety_risk_head`) with Leave-One-Subject-Out Cross-Validation (LOSO-CV). |
+| Feature | Description | Codebase Implementation |
+| :--- | :--- | :--- |
+| **Pre-Onset Early-Warning Detection** | Slices multi-lead EEG/PSG into empirical pre-onset lookback windows (e.g., 60–90s prior to obstructive sleep apnea onset; acute stressor transition phases) to identify risk before clinical manifestation. | `early_warning/preprocessing/pre_event_windowing.py` |
+| **Multi-Window Escalation Engine** | Computes first-derivative velocity ($\Delta \text{Beta}\%$) and second-derivative acceleration ($\Delta^2$) across sequenced EEG epochs to differentiate transient voltage fluctuations from progressive neurological escalation. | `frontend/lib/trend-logic.ts` & `backend/ml/trend.py` |
+| **Calibrated Oscilloscope Waveforms** | Renders 128 Hz microvolt signal traces ($\pm 60\,\mu\text{V}$) with 1-second time calibration grids, zero baselines, and exact peak voltage discharge annotations on standard 10–20 derivations (Fp1, F3, Fz, F4, Cz, Pz, O1). | `frontend/components/SignalViewer.tsx` |
+| **128×128 STFT Spectrogram Matrices** | Generates high-resolution time-frequency power distributions across 0.5–48 Hz, isolating localized power shifts in Delta ($0.5\text{--}4\,\text{Hz}$), Theta ($4\text{--}8\,\text{Hz}$), Alpha ($8\text{--}12\,\text{Hz}$), Beta ($13\text{--}30\,\text{Hz}$), and Gamma ($30\text{--}48\,\text{Hz}$). | `early_warning/preprocessing/pre_event_windowing.py` |
+| **Objective Neurometric Feature Extraction** | Computes standardized electrophysiological indices including Beta/Alpha Ratio (BAR), Frontal Alpha Asymmetry (FAA), Frontal Midline Theta (Fm$\theta$) workload percentages, and relative spectral deviations against resting baseline. | `backend/scripts/verify_math.py` & `frontend/lib/benchmark-data.json` |
+| **Artifact Screening & Gating Layer** | Evaluates high-frequency power slope ($30\text{--}48\,\text{Hz}$) to screen and reject cranial electromyographic (EMG) muscle artifacts and ocular blink contamination before model inference confidence is released. | `early_warning/preprocessing/pre_event_windowing.py` |
+| **Deterministic Clinical Guideline RAG** | Indexes accredited medical standards (American Academy of Sleep Medicine 2017/2021, NICE NG148/CG113, American Psychological Association) to retrieve vetted interventions with zero generative LLM hallucination. | `frontend/lib/clinical-guidelines-data.ts` & `early_warning/rag/rag_precautions.py` |
+| **Dual-Head Multi-Task CNN Architecture** | Shared 3-block convolutional representation extractor routing through modular task heads (`apnea_risk_head` and `stress_anxiety_risk_head`) with Leave-One-Subject-Out Cross-Validation (LOSO-CV). | `early_warning/models/` & `early_warning/training/` |
 
 ---
 
 ## What It Can Do Now
 
-- **Process Multi-Cohort Benchmark Recordings**: Ingests, normalizes, and classifies 44 de-identified laboratory benchmark recordings from PhysioNet MIT-BIH (`slpdb`), SAM-40, Student EEG Stress, and DASPS cohorts.
+- **Process Multi-Cohort Benchmark Recordings**: Ingests, normalizes, and classifies 22 multi-cohort laboratory benchmark recordings (yielding 44 telemetry artifacts: raw 128 Hz microvolt JSON streams and 128×128 STFT spectrogram tensors) from PhysioNet MIT-BIH (`slpdb`), SAM-40, Student EEG Stress, DASPS, Bonn, and CHB-MIT cohorts, with flagship cases interactively selectable in the production workstation.
 - **Pinpoint Peak Cortical Discharge in Real Time**: Identifies the exact window, time offset, and electrode derivation where cortical arousal peaks across sequenced multi-window recordings.
 - **Track Acceleration and Escalation Velocity**: Calculates discrete slopes between consecutive recording windows and flags trajectory states: `STABLE`, `RISING`, `ESCALATING`, `PEAK THRESHOLD`, or `DECLINING`.
 - **Display Synchronous Electrophysiology Telemetry**: Renders simultaneous interactive microvolt oscilloscope wave canvases, 128×128 STFT spectrogram image matrices, and exact relative power distribution bars on a single screen.
 - **Differentiate Cognitive Load from Affective Anxiety**: Distinguishes task-induced bilateral frontal beta elevations (mental calculation load) from asymmetric prefrontal affective reactivity via lead-specific derivations.
-- **Enforce Strict Automated Guardrails**: Automatically validates relative band power sums ($100 \pm 0.1\%$), mathematical deviation consistency, and language integrity across the full codebase via automated CI test suites.
-- **Serve Production Telemetry Sub-Second**: Delivers full spectral decomposition, convolutional inference, and clinical guideline retrieval in $<35\,\text{ms}$ per 10.0-second epoch.
+- **Enforce Strict Automated Guardrails**: Automatically validates relative band power sums ($100 \pm 0.1\%$), mathematical deviation consistency, and language integrity across the full codebase via automated CI test suites (`test_data_integrity.js`).
+- **Serve Production Telemetry Sub-Second**: Delivers precomputed, mathematically validated spectral decomposition matrices, calibrated waveform streams, and grounded clinical guideline retrieval in $<35\,\text{ms}$ per epoch with zero-downtime edge caching.
 
 ---
 
@@ -56,7 +64,7 @@ Neurological and physiological event detection has historically been trapped bet
 | :--- | :--- | :--- | :--- |
 | **Detection Timing** | Post-hoc manual inspection (hours/days later) | Instantaneous post-onset trigger ($t > \text{threshold}$) | **Pre-onset lookback windowing** ($60\text{--}90\,\text{s}$ pre-event) |
 | **Trend Awareness** | Static epoch-by-epoch visual scoring | Zero temporal memory; isolated single-epoch evaluations | **Multi-window 1st & 2nd derivative escalation velocity tracking** |
-| **Spectral Resolution** | Coarse visual paper trace inspection | Simple single-band power filtering | **128×128 Synchrosqueezing/STFT spatial-frequency tensors** |
+| **Spectral Resolution** | Coarse visual paper trace inspection | Simple single-band power filtering | **128×128 STFT spatial-frequency tensors** |
 | **Artifact Robustness** | Subjective human artifact dismissal | High false-positive rate from muscle (EMG) and ocular (EOG) noise | **Quantitative spectral slope cranial EMG & EOG screening gate** |
 | **Clinical Transparency** | High clinical expertise, zero automation | Black-box raw score without medical explanation | **Deterministic RAG mapping to AASM, NICE, and APA guidelines** |
 | **Subject Generalization** | Subject-specific clinical interpretation | Severe inter-subject drop-off; intra-subject overfitting | **LOSO-CV subject-independent cross-validation (93.8% Accuracy)** |
@@ -69,7 +77,7 @@ The flowchart below traces the end-to-end telemetry pipeline from raw electrode 
 
 ```mermaid
 flowchart TD
-    subgraph INGESTION["1. Signal Ingestion & Preprocessing"]
+    subgraph INGESTION["1. Signal Ingestion & Preprocessing (Python / SciPy)"]
         A["Raw Multi-Channel Telemetry (128 Hz)<br/>Fp1, F3, Fz, F4, Cz, Pz, O1"] --> B["Zero-Phase 4th-Order Butterworth Filter<br/>Bandpass: 0.5 Hz – 45 Hz"]
         B --> C["Per-Window Z-Score Voltage Normalization<br/>μV Centering & Standardization"]
         C --> D{"Cranial Artifact Screen<br/>30–48 Hz Spectral Slope > Threshold?"}
@@ -77,17 +85,17 @@ flowchart TD
         D -- "No (Cortical EEG)" --> E["128x128 Short-Time Fourier Transform (STFT)<br/>Time-Frequency Matrix Generation"]
     end
 
-    subgraph CNN_CORE["2. Deep Convolutional Representation Core"]
+    subgraph CNN_CORE["2. Deep Convolutional Representation Core (PyTorch / Keras)"]
         E --> F["Özdemir Conv2D Backbone<br/>3x Conv2D + BatchNorm + ReLU + MaxPool2D"]
         F --> G["256-Dimensional Shared Latent Tensor"]
         G --> H{"Task Router"}
-        H -- "Sleep Apnea" --> I["Apnea Risk Head<br/>Dense + Sigmoid"]
-        H -- "Stress / Anxiety" --> J["Stress/Anxiety Risk Head<br/>Dense + Sigmoid"]
+        H -- "Sleep Apnea" --> I["Apnea Risk Head<br/>Dense + Softmax"]
+        H -- "Stress / Anxiety" --> J["Stress/Anxiety Risk Head<br/>Dense + Softmax"]
         I --> K["Single-Window Arousal & Confidence Scoring"]
         J --> K
     end
 
-    subgraph ESCALATION["3. Multi-Window Rate-of-Change Layer"]
+    subgraph ESCALATION["3. Multi-Window Rate-of-Change Layer (TypeScript / Python)"]
         K --> L["Chronological Window Sequence Buffer<br/>W_1, W_2, ..., W_n (10.0s Epochs)"]
         L --> M["Compute First-Order Derivative<br/>ΔBeta% Velocity Between Epochs"]
         M --> N["Compute Second-Order Derivative<br/>Acceleration: Δ² = Slope_k - Slope_k-1"]
@@ -95,7 +103,7 @@ flowchart TD
         O --> P["Identify Peak Cortical Discharge Point<br/>Window Index, Peak μV, Peak Lead"]
     end
 
-    subgraph RAG_LAYER["4. Clinical Guideline & Telemetry Output"]
+    subgraph RAG_LAYER["4. Clinical Guideline & Telemetry Output (Next.js 14 Workstation)"]
         P --> Q["Deterministic Clinical Knowledge Base<br/>AASM 2017/2021 | NICE NG148/CG113 | APA"]
         K --> Q
         Q --> R["Grounded Precaution & Action Protocol"]
@@ -114,50 +122,60 @@ flowchart TD
 
 ---
 
-## Core Workflow Sequence Diagram
+## Dual Pipeline Architecture: Edge Workstation vs. Offline Pipeline
 
-This sequence diagram illustrates the lifecycle of a single diagnostic session, showing synchronous front-end stream rendering and asynchronous model scoring.
+NeuroSense cleanly separates **live edge delivery** from **offline feature extraction & deep learning training**:
 
 ```mermaid
 sequenceDiagram
     autonumber
     actor Clinician as Clinical Operator / Researcher
     participant UI as Telemetry Workstation (Next.js 14)
-    participant API as Telemetry Controller (/api/analyze)
-    participant Preproc as Signal Processor (SciPy/WFDB)
-    participant CNN as Özdemir Conv2D Engine
-    participant Trend as Rate-of-Change Engine
-    participant RAG as Clinical Protocol Store
+    participant EdgeAPI as Edge API (/api/analyze)
+    participant Cache as Benchmark Case Store (JSON & Spectrograms)
+    participant Trend as Rate-of-Change Engine (trend-logic.ts)
+    participant RAG as Clinical Protocol Store (AASM/NICE/APA)
 
+    Note over Clinician,RAG: PATH A: Live Interactive Workstation (<35ms Edge Delivery)
     Clinician->>UI: Selects Patient Telemetry Case & Sequence
-    UI->>API: GET /api/analyze/[caseId]
-    API->>Preproc: Fetch raw multi-channel samples (10.0s window @ 128 Hz)
-    Preproc->>Preproc: 0.5–45 Hz Bandpass + 30–48 Hz EMG Slope Verification
-    alt Artifact Contamination Detected
-        Preproc-->>API: Gating Alert (Signal Quality < 80%)
-        API-->>UI: Return Gated Low-Confidence Warning
-    else Clean Cortical Telemetry
-        Preproc->>Preproc: Generate 128x128 STFT Spectrogram Matrix
-        Preproc->>CNN: Execute Forward Pass on 128x128 Tensor
-        CNN->>CNN: Conv2D Feature Extraction + Task-Head Classification
-        CNN-->>API: Return Risk Stage, Confidence, Spectral Metrics (BAR, FAA)
-        API->>Trend: Push Epoch to Multi-Window Sequence Buffer
-        Trend->>Trend: Compute 1st-Derivative Velocity & 2nd-Derivative Acceleration
-        Trend->>Trend: Identify Sequence Peak Discharge & Trajectory State
-        Trend-->>API: Return Slope Vector, Peak Window Index, Trend State
-        API->>RAG: Query Grounded Knowledge Base for Risk Stage & Markers
-        RAG-->>API: Return Vetted Guidelines (AASM, NICE, APA citations)
-        API-->>UI: 200 OK (Telemetry JSON + Spectrogram + Grounded Protocol)
-        UI->>UI: Render Oscilloscope Trace with Peak Pointer & Telemetry Matrix
-        UI-->>Clinician: Interactive Visual Inspection & PDF Audit Export Ready
-    end
+    UI->>EdgeAPI: GET /api/analyze/[caseId]
+    EdgeAPI->>Cache: Fetch Verified Telemetry (10.0s Window @ 128 Hz)
+    Cache-->>EdgeAPI: Return Raw Signal Samples, STFT Path, Band Powers
+    EdgeAPI->>Trend: Push Epoch to Multi-Window Sequence Buffer
+    Trend->>Trend: Compute 1st-Derivative Velocity & 2nd-Derivative Acceleration
+    Trend->>Trend: Classify Trajectory (Stable | Rising | Escalating | Peak | Declining)
+    EdgeAPI->>RAG: Query Grounded Guidelines for Detected Risk Stage
+    RAG-->>EdgeAPI: Return Vetted Protocols (AASM, NICE, APA citations)
+    EdgeAPI-->>UI: 200 OK (Telemetry JSON + Spectrogram + Grounded Protocol)
+    UI->>UI: Render 128 Hz Oscilloscope with Peak Pointer & Telemetry Matrix
+    UI-->>Clinician: Interactive Visual Inspection & Clinical PDF Audit Ready
+```
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Dev as ML Researcher / Pipeline
+    participant RawData as Multi-Cohort Raw Recordings
+    participant Preproc as Python Signal Processor (SciPy)
+    participant PyTorch as Özdemir Conv2D CNN (PyTorch 2.2+)
+    participant Eval as LOSO-CV & Evaluation Suite
+
+    Note over Dev,Eval: PATH B: Offline Signal Processing & Model Training Pipeline
+    Dev->>Preproc: Run batch preprocessing on SAM-40, Student Stress, DASPS, MIT-BIH
+    Preproc->>Preproc: 0.5–45 Hz Butterworth Filter + Z-Score Normalization
+    Preproc->>Preproc: 30–48 Hz EMG Slope Verification & Artifact Gating
+    Preproc->>Preproc: Generate 128x128 STFT Power Spectrogram Tensors
+    Preproc->>PyTorch: Train Özdemir Conv2D Backbone + Task Heads
+    PyTorch->>Eval: Execute Subject-Wise Train/Test Partitioning
+    Eval->>Eval: Generate EVALUATION_REPORT.md and loso_validation_metrics.json
+    Eval-->>Dev: Export Optimized Weights (.pt / .npz) and Benchmark JSONs
 ```
 
 ---
 
 ## Key Logic Flow: Signal Gating & Escalation Decision Engine
 
-The following RAPTOR-style algorithmic flowchart details every decision boundary, verification gate, and mathematical threshold evaluated from raw voltage input to final clinical state assignment.
+The following algorithmic flowchart details every decision boundary, verification gate, and mathematical threshold evaluated from raw voltage input to final clinical state assignment.
 
 ```mermaid
 flowchart TD
@@ -377,8 +395,8 @@ erDiagram
 
 ### Prerequisites
 - **Node.js**: `v18.17.0+` (Node 20 LTS recommended)
-- **Python**: `3.10+`
-- **Package Managers**: `npm` and `pip` (or Python virtual environment)
+- **Python**: `3.10+` (Python 3.11 recommended for backend virtual environment)
+- **Package Managers**: `npm` and `pip` (or Python `venv`)
 
 ### Installation
 
@@ -387,7 +405,12 @@ erDiagram
 git clone https://github.com/arnnnnaaavvvvv/NeuroSense.git
 cd NeuroSense
 
-# 2. Set up Python backend environment
+# 2. Set up Next.js frontend dependencies
+cd frontend
+npm install
+cd ..
+
+# 3. Optional: Set up Python backend environment for model training & data pipelines
 python -m venv backend/.venv
 # Windows:
 .\backend\.venv\Scripts\activate
@@ -396,17 +419,12 @@ source backend/.venv/bin/activate
 
 # Install backend dependencies
 pip install -r backend/requirements.txt
-
-# 3. Set up Next.js frontend dependencies
-cd frontend
-npm install
-cd ..
 ```
 
 ### Running Locally
 
 ```bash
-# Terminal 1: Launch Next.js Telemetry Frontend (Port 3000)
+# Launch Next.js Telemetry Frontend (Port 3000)
 cd frontend
 npm run dev
 
@@ -426,7 +444,7 @@ python demo_mode.py
 ## Example Input → Output
 
 ### Realistic API Request
-Simulated payload requesting evaluation of a 10.0-second EEG window for case `sam40_sub01_math_stress`:
+Payload requesting evaluation of a 10.0-second EEG window for case `sam40_sub01_math_stress`:
 
 ```http
 GET /api/analyze/sam40_sub01_math_stress HTTP/1.1
@@ -445,11 +463,13 @@ Accept: application/json
     "duration_seconds": 10.0
   },
   "classification": {
-    "predicted_class": "elevated_risk",
-    "three_state_class": "high_arousal",
+    "binary_class": "elevated_risk",
     "risk_stage": "Elevated Cognitive Workload",
+    "three_state_class": "high_arousal",
+    "detected_state_title": "Elevated Cognitive Workload & Mental Strain",
     "confidence": 0.9912,
-    "detected_state_title": "Elevated Cognitive Workload & Mental Strain"
+    "model_name": "Özdemir Conv2D CNN Backbone (128x128 STFT)",
+    "provenance": "SAM-40 Research Benchmark Cohort"
   },
   "signal_quality": {
     "overall_score": 96,
@@ -486,7 +506,7 @@ Accept: application/json
   ],
   "signal_assets": {
     "sst_image_url": "/static/processed/sam40_sub01_math_stress_sst_128.png",
-    "raw_signal_url": "/static/processed/sam40_sub01_math_stress_raw.json"
+    "raw_waveform_url": "/static/processed/sam40_sub01_math_stress_raw.json"
   }
 }
 ```
@@ -547,14 +567,14 @@ curl -X GET "https://neurosense-orcin.vercel.app/api/precautions/Elevated%20Cogn
 NeuroSense enforces strict data integrity, mathematical consistency, and medical language guardrails across both Python and TypeScript components:
 
 ```bash
-# 1. Run Data Integrity & Language Guardrail Test Suite (65 Assertions)
+# 1. Run Data Integrity & Language Guardrail Test Suite (65 Assertions Passing)
 node frontend/scripts/test_data_integrity.js
 
-# 2. Run Python Early-Warning Unit Test Suite (17 Tests)
-pytest early_warning/tests/ -v
+# 2. Run Mathematical Consistency & Band Sum Verification
+python backend/scripts/verify_math.py
 
-# 3. Run Full System Regression Suite (31 Tests)
-pytest backend/tests/ early_warning/tests/ -v
+# 3. Run Leave-One-Subject-Out Cross-Validation Benchmark Script
+python backend/scripts/evaluate_loso_validation.py
 
 # 4. Verify Next.js Production Compilation & Type Safety
 cd frontend && npm run build
@@ -567,17 +587,18 @@ cd frontend && npm run build
 1. **Pre-Onset Velocity Over Post-Onset Thresholds**: Static amplitudes miss progressive neurological escalation. True early warning requires calculating first- and second-order acceleration across chronological time windows.
 2. **Clinical Explainability Over Black-Box Confidence**: Confidence percentages without physiological explanations are clinically unviable. Every alert must display exact microvolt excursions, frequency band powers, and lead derivations.
 3. **Deterministic RAG With Zero Generative Hallucination**: Patient-facing and clinical guidance must never be left to generative free-form language models. Protocols are strictly retrieved from peer-reviewed, accredited clinical literature (AASM, NICE, APA).
-4. **Subject-Wise Independent Validation**: Random train-test splitting on time-series physiological data causes catastrophic intra-subject data leakage. Models must be validated exclusively through Leave-One-Subject-Out Cross-Validation (LOSO-CV).
+4. **Subject-Wise Independent Validation**: Random train-test splitting on time-series physiological data causes catastrophic intra-subject data leakage. Models must be validated exclusively through Leave-One-Subject-Out Cross-Validation (LOSO-CV) and subject-wise cohort partitioning.
 
 ---
 
 ## Roadmap
 
-- [x] Pre-apnea 90-second lookback detection on MIT-BIH Polysomnographic database (`slpdb`).
+- [x] Pre-apnea lookback detection on MIT-BIH Polysomnographic database (`slpdb`).
 - [x] Multi-cohort student cognitive workload and acute stress classification (SAM-40 & Student EEG).
 - [x] Multi-window derivative velocity and acceleration trajectory detection.
 - [x] Calibrated real microvolt canvas oscilloscope and 128×128 STFT spectrogram visualizers.
-- [x] Automated 65-point data integrity and language guardrail test suite.
+- [x] Automated 65-point data integrity and language guardrail test suite (`test_data_integrity.js`).
+- [x] Full architecture specification document (`ARCHITECTURE.md`).
 - [ ] Integration of real-time streaming WebSocket feeds for live dry-electrode wearable headbands.
 - [ ] Expansion of RAG index to include Pediatric Epilepsy Surgery Guidelines (ILAE 2022).
 - [ ] WebGPU-accelerated local client-side STFT tensor generation for zero-latency offline triage.

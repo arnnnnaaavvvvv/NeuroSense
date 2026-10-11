@@ -16,6 +16,8 @@
 [![Data Integrity Suite](https://img.shields.io/badge/Tests-65%2F65%20Passing-emerald)](frontend/scripts/test_data_integrity.js)
 [![Evaluation Protocol](https://img.shields.io/badge/Validation-LOSO--CV%20(93.8%25%20Acc)-purple)](backend/scripts/evaluate_loso_validation.py)
 
+🌐 **Live Production Application**: [https://neurosense-orcin.vercel.app](https://neurosense-orcin.vercel.app)
+
 ---
 
 ## Overview
